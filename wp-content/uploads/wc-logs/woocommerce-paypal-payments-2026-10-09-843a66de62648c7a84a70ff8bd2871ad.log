@@ -1,0 +1,89 @@
+2026-10-09T01:44:16+00:00 DEBUG #6542 - [New Request] POST /CK_NHOMF_CMS/
+2026-10-09T01:44:16+00:00 ERROR #6542 - SDK v6 client token runtime error: Cannot request a PayPal client token without a client ID and secret.
+2026-10-09T01:44:28+00:00 DEBUG #5656 - [New Request] POST /CK_NHOMF_CMS/
+2026-10-09T01:44:28+00:00 ERROR #5656 - SDK v6 client token runtime error: Cannot request a PayPal client token without a client ID and secret.
+2026-10-09T01:55:20+00:00 DEBUG #9096 - [New Request] GET /CK_NHOMF_CMS/wp-admin/plugins.php
+2026-10-09T01:55:20+00:00 DEBUG #9096 - Webhook lock acquired for 'unregister'.
+2026-10-09T01:55:20+00:00 DEBUG #9096 - Webhook operation 'unregister' started.
+2026-10-09T01:55:22+00:00 DEBUG #9096 - GET https://api.woocommerce.com/integrations/ppc/v1/notifications/webhooks
+Response: Array
+(
+    [code] => 404
+    [message] => Not Found
+)
+
+Response Body: {"statusCode":404,"error":"Not Found","message":"Not Found"}
+
+2026-10-09T01:55:22+00:00 ERROR #9096 - Failed to delete webhooks: [Error] Not Found
+2026-10-09T01:55:22+00:00 INFO #9096 - Webhooks deleted.
+2026-10-09T01:55:22+00:00 DEBUG #9096 - Webhook lock released for 'unregister'.
+2026-10-09T03:42:54+00:00 DEBUG #1422 - [New Request] POST /CK_NHOMF_CMS/
+2026-10-09T03:42:54+00:00 ERROR #1422 - SDK v6 client token runtime error: Cannot request a PayPal client token without a client ID and secret.
+2026-10-09T03:42:56+00:00 DEBUG #6559 - [New Request] POST /CK_NHOMF_CMS/
+2026-10-09T03:42:56+00:00 ERROR #6559 - SDK v6 client token runtime error: Cannot request a PayPal client token without a client ID and secret.
+2026-10-09T03:43:04+00:00 DEBUG #1098 - [New Request] POST /CK_NHOMF_CMS/
+2026-10-09T03:43:04+00:00 ERROR #1098 - SDK v6 client token runtime error: Cannot request a PayPal client token without a client ID and secret.
+2026-10-09T03:43:07+00:00 DEBUG #6311 - [New Request] POST /CK_NHOMF_CMS/
+2026-10-09T03:43:07+00:00 ERROR #6311 - SDK v6 client token runtime error: Cannot request a PayPal client token without a client ID and secret.
+2026-10-09T03:43:19+00:00 DEBUG #2243 - [New Request] GET /CK_NHOMF_CMS/wp-admin/admin.php
+2026-10-09T03:43:19+00:00 DEBUG #2243 - GET https://api.woocommerce.com/integrations/ppc/v1/customer/partners/K8SKZ36LQBWXJ/merchant-integrations/
+Response: Array
+(
+    [code] => 404
+    [message] => Not Found
+)
+
+Response Body: {"statusCode":404,"error":"Not Found","message":"Not Found"}
+
+2026-10-09T03:43:19+00:00 WARNING #2243 - [Error] Not Found CONTEXT: {"args":{"method":"GET","headers":{"Authorization":"Bearer token","Content-Type":"application/json"}},"response":{"headers":{},"body":"{\"statusCode\":404,\"error\":\"Not Found\",\"message\":\"Not Found\"}","response":{"code":404,"message":"Not Found"},"cookies":[],"filename":null,"http_response":{"data":null,"headers":null,"status":null}}}
+2026-10-09T03:43:30+00:00 DEBUG #8278 - [New Request] GET /CK_NHOMF_CMS/wp-json/wc/v3/wc_paypal/webhooks
+2026-10-09T03:43:30+00:00 DEBUG #8278 - GET https://api.woocommerce.com/integrations/ppc/v1/notifications/webhooks
+Response: Array
+(
+    [code] => 404
+    [message] => Not Found
+)
+
+Response Body: {"statusCode":404,"error":"Not Found","message":"Not Found"}
+
+2026-10-09T03:43:43+00:00 DEBUG #8277 - [New Request] POST /CK_NHOMF_CMS/
+2026-10-09T03:43:43+00:00 ERROR #8277 - SDK v6 client token runtime error: Cannot request a PayPal client token without a client ID and secret.
+2026-10-09T03:43:46+00:00 DEBUG #6369 - [New Request] POST /CK_NHOMF_CMS/
+2026-10-09T03:43:46+00:00 ERROR #6369 - SDK v6 client token runtime error: Cannot request a PayPal client token without a client ID and secret.
+2026-10-09T03:43:59+00:00 DEBUG #5844 - [New Request] POST /CK_NHOMF_CMS/
+2026-10-09T03:43:59+00:00 ERROR #5844 - SDK v6 client token runtime error: Cannot request a PayPal client token without a client ID and secret.
+2026-10-09T03:44:00+00:00 DEBUG #7128 - [New Request] POST /CK_NHOMF_CMS/
+2026-10-09T03:44:00+00:00 ERROR #7128 - SDK v6 client token runtime error: Cannot request a PayPal client token without a client ID and secret.
+2026-10-09T03:44:22+00:00 DEBUG #2445 - [New Request] POST /CK_NHOMF_CMS/wp-json/wc/v3/wc_paypal/login_link
+2026-10-09T03:44:22+00:00 INFO #2445 - Generating onboarding URL for: production-express_checkout-
+2026-10-09T03:44:23+00:00 DEBUG #2445 - POST https://api.woocommerce.com/integrations/ppc/v2/customer/partner-referrals
+Request Body: {"partner_config_override":{"return_url":"http:\/\/wordpress.local\/CK_NHOMF_CMS\/wp-admin\/admin.php?page=wc-settings&tab=checkout&section=ppcp-gateway&ppcpToken=eyJrIjoicHJvZHVjdGlvbi1leHByZXNzX2NoZWNrb3V0LSIsInUiOjEsImgiOiJlYWFhYTE1NDBmYzY4YTFkYjI1ZTJmNDkzMWIyMGViOSJ9","return_url_description":"Return to your shop.","show_add_credit_card":false},"products":["EXPRESS_CHECKOUT"],"legal_consents":[{"type":"SHARE_DATA_CONSENT","granted":true}],"operations":[{"operation":"API_INTEGRATION","api_integration_preference":{"rest_api_integration":{"integration_method":"PAYPAL","integration_type":"FIRST_PARTY","first_party_details":{"features":["PAYMENT","REFUND","ADVANCED_TRANSACTIONS_SEARCH","TRACKING_SHIPMENT_READWRITE","BILLING_AGREEMENT"],"seller_nonce":"ec73734770fd8cc260f11eb160510fb26cd4c4ad6fd52401aa81ca33eb9ac98f"}}}}]}
+Response Debug ID: d3b4317aef3e8
+Response: Array
+(
+    [code] => 201
+    [message] => Created
+)
+
+
+2026-10-09T03:44:29+00:00 DEBUG #8955 - [New Request] POST /CK_NHOMF_CMS/wp-json/wc/v3/wc_paypal/login_link
+2026-10-09T03:44:29+00:00 DEBUG #8955 - Loaded onboarding URL from cache: production-express_checkout-
+2026-10-09T03:44:29+00:00 INFO #8955 - Using cached onboarding URL for: production-express_checkout-
+2026-10-09T03:44:29+00:00 DEBUG #9937 - [New Request] POST /CK_NHOMF_CMS/wp-json/wc/v3/wc_paypal/login_link
+2026-10-09T03:44:29+00:00 DEBUG #9937 - Loaded onboarding URL from cache: production-express_checkout-
+2026-10-09T03:44:29+00:00 INFO #9937 - Using cached onboarding URL for: production-express_checkout-
+2026-10-09T03:45:28+00:00 DEBUG #2964 - [New Request] GET /CK_NHOMF_CMS/wp-admin/plugins.php
+2026-10-09T03:45:28+00:00 DEBUG #2964 - Webhook lock acquired for 'unregister'.
+2026-10-09T03:45:28+00:00 DEBUG #2964 - Webhook operation 'unregister' started.
+2026-10-09T03:45:29+00:00 DEBUG #2964 - GET https://api.woocommerce.com/integrations/ppc/v1/notifications/webhooks
+Response: Array
+(
+    [code] => 404
+    [message] => Not Found
+)
+
+Response Body: {"statusCode":404,"error":"Not Found","message":"Not Found"}
+
+2026-10-09T03:45:29+00:00 ERROR #2964 - Failed to delete webhooks: [Error] Not Found
+2026-10-09T03:45:29+00:00 INFO #2964 - Webhooks deleted.
+2026-10-09T03:45:29+00:00 DEBUG #2964 - Webhook lock released for 'unregister'.
