@@ -1,0 +1,1068 @@
+/**
+ * NEM Fashion Header & Footer Styling
+ * Perfectly styled to match NEM Fashion official design
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
+
+/* ==========================================================================
+   RESET & STOREFRONT OVERRIDES FOR HEADER & FOOTER
+   ========================================================================== */
+.site-header.nem-site-header {
+    padding: 0 !important;
+    margin: 0 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    background: #ffffff !important;
+    border: none !important;
+    border-bottom: 1px solid #ebebeb !important;
+}
+
+.site-footer.nem-site-footer {
+    padding: 0 !important;
+    margin: 0 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    background: transparent !important;
+    border: none !important;
+    color: #cccccc !important;
+}
+
+/* Hide default storefront handheld footer bar if it conflicts */
+.storefront-handheld-footer-bar {
+    display: none !important;
+}
+
+/* ==========================================================================
+   NEM HEADER STYLES
+   ========================================================================== */
+.nem-header-sticky-wrapper {
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background: #ffffff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    transition: all 0.3s ease;
+}
+
+.nem-header-inner {
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: 0 24px;
+    height: 75px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+}
+
+/* Brand Logo */
+.nem-header-logo {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+}
+
+.nem-header-logo a {
+    display: inline-block;
+    line-height: 1;
+}
+
+.nem-logo-img {
+    height: 34px;
+    width: auto;
+    display: block;
+    object-fit: contain;
+}
+
+/* Desktop Navigation */
+.nem-desktop-nav {
+    display: flex;
+    align-items: center;
+    margin: 0 20px;
+    flex-grow: 1;
+    justify-content: center;
+}
+
+.nem-nav-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    gap: 28px;
+}
+
+.nem-nav-item {
+    position: relative;
+    padding: 26px 0;
+    margin: 0;
+}
+
+.nem-nav-link {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: #222222 !important;
+    text-transform: uppercase;
+    text-decoration: none !important;
+    letter-spacing: 0.6px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: color 0.2s ease;
+}
+
+.nem-nav-link:hover,
+.nem-nav-item:hover > .nem-nav-link {
+    color: #000000 !important;
+    opacity: 0.75;
+}
+
+.nem-arrow-down {
+    font-size: 11px;
+    font-weight: 700;
+    display: inline-block;
+    transition: transform 0.25s ease;
+}
+
+.nem-nav-item:hover .nem-arrow-down {
+    transform: rotate(180deg);
+}
+
+/* Dropdown Menus Common */
+.nem-has-dropdown,
+.nem-has-megamenu {
+    position: relative;
+}
+
+.nem-simple-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: #ffffff;
+    min-width: 210px;
+    list-style: none;
+    margin: 0;
+    padding: 10px 0;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    border: 1px solid #f0f0f0;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
+    z-index: 1050;
+}
+
+.nem-nav-item:hover .nem-simple-dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.nem-simple-dropdown li {
+    margin: 0;
+    padding: 0;
+}
+
+.nem-simple-dropdown li a {
+    display: block;
+    padding: 10px 20px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #333333 !important;
+    text-decoration: none !important;
+    transition: background-color 0.2s, color 0.2s, padding-left 0.2s;
+}
+
+.nem-simple-dropdown li a:hover {
+    background-color: #f8f8f8;
+    color: #000000 !important;
+    padding-left: 24px;
+}
+
+/* Mega Menu for SẢN PHẨM */
+.nem-megamenu-panel {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    width: 960px;
+    max-width: 92vw;
+    background: #ffffff;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+    border-radius: 6px;
+    border: 1px solid #eeeeee;
+    padding: 30px 35px;
+    box-sizing: border-box;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
+    z-index: 1050;
+}
+
+.nem-has-megamenu:hover .nem-megamenu-panel {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+}
+
+.nem-megamenu-inner {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 25px;
+}
+
+.nem-megamenu-col {
+    display: flex;
+    flex-direction: column;
+}
+
+.nem-col-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: #111111 !important;
+    text-transform: uppercase;
+    text-decoration: none !important;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+    padding-bottom: 6px;
+    border-bottom: 1.5px solid #111111;
+    display: inline-block;
+}
+
+.nem-col-extra {
+    margin-top: 18px;
+}
+
+.nem-sub-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.nem-sub-list li {
+    margin: 0;
+    padding: 0;
+}
+
+.nem-sub-list li a {
+    display: block;
+    font-size: 13px;
+    color: #555555 !important;
+    text-decoration: none !important;
+    padding: 5px 0;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.nem-sub-list li a:hover {
+    color: #000000 !important;
+    transform: translateX(3px);
+}
+
+/* Header Right Actions */
+.nem-header-actions {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.nem-action-btn {
+    background: none;
+    border: none;
+    padding: 6px;
+    margin: 0;
+    cursor: pointer;
+    color: #222222;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.2s, transform 0.2s;
+}
+
+.nem-action-btn:hover {
+    opacity: 0.7;
+    transform: scale(1.05);
+}
+
+.nem-divider-pipe {
+    width: 1px;
+    height: 18px;
+    background-color: #d8d8d8;
+    display: inline-block;
+}
+
+/* User Account Section */
+.nem-user-wrapper {
+    position: relative;
+}
+
+.nem-user-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13.5px;
+    font-weight: 500;
+    color: #222222 !important;
+    text-decoration: none !important;
+    padding: 8px 4px;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.nem-user-link:hover {
+    opacity: 0.8;
+}
+
+.nem-user-icon {
+    flex-shrink: 0;
+}
+
+.nem-user-name {
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.nem-user-dropdown-panel {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: #ffffff;
+    min-width: 220px;
+    border-radius: 6px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+    border: 1px solid #f0f0f0;
+    padding: 12px 0;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
+    z-index: 1050;
+}
+
+.nem-user-wrapper:hover .nem-user-dropdown-panel {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.nem-user-dropdown-header {
+    padding: 8px 18px 12px;
+    border-bottom: 1px solid #f2f2f2;
+    margin-bottom: 6px;
+}
+
+.nem-user-badge {
+    display: inline-block;
+    font-size: 10px;
+    text-transform: uppercase;
+    background: #f0f0f0;
+    padding: 2px 6px;
+    border-radius: 3px;
+    color: #666;
+    margin-bottom: 4px;
+}
+
+.nem-user-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.nem-user-links li a {
+    display: block;
+    padding: 8px 18px;
+    font-size: 13px;
+    color: #444444 !important;
+    text-decoration: none !important;
+    transition: background 0.2s, color 0.2s;
+}
+
+.nem-user-links li a:hover {
+    background-color: #f7f7f7;
+    color: #000000 !important;
+}
+
+.nem-logout-link {
+    color: #e53935 !important;
+}
+
+/* Cart Section */
+.nem-cart-wrapper {
+    position: relative;
+}
+
+.nem-cart-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13.5px;
+    font-weight: 500;
+    color: #222222 !important;
+    text-decoration: none !important;
+    padding: 8px 4px;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.nem-cart-link:hover {
+    opacity: 0.8;
+}
+
+.nem-cart-bag-icon {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nem-cart-badge {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -25%);
+    font-size: 10.5px;
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1;
+    pointer-events: none;
+}
+
+.nem-cart-label {
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* Mini Cart Dropdown */
+.nem-minicart-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: #ffffff;
+    width: 320px;
+    max-width: 90vw;
+    border-radius: 6px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+    border: 1px solid #f0f0f0;
+    padding: 16px;
+    box-sizing: border-box;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
+    z-index: 1050;
+}
+
+.nem-cart-wrapper:hover .nem-minicart-dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.nem-minicart-header {
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 12px;
+}
+
+.nem-empty-cart-msg {
+    font-size: 13px;
+    color: #777;
+    margin: 10px 0;
+    text-align: center;
+}
+
+/* Hamburger Toggle (Mobile) */
+.nem-hamburger-btn {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 26px;
+    height: 18px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    margin-left: 8px;
+}
+
+.nem-hamburger-btn span {
+    display: block;
+    height: 2px;
+    width: 100%;
+    background-color: #222222;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+/* Search Overlay Modal */
+.nem-search-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2000;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 120px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.nem-search-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.nem-search-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(4px);
+}
+
+.nem-search-box {
+    position: relative;
+    z-index: 1;
+    width: 640px;
+    max-width: 90vw;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+    padding: 16px 20px;
+    transform: translateY(-20px);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.nem-search-overlay.active .nem-search-box {
+    transform: translateY(0);
+}
+
+.nem-search-input-wrap {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.nem-search-input-icon {
+    flex-shrink: 0;
+}
+
+.nem-search-input {
+    flex-grow: 1;
+    border: none !important;
+    outline: none !important;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 15px;
+    color: #222;
+    background: transparent;
+    padding: 8px 0;
+}
+
+.nem-search-btn {
+    background: #111111;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 18px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.nem-search-btn:hover {
+    background: #333333;
+}
+
+.nem-search-close-btn {
+    background: none;
+    border: none;
+    font-size: 26px;
+    line-height: 1;
+    color: #777;
+    cursor: pointer;
+    padding: 0 4px;
+    transition: color 0.2s;
+}
+
+.nem-search-close-btn:hover {
+    color: #111;
+}
+
+/* Mobile Drawer */
+.nem-mobile-drawer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2500;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.nem-mobile-drawer.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.nem-drawer-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.nem-drawer-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 320px;
+    max-width: 82vw;
+    background: #ffffff;
+    box-shadow: 2px 0 15px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 1;
+}
+
+.nem-mobile-drawer.active .nem-drawer-content {
+    transform: translateX(0);
+}
+
+.nem-drawer-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.nem-drawer-logo {
+    height: 28px;
+    width: auto;
+}
+
+.nem-drawer-close {
+    background: none;
+    border: none;
+    font-size: 28px;
+    line-height: 1;
+    cursor: pointer;
+    color: #444;
+}
+
+.nem-drawer-body {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 16px 20px;
+}
+
+.nem-mobile-nav-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.nem-m-item {
+    border-bottom: 1px solid #f3f3f3;
+    padding: 12px 0;
+    position: relative;
+}
+
+.nem-m-item > a {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: #222222 !important;
+    text-decoration: none !important;
+    text-transform: uppercase;
+}
+
+.nem-m-sub-toggle {
+    position: absolute;
+    right: 0;
+    top: 10px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #666;
+    width: 30px;
+    height: 30px;
+    line-height: 1;
+}
+
+.nem-m-sub-list {
+    list-style: none;
+    margin: 10px 0 4px 12px;
+    padding: 0;
+    display: none;
+}
+
+.nem-m-sub-list.active {
+    display: block;
+}
+
+.nem-m-sub-list li a {
+    display: block;
+    padding: 6px 0;
+    font-size: 13px;
+    color: #555 !important;
+    text-decoration: none !important;
+}
+
+.nem-drawer-footer {
+    padding: 20px;
+    border-top: 1px solid #eee;
+}
+
+.nem-drawer-account-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: #222 !important;
+    text-decoration: none !important;
+}
+
+
+/* ==========================================================================
+   NEM FOOTER STYLES
+   ========================================================================== */
+.nem-footer-wrapper {
+    background-color: #0b0b0b;
+    font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: #cccccc;
+    width: 100%;
+    margin-top: 50px;
+    box-sizing: border-box;
+}
+
+.nem-footer-body {
+    padding: 50px 0 40px;
+}
+
+.nem-footer-container {
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: grid;
+    grid-template-columns: 2.2fr 1.2fr 1.6fr 1.3fr;
+    gap: 36px;
+    box-sizing: border-box;
+}
+
+/* Column 1: Company */
+.nem-col-company {
+    padding-right: 15px;
+}
+
+.nem-footer-heading {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: #ffffff !important;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    margin: 0 0 16px 0;
+    line-height: 1.4;
+}
+
+.nem-company-info {
+    font-size: 13px;
+    line-height: 1.75;
+    color: #b5b5b5;
+}
+
+.nem-info-text {
+    margin: 0 0 8px 0;
+}
+
+.nem-contact-row {
+    margin-bottom: 6px;
+}
+
+.nem-contact-row strong {
+    color: #ffffff;
+    font-weight: 700;
+}
+
+/* Columns 2 & 3: Menus */
+.nem-footer-menu {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.nem-footer-menu li {
+    margin: 0 0 10px 0;
+    padding: 0;
+}
+
+.nem-footer-menu li a {
+    font-size: 13px;
+    color: #b5b5b5 !important;
+    text-decoration: none !important;
+    line-height: 1.6;
+    transition: color 0.2s ease, padding-left 0.2s ease;
+    display: inline-block;
+}
+
+.nem-footer-menu li a:hover {
+    color: #ffffff !important;
+    padding-left: 4px;
+}
+
+/* Column 4: Payment & BCT */
+.nem-col-payment {
+    display: flex;
+    flex-direction: column;
+}
+
+.nem-payment-heading {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: #ffffff !important;
+    margin: 0 0 14px 0;
+    line-height: 1.4;
+}
+
+.nem-payment-icons {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
+}
+
+.nem-payment-badge {
+    background: #ffffff;
+    border-radius: 4px;
+    padding: 5px 8px;
+    height: 30px;
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.nem-payment-badge img {
+    height: 20px;
+    width: auto;
+    display: block;
+    object-fit: contain;
+}
+
+.nem-bct-wrapper {
+    margin-top: 6px;
+}
+
+.nem-bct-img {
+    width: 135px;
+    height: auto;
+    display: block;
+    transition: opacity 0.2s;
+}
+
+.nem-bct-img:hover {
+    opacity: 0.85;
+}
+
+/* Bottom Copyright Bar */
+.nem-footer-copyright {
+    background-color: #ededed;
+    border-top: 1px solid #e0e0e0;
+    padding: 14px 0;
+}
+
+.nem-copyright-container {
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: 0 24px;
+    text-align: center;
+}
+
+.nem-copyright-text {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    color: #333333;
+    margin: 0;
+    font-weight: 500;
+}
+
+
+/* ==========================================================================
+   FLOATING ACTION BUTTONS
+   ========================================================================== */
+.nem-floating-actions {
+    position: fixed;
+    right: 25px;
+    bottom: 25px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.nem-float-btn {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: none;
+    text-decoration: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+}
+
+.nem-float-btn:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+}
+
+/* Messenger Button */
+.nem-btn-messenger {
+    background: #0084ff;
+    color: #ffffff;
+    box-shadow: 0 4px 15px rgba(0, 132, 255, 0.45);
+    animation: nemPulse 2.5s infinite;
+}
+
+.nem-btn-messenger svg {
+    display: block;
+}
+
+@keyframes nemPulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(0, 132, 255, 0.6);
+    }
+    70% {
+        box-shadow: 0 0 0 12px rgba(0, 132, 255, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(0, 132, 255, 0);
+    }
+}
+
+/* Scroll To Top Button */
+.nem-btn-scrolltop {
+    background: #111111;
+    color: #ffffff;
+    border-radius: 4px;
+    width: 42px;
+    height: 42px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.25s ease;
+}
+
+.nem-btn-scrolltop.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.nem-btn-scrolltop:hover {
+    background: #000000;
+}
+
+
+/* ==========================================================================
+   RESPONSIVE MEDIA QUERIES
+   ========================================================================== */
+@media (max-width: 1080px) {
+    .nem-desktop-nav {
+        margin: 0 10px;
+    }
+    .nem-nav-list {
+        gap: 16px;
+    }
+    .nem-nav-link {
+        font-size: 12px;
+    }
+    .nem-user-name,
+    .nem-cart-label {
+        font-size: 12.5px;
+    }
+    .nem-footer-container {
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+    }
+}
+
+@media (max-width: 900px) {
+    .nem-desktop-nav {
+        display: none;
+    }
+    .nem-hamburger-btn {
+        display: flex;
+    }
+    .nem-header-inner {
+        height: 65px;
+    }
+    .nem-user-name {
+        display: none;
+    }
+    .nem-cart-label {
+        display: none;
+    }
+    .nem-footer-container {
+        grid-template-columns: 1fr;
+        gap: 28px;
+    }
+    .nem-col-company {
+        padding-right: 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .nem-header-inner {
+        padding: 0 16px;
+    }
+    .nem-logo-img {
+        height: 28px;
+    }
+    .nem-footer-body {
+        padding: 40px 0 30px;
+    }
+    .nem-floating-actions {
+        right: 16px;
+        bottom: 16px;
+    }
+    .nem-float-btn {
+        width: 42px;
+        height: 42px;
+    }
+}
