@@ -11,12 +11,12 @@ $account_url = function_exists( 'wc_get_page_permalink' ) ? esc_url( wc_get_page
 $cart_count  = ( function_exists( 'WC' ) && is_object( WC()->cart ) ) ? WC()->cart->get_cart_contents_count() : 0;
 
 // Determine display name
-$user_display_name = 'Nguyễn Giang';
-if ( is_user_logged_in() ) {
+$is_logged_in = is_user_logged_in();
+if ( $is_logged_in ) {
     $current_user = wp_get_current_user();
-    if ( ! empty( $current_user->display_name ) && $current_user->display_name !== 'NhomF_CMS' ) {
-        $user_display_name = $current_user->display_name;
-    }
+    $user_display_name = ! empty( $current_user->display_name ) ? $current_user->display_name : 'Nguyễn Giang';
+} else {
+    $user_display_name = 'Tài khoản';
 }
 $logo_url = get_template_directory_uri() . '/assets/images/nem/logo.png';
 ?>
@@ -149,22 +149,26 @@ $logo_url = get_template_directory_uri() . '/assets/images/nem/logo.png';
                     </svg>
                     <span class="nem-user-name"><?php echo esc_html( $user_display_name ); ?></span>
                 </a>
-                <div class="nem-user-dropdown-panel">
-                    <div class="nem-user-dropdown-header">
-                        <span class="nem-user-badge">Khách hàng</span>
-                        <strong><?php echo esc_html( $user_display_name ); ?></strong>
-                    </div>
-                    <ul class="nem-user-links">
-                        <li><a href="<?php echo $account_url; ?>">Tài khoản của tôi</a></li>
-                        <?php if ( function_exists( 'wc_get_account_endpoint_url' ) ) : ?>
-                            <li><a href="<?php echo wc_get_account_endpoint_url( 'orders' ); ?>">Đơn mua</a></li>
-                        <?php endif; ?>
-                        <?php if ( is_user_logged_in() ) : ?>
+                <div class="nem-user-dropdown-panel <?php echo $is_logged_in ? 'nem-is-logged-in' : 'nem-is-logged-out'; ?>">
+                    <?php if ( $is_logged_in ) : ?>
+                        <div class="nem-user-dropdown-header">
+                            <span class="nem-user-badge">Khách hàng</span>
+                            <strong><?php echo esc_html( $user_display_name ); ?></strong>
+                        </div>
+                        <ul class="nem-user-links">
+                            <li><a href="<?php echo $account_url; ?>">Thông tin tài khoản</a></li>
+                            <?php if ( function_exists( 'wc_get_account_endpoint_url' ) ) : ?>
+                                <li><a href="<?php echo wc_get_account_endpoint_url( 'orders' ); ?>">Quản lý đơn hàng</a></li>
+                                <li><a href="<?php echo wc_get_account_endpoint_url( 'edit-address' ); ?>">Thông tin giao hàng</a></li>
+                            <?php endif; ?>
                             <li><a href="<?php echo wp_logout_url( $home_url ); ?>" class="nem-logout-link">Đăng xuất</a></li>
-                        <?php else : ?>
-                            <li><a href="<?php echo $account_url; ?>">Đăng nhập / Đăng ký</a></li>
-                        <?php endif; ?>
-                    </ul>
+                        </ul>
+                    <?php else : ?>
+                        <ul class="nem-user-links nem-guest-links">
+                            <li><a href="<?php echo $account_url; ?>">Đăng nhập</a></li>
+                            <li><a href="<?php echo $account_url; ?>">Đăng ký</a></li>
+                        </ul>
+                    <?php endif; ?>
                 </div>
             </div>
 

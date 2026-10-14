@@ -66,3 +66,14 @@ function nem_clean_storefront_defaults() {
     remove_action( 'storefront_footer', 'storefront_handheld_footer_bar', 999 );
 }
 add_action( 'wp_loaded', 'nem_clean_storefront_defaults' );
+
+/**
+ * Tweaks for WooCommerce Account page layout.
+ */
+function nem_account_page_tweaks() {
+    if ( function_exists( 'is_account_page' ) && is_account_page() ) {
+        remove_action( 'storefront_sidebar', 'storefront_get_sidebar', 10 );
+        remove_action( 'storefront_before_content', 'woocommerce_breadcrumb', 10 );
+    }
+}
+add_action( 'wp', 'nem_account_page_tweaks' );
