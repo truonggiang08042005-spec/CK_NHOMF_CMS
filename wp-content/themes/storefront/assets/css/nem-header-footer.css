@@ -1066,3 +1066,512 @@
         height: 42px;
     }
 }
+
+/* ==========================================================================
+   GUEST DROPDOWN (IMAGE 2)
+   ========================================================================== */
+.nem-user-dropdown-panel.nem-is-logged-out {
+    min-width: 140px;
+    padding: 8px 0;
+    border-radius: 4px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+.nem-guest-links li a {
+    padding: 9px 18px !important;
+    font-size: 13.5px !important;
+    font-weight: 500 !important;
+    color: #333333 !important;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.nem-guest-links li a:hover {
+    background-color: #f7f7f7 !important;
+    color: #000000 !important;
+}
+
+
+/* ==========================================================================
+   PROFILE PAGE (IMAGE 1)
+   ========================================================================== */
+/* Hide default storefront entry header & breadcrumbs on account page */
+.woocommerce-account .entry-header,
+.woocommerce-account .woocommerce-breadcrumb {
+    display: none !important;
+}
+
+.woocommerce-account .site-main {
+    margin-bottom: 0 !important;
+}
+
+.woocommerce-account #primary {
+    width: 100% !important;
+    float: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.woocommerce-account .site-content .col-full {
+    max-width: 1320px !important;
+    padding: 0 !important;
+    margin: 0 auto !important;
+}
+
+/* Reset default woocommerce account styles */
+.woocommerce-account .woocommerce-MyAccount-navigation,
+.woocommerce-account .woocommerce-MyAccount-content {
+    float: none !important;
+    width: 100% !important;
+    margin: 0 !important;
+}
+
+.nem-profile-wrapper {
+    font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    max-width: 1200px;
+    margin: 25px auto 50px;
+    padding: 0 24px;
+    box-sizing: border-box;
+}
+
+/* Profile Breadcrumb */
+.nem-profile-breadcrumb {
+    font-size: 12px;
+    font-weight: 500;
+    color: #777777;
+    margin-bottom: 30px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.nem-profile-breadcrumb a {
+    color: #777777 !important;
+    text-decoration: none !important;
+    transition: color 0.2s;
+}
+
+.nem-profile-breadcrumb a:hover {
+    color: #111111 !important;
+}
+
+.nem-bc-separator {
+    margin: 0 8px;
+    color: #aaa;
+}
+
+.nem-bc-active {
+    color: #222222;
+    font-weight: 600;
+}
+
+/* Profile Greeting Header */
+.nem-profile-greeting-wrap {
+    margin-bottom: 35px;
+}
+
+.nem-greeting-sub {
+    font-size: 22px;
+    font-weight: 400;
+    color: #333333;
+    display: block;
+    margin-bottom: 4px;
+    line-height: 1.2;
+}
+
+.nem-greeting-name {
+    font-size: 32px;
+    font-weight: 700;
+    color: #111111;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    margin: 0;
+    line-height: 1.2;
+}
+
+/* Main Profile 2-column Grid */
+.nem-profile-grid {
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+}
+
+/* Left Sidebar Menu */
+.nem-profile-sidebar-col {
+    width: 240px;
+    flex-shrink: 0;
+    border-right: 1px solid #e5e5e5;
+    padding-right: 30px;
+    box-sizing: border-box;
+}
+
+.nem-account-nav-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.nem-account-nav-item {
+    margin-bottom: 12px;
+}
+
+.nem-account-nav-link {
+    font-size: 13.5px;
+    font-weight: 400;
+    color: #555555 !important;
+    text-decoration: none !important;
+    display: block;
+    padding: 4px 0;
+    transition: color 0.2s ease, font-weight 0.2s ease;
+}
+
+.nem-account-nav-link:hover {
+    color: #111111 !important;
+}
+
+.nem-account-nav-item.is-active .nem-account-nav-link {
+    color: #111111 !important;
+    font-weight: 700 !important;
+}
+
+.nem-account-nav-logout {
+    margin-top: 24px;
+    padding-top: 12px;
+    border-top: 1px dashed #eee;
+}
+
+.nem-account-nav-logout .nem-account-nav-link {
+    color: #888888 !important;
+}
+
+.nem-account-nav-logout .nem-account-nav-link:hover {
+    color: #e53935 !important;
+}
+
+/* Right Content Area */
+.nem-profile-content-col {
+    flex-grow: 1;
+    padding-left: 20px;
+    box-sizing: border-box;
+}
+
+.nem-profile-dashboard {
+    max-width: 600px;
+}
+
+.nem-profile-field-group {
+    margin-bottom: 22px;
+}
+
+.nem-field-label {
+    font-size: 13.5px;
+    font-weight: 500;
+    color: #444444;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.nem-field-box {
+    background-color: #eff1f4;
+    border-radius: 4px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    border: 1px solid #e6e8eb;
+    transition: border-color 0.2s;
+}
+
+.nem-field-input {
+    width: 100%;
+    height: 100%;
+    background: transparent !important;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    font-family: inherit;
+    font-size: 14px;
+    color: #222222;
+    padding: 0 16px !important;
+    margin: 0 !important;
+}
+
+.nem-profile-edit-actions {
+    margin-top: 25px;
+}
+
+.nem-btn-edit-account {
+    display: inline-block;
+    background: #111111;
+    color: #ffffff !important;
+    font-size: 12.5px;
+    font-weight: 600;
+    text-transform: uppercase;
+    text-decoration: none !important;
+    letter-spacing: 0.5px;
+    padding: 10px 24px;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+
+.nem-btn-edit-account:hover {
+    background: #333333;
+}
+
+
+/* ==========================================================================
+   NEWSLETTER SECTION (ĐĂNG KÝ BẢN TIN)
+   ========================================================================== */
+.nem-newsletter-section {
+    background-color: #f4f5f7;
+    padding: 55px 24px;
+    margin-top: 60px;
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    box-sizing: border-box;
+    text-align: center;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.nem-newsletter-container {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.nem-newsletter-heading {
+    font-size: 24px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #111111;
+    margin: 0 0 8px 0;
+    line-height: 1.3;
+}
+
+.nem-newsletter-desc {
+    font-size: 13.5px;
+    color: #666666;
+    margin: 0 0 25px 0;
+    line-height: 1.5;
+}
+
+.nem-newsletter-form {
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    max-width: 520px;
+    margin: 0 auto;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.nem-newsletter-input {
+    flex-grow: 1;
+    height: 44px;
+    padding: 0 16px !important;
+    margin: 0 !important;
+    background: #ffffff !important;
+    border: 1px solid #d5d5d5 !important;
+    border-right: none !important;
+    border-radius: 0 !important;
+    font-size: 13.5px;
+    color: #333333;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.nem-newsletter-submit {
+    flex-shrink: 0;
+    height: 44px;
+    background: #000000 !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 0 !important;
+    padding: 0 26px !important;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.nem-newsletter-submit:hover {
+    background: #333333 !important;
+}
+
+.nem-newsletter-social-icons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.nem-social-bubble {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.nem-social-bubble:hover {
+    transform: scale(1.1);
+    opacity: 0.9;
+}
+
+.nem-social-facebook {
+    background-color: #1877f2;
+}
+
+.nem-social-instagram {
+    background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+}
+
+.nem-social-youtube {
+    background-color: #ff0000;
+}
+
+
+/* ==========================================================================
+   AUTHENTICATION FORM STYLES (LOGGED OUT)
+   ========================================================================== */
+.nem-auth-page-wrapper {
+    max-width: 960px;
+}
+
+.nem-auth-grid {
+    display: flex;
+    gap: 40px;
+    margin-top: 20px;
+}
+
+.nem-auth-box {
+    flex: 1;
+    background: #ffffff;
+    padding: 30px;
+    border: 1px solid #ebebeb;
+    border-radius: 6px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+}
+
+.nem-auth-title {
+    font-size: 18px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #111111;
+    margin: 0 0 20px 0;
+    padding-bottom: 10px;
+    border-bottom: 1.5px solid #111111;
+}
+
+.nem-auth-form .nem-form-row {
+    margin-bottom: 16px;
+}
+
+.nem-auth-form label {
+    font-size: 13px;
+    font-weight: 500;
+    color: #444;
+    display: block;
+    margin-bottom: 6px;
+}
+
+.nem-auth-input {
+    width: 100% !important;
+    height: 42px;
+    border: 1px solid #ddd !important;
+    border-radius: 4px !important;
+    padding: 0 14px !important;
+    font-size: 13.5px;
+    outline: none !important;
+    transition: border-color 0.2s;
+    box-sizing: border-box;
+}
+
+.nem-auth-input:focus {
+    border-color: #111111 !important;
+}
+
+.nem-form-options {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    font-size: 13px;
+}
+
+.nem-remember-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #555;
+    cursor: pointer;
+}
+
+.nem-lost-pwd-link {
+    color: #777 !important;
+    text-decoration: none !important;
+}
+
+.nem-lost-pwd-link:hover {
+    color: #111 !important;
+    text-decoration: underline !important;
+}
+
+.nem-auth-submit-btn {
+    width: 100%;
+    height: 44px;
+    background: #111111 !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 4px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13.5px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.nem-auth-submit-btn:hover {
+    background: #333333 !important;
+}
+
+.nem-btn-reg {
+    background: #222222 !important;
+}
+
+.nem-reg-hint {
+    font-size: 12.5px;
+    color: #666;
+    margin: 10px 0 18px;
+    line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+    .nem-profile-grid {
+        flex-direction: column;
+        gap: 25px;
+    }
+    .nem-profile-sidebar-col {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid #eee;
+        padding-right: 0;
+        padding-bottom: 20px;
+    }
+    .nem-profile-content-col {
+        padding-left: 0;
+    }
+    .nem-auth-grid {
+        flex-direction: column;
+    }
+}
