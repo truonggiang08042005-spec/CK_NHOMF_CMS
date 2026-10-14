@@ -1,0 +1,7 @@
+Database
+information_schema
+mysql
+performance_schema
+quanly_bds
+sys
+wp_nhomf
