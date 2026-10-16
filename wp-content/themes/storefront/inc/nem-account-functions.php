@@ -216,3 +216,54 @@ add_action( 'woocommerce_created_customer', function ( $customer_id ) {
 		}
 	}
 } );
+
+/**
+ * AJAX cập nhật hoặc lưu thông tin địa chỉ từ trang Profile
+ */
+add_action( 'wp_ajax_nem_save_profile_address', function() {
+	if ( ! is_user_logged_in() ) {
+		wp_send_json_error( array( 'message' => 'Bạn cần đăng nhập.' ) );
+	}
+
+	$user_id = get_current_user_id();
+
+	$fullname = isset( $_POST['fullname'] ) ? sanitize_text_field( wp_unslash( $_POST['fullname'] ) ) : '';
+	$phone    = isset( $_POST['phone'] ) ? sanitize_text_field( wp_unslash( $_POST['phone'] ) ) : '';
+	$country  = isset( $_POST['country'] ) ? sanitize_text_field( wp_unslash( $_POST['country'] ) ) : 'Vietnam';
+	$address  = isset( $_POST['address'] ) ? sanitize_text_field( wp_unslash( $_POST['address'] ) ) : 'Vietnam';
+
+	if ( ! empty( $fullname ) ) {
+		$parts = explode( ' ', trim( $fullname ) );
+		$first_name = array_pop( $parts );
+		$last_name  = implode( ' ', $parts );
+
+		update_user_meta( $user_id, 'billing_first_name', $first_name );
+		update_user_meta( $user_id, 'first_name', $first_name );
+		update_user_meta( $user_id, 'billing_last_name', $last_name );
+		update_user_meta( $user_id, 'last_name', $last_name );
+		wp_update_user( array(
+			'ID'           => $user_id,
+			'display_name' => $fullname,
+		) );
+	}
+
+	if ( ! empty( $phone ) ) {
+		update_user_meta( $user_id, 'billing_phone', $phone );
+	}
+
+	if ( ! empty( $country ) ) {
+		update_user_meta( $user_id, 'billing_country', ( 'Vietnam' === $country || 'Việt Nam' === $country ) ? 'VN' : $country );
+	}
+
+	if ( ! empty( $address ) ) {
+		update_user_meta( $user_id, 'billing_address_1', $address );
+	}
+
+	wp_send_json_success( array(
+		'fullname' => $fullname,
+		'phone'    => $phone,
+		'country'  => $country,
+		'address'  => $address,
+	) );
+} );
+

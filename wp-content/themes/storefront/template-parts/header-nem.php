@@ -38,61 +38,78 @@ $search_img_url  = $img_dir . 'search.png';
         <nav class="nem-desktop-nav" role="navigation" aria-label="NEM Navigation">
             <ul class="nem-nav-list">
                 <!-- SẢN PHẨM -->
-                <li class="nem-nav-item nem-has-megamenu">
+                <li class="nem-nav-item nem-has-dropdown nem-has-product-dropdown">
                     <a href="<?php echo $shop_url; ?>" class="nem-nav-link">
                         SẢN PHẨM <span class="nem-arrow-down">⌵</span>
                     </a>
-                    <div class="nem-megamenu-panel">
-                        <div class="nem-megamenu-inner">
-                            <div class="nem-megamenu-col">
-                                <a href="<?php echo $shop_url; ?>?category=dam" class="nem-col-title">ĐẦM</a>
-                                <ul class="nem-sub-list">
-                                    <li><a href="<?php echo $shop_url; ?>?category=dam-suong">Đầm suông</a></li>
-                                    <li><a href="<?php echo $shop_url; ?>?category=dam-dang-a">Đầm dáng A</a></li>
-                                    <li><a href="<?php echo $shop_url; ?>?category=dam-om">Đầm ôm</a></li>
-                                    <li><a href="<?php echo $shop_url; ?>?category=dam-maxi">Đầm maxi</a></li>
-                                </ul>
-                            </div>
-                            <div class="nem-megamenu-col">
-                                <a href="<?php echo $shop_url; ?>?category=ao" class="nem-col-title">ÁO</a>
-                                <ul class="nem-sub-list">
-                                    <li><a href="<?php echo $shop_url; ?>?category=ao-so-mi">Áo sơ mi & Áo kiểu</a></li>
-                                    <li><a href="<?php echo $shop_url; ?>?category=ao-len">Áo len</a></li>
-                                    <li><a href="<?php echo $shop_url; ?>?category=ao-phong">Áo phông</a></li>
-                                </ul>
-                            </div>
-                            <div class="nem-megamenu-col">
-                                <a href="<?php echo $shop_url; ?>?category=ao-khoac" class="nem-col-title">ÁO KHOÁC</a>
-                                <ul class="nem-sub-list">
-                                    <li><a href="<?php echo $shop_url; ?>?category=ao-chong-nang">Áo chống nắng</a></li>
-                                    <li><a href="<?php echo $shop_url; ?>?category=ao-vest">Áo vest</a></li>
-                                    <li><a href="<?php echo $shop_url; ?>?category=ao-phao">Áo phao</a></li>
-                                    <li><a href="<?php echo $shop_url; ?>?category=ao-khoac-kieu">Áo khoác kiểu</a></li>
-                                    <li><a href="<?php echo $shop_url; ?>?category=mang-to">Măng tô</a></li>
-                                </ul>
-                            </div>
-                            <div class="nem-megamenu-col">
-                                <a href="<?php echo $shop_url; ?>?category=chan-vay" class="nem-col-title">CHÂN VÁY</a>
-                                <ul class="nem-sub-list">
-                                    <li><a href="<?php echo $shop_url; ?>?category=chan-vay-xep-li">Chân váy xếp li</a></li>
-                                    <li><a href="<?php echo $shop_url; ?>?category=chan-vay-but-chi">Chân váy bút chì</a></li>
-                                    <li><a href="<?php echo $shop_url; ?>?category=chan-vay-dang-a">Chân váy chữ A</a></li>
-                                </ul>
-                                <a href="<?php echo $shop_url; ?>?category=ao-dai" class="nem-col-title nem-col-extra">ÁO DÀI</a>
-                            </div>
-                            <div class="nem-megamenu-col">
-                                <a href="<?php echo $shop_url; ?>?category=quan" class="nem-col-title">QUẦN</a>
-                                <ul class="nem-sub-list">
-                                    <li><a href="<?php echo $shop_url; ?>?category=quan-dai">Quần dài</a></li>
-                                    <li><a href="<?php echo $shop_url; ?>?category=quan-short">Quần short</a></li>
-                                    <li><a href="<?php echo $shop_url; ?>?category=quan-lung">Quần lửng</a></li>
-                                    <li><a href="<?php echo $shop_url; ?>?category=quan-jeans">Quần jeans</a></li>
-                                </ul>
-                                <a href="<?php echo $shop_url; ?>?category=set-bo" class="nem-col-title nem-col-extra">SET BỘ</a>
-                            </div>
-                        </div>
-                    </div>
+                    <ul class="nem-product-dropdown">
+                        <li class="nem-pdrop-item nem-has-sub">
+                            <a href="<?php echo $shop_url; ?>?category=dam" class="nem-pdrop-link">
+                                Đầm <span class="nem-menu-chevron">›</span>
+                            </a>
+                            <ul class="nem-pdrop-sub">
+                                <li><a href="<?php echo $shop_url; ?>?category=dam-suong">Đầm suông</a></li>
+                                <li><a href="<?php echo $shop_url; ?>?category=dam-dang-a">Đầm dáng A</a></li>
+                                <li><a href="<?php echo $shop_url; ?>?category=dam-om">Đầm ôm</a></li>
+                                <li><a href="<?php echo $shop_url; ?>?category=dam-maxi">Đầm maxi</a></li>
+                            </ul>
+                        </li>
+                        <li class="nem-pdrop-item nem-has-sub">
+                            <a href="<?php echo $shop_url; ?>?category=ao" class="nem-pdrop-link">
+                                Áo <span class="nem-menu-chevron">›</span>
+                            </a>
+                            <ul class="nem-pdrop-sub">
+                                <li><a href="<?php echo $shop_url; ?>?category=ao-so-mi">Áo sơ mi & Áo kiểu</a></li>
+                                <li><a href="<?php echo $shop_url; ?>?category=ao-len">Áo len</a></li>
+                                <li><a href="<?php echo $shop_url; ?>?category=ao-phong">Áo phông</a></li>
+                            </ul>
+                        </li>
+                        <li class="nem-pdrop-item nem-has-sub">
+                            <a href="<?php echo $shop_url; ?>?category=ao-khoac" class="nem-pdrop-link">
+                                Áo khoác <span class="nem-menu-chevron">›</span>
+                            </a>
+                            <ul class="nem-pdrop-sub">
+                                <li><a href="<?php echo $shop_url; ?>?category=ao-chong-nang">Áo chống nắng</a></li>
+                                <li><a href="<?php echo $shop_url; ?>?category=ao-vest">Áo vest</a></li>
+                                <li><a href="<?php echo $shop_url; ?>?category=ao-phao">Áo phao</a></li>
+                                <li><a href="<?php echo $shop_url; ?>?category=ao-khoac-kieu">Áo khoác kiểu</a></li>
+                                <li><a href="<?php echo $shop_url; ?>?category=mang-to">Măng tô</a></li>
+                            </ul>
+                        </li>
+                        <li class="nem-pdrop-item">
+                            <a href="<?php echo $shop_url; ?>?category=ao-dai" class="nem-pdrop-link">
+                                Áo dài
+                            </a>
+                        </li>
+                        <li class="nem-pdrop-item nem-has-sub">
+                            <a href="<?php echo $shop_url; ?>?category=chan-vay" class="nem-pdrop-link">
+                                Chân váy <span class="nem-menu-chevron">›</span>
+                            </a>
+                            <ul class="nem-pdrop-sub">
+                                <li><a href="<?php echo $shop_url; ?>?category=chan-vay-xep-li">Chân váy xếp li</a></li>
+                                <li><a href="<?php echo $shop_url; ?>?category=chan-vay-but-chi">Chân váy bút chì</a></li>
+                                <li><a href="<?php echo $shop_url; ?>?category=chan-vay-dang-a">Chân váy chữ A</a></li>
+                            </ul>
+                        </li>
+                        <li class="nem-pdrop-item nem-has-sub">
+                            <a href="<?php echo $shop_url; ?>?category=quan" class="nem-pdrop-link">
+                                Quần <span class="nem-menu-chevron">›</span>
+                            </a>
+                            <ul class="nem-pdrop-sub">
+                                <li><a href="<?php echo $shop_url; ?>?category=quan-dai">Quần dài</a></li>
+                                <li><a href="<?php echo $shop_url; ?>?category=quan-short">Quần short</a></li>
+                                <li><a href="<?php echo $shop_url; ?>?category=quan-lung">Quần lửng</a></li>
+                                <li><a href="<?php echo $shop_url; ?>?category=quan-jeans">Quần jeans</a></li>
+                            </ul>
+                        </li>
+                        <li class="nem-pdrop-item">
+                            <a href="<?php echo $shop_url; ?>?category=set-bo" class="nem-pdrop-link">
+                                Set bộ
+                            </a>
+                        </li>
+                    </ul>
                 </li>
+
 
                 <!-- SẢN PHẨM MỚI -->
                 <li class="nem-nav-item">

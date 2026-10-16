@@ -141,6 +141,26 @@
                 });
             });
         }
+        // --- 3.5. Desktop Dropdowns Hover Support ---
+        var desktopDropdowns = document.querySelectorAll('.nem-has-dropdown');
+        desktopDropdowns.forEach(function (item) {
+            item.addEventListener('mouseenter', function () {
+                item.classList.add('is-open');
+            });
+            item.addEventListener('mouseleave', function () {
+                item.classList.remove('is-open');
+            });
+        });
+
+        var subFlyouts = document.querySelectorAll('.nem-pdrop-item.nem-has-sub');
+        subFlyouts.forEach(function (sub) {
+            sub.addEventListener('mouseenter', function () {
+                sub.classList.add('is-open');
+            });
+            sub.addEventListener('mouseleave', function () {
+                sub.classList.remove('is-open');
+            });
+        });
     });
 
     // --- 4. WooCommerce Dynamic Cart Fragment Hook ---
