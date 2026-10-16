@@ -73,3 +73,6 @@ if (version_compare(get_bloginfo('version'), '4.7.3', '>=') && (is_admin() || is
 
 // NEM Fashion Header & Footer customizations
 require 'inc/nem-custom-functions.php';
+
+// NEM Fashion Account page (Đăng nhập / Đăng ký / Bản tin)
+require 'inc/nem-account-functions.php';
