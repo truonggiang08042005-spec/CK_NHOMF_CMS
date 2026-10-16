@@ -44,7 +44,7 @@
     z-index: 1000;
     background: #ffffff;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-    font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family: 'Times New Roman', Times, serif;
     transition: all 0.3s ease;
 }
 
@@ -103,28 +103,31 @@
 }
 
 .nem-nav-link {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 13px;
-    font-weight: 600;
-    color: #222222 !important;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 13.5px;
+    font-weight: 400; /* Thanh mảnh, không in đậm */
+    color: #888888 !important; /* Làm mờ chữ hơn nữa theo đúng ảnh mẫu NEM */
     text-transform: uppercase;
     text-decoration: none !important;
-    letter-spacing: 0.6px;
+    letter-spacing: 0.7px;
     display: inline-flex;
     align-items: center;
     gap: 4px;
-    transition: color 0.2s ease;
+    transition: color 0.2s ease, opacity 0.2s ease;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 .nem-nav-link:hover,
 .nem-nav-item:hover > .nem-nav-link {
     color: #000000 !important;
-    opacity: 0.75;
+    opacity: 1;
 }
 
 .nem-arrow-down {
-    font-size: 11px;
-    font-weight: 700;
+    font-size: 9px;
+    font-family: Arial, sans-serif;
+    color: #aaaaaa;
     display: inline-block;
     transition: transform 0.25s ease;
 }
@@ -223,8 +226,8 @@
 }
 
 .nem-col-title {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 13px;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 14px;
     font-weight: 700;
     color: #111111 !important;
     text-transform: uppercase;
@@ -270,25 +273,30 @@
     flex-shrink: 0;
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 14px;
 }
 
 .nem-action-btn {
     background: none;
     border: none;
-    padding: 6px;
+    padding: 4px;
     margin: 0;
     cursor: pointer;
-    color: #222222;
+    color: #000000;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    transition: opacity 0.2s, transform 0.2s;
+    transition: opacity 0.2s ease;
 }
 
 .nem-action-btn:hover {
     opacity: 0.7;
-    transform: scale(1.05);
+}
+
+.nem-search-icon-svg {
+    display: block;
+    width: 18px;
+    height: 18px;
 }
 
 .nem-divider-pipe {
@@ -296,6 +304,8 @@
     height: 18px;
     background-color: #d8d8d8;
     display: inline-block;
+    margin: 0 4px;
+    flex-shrink: 0;
 }
 
 /* User Account Section */
@@ -303,30 +313,36 @@
     position: relative;
 }
 
+.nem-account-icon-svg {
+    display: block;
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+}
+
 .nem-user-link {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     gap: 8px;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 13.5px;
-    font-weight: 500;
-    color: #222222 !important;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 15px;
+    font-weight: 400;
+    color: #000000 !important;
     text-decoration: none !important;
-    padding: 8px 4px;
+    padding: 6px 2px;
     cursor: pointer;
     transition: opacity 0.2s;
 }
 
 .nem-user-link:hover {
-    opacity: 0.8;
-}
-
-.nem-user-icon {
-    flex-shrink: 0;
+    opacity: 0.75;
 }
 
 .nem-user-name {
-    font-weight: 600;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 15px;
+    font-weight: 400;
+    color: #000000;
     white-space: nowrap;
 }
 
@@ -400,44 +416,71 @@
 }
 
 .nem-cart-link {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     gap: 8px;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 13.5px;
-    font-weight: 500;
-    color: #222222 !important;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 15px;
+    font-weight: 400;
+    color: #000000 !important;
     text-decoration: none !important;
-    padding: 8px 4px;
+    padding: 6px 2px;
     cursor: pointer;
     transition: opacity 0.2s;
 }
 
 .nem-cart-link:hover {
-    opacity: 0.8;
+    opacity: 0.75;
 }
 
 .nem-cart-bag-icon {
-    position: relative;
     display: inline-flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-end;
+    width: 20px;
+    height: 22px;
+    position: relative;
+    flex-shrink: 0;
+}
+
+.nem-cart-handle {
+    width: 11px;
+    height: 6px;
+    border: 1.8px solid #000000;
+    border-bottom: none;
+    border-radius: 6px 6px 0 0;
+    display: block;
+    margin-bottom: -1px;
+    box-sizing: border-box;
+    flex-shrink: 0;
 }
 
 .nem-cart-badge {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -25%);
-    font-size: 10.5px;
+    width: 19px;
+    height: 15px;
+    background-color: #000000;
+    color: #ffffff !important;
+    border-radius: 0.5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 11px;
     font-weight: 700;
-    color: #ffffff;
     line-height: 1;
-    pointer-events: none;
+    text-align: center;
+    box-sizing: border-box;
+    padding-top: 1px;
+    flex-shrink: 0;
+    user-select: none;
 }
 
 .nem-cart-label {
-    font-weight: 600;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 15px;
+    font-weight: 400;
+    color: #000000;
     white-space: nowrap;
 }
 
@@ -757,16 +800,16 @@
    NEM FOOTER STYLES
    ========================================================================== */
 .nem-footer-wrapper {
-    background-color: #0b0b0b;
-    font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    color: #cccccc;
+    background-color: #000000;
+    font-family: 'Times New Roman', Times, serif;
+    color: #ffffff;
     width: 100%;
     margin-top: 50px;
     box-sizing: border-box;
 }
 
 .nem-footer-body {
-    padding: 50px 0 40px;
+    padding: 38px 0 28px;
 }
 
 .nem-footer-container {
@@ -777,6 +820,7 @@
     grid-template-columns: 2.2fr 1.2fr 1.6fr 1.3fr;
     gap: 36px;
     box-sizing: border-box;
+    font-family: 'Times New Roman', Times, serif;
 }
 
 /* Column 1: Company */
@@ -785,36 +829,44 @@
 }
 
 .nem-footer-heading {
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Times New Roman', Times, serif;
     font-size: 15px;
     font-weight: 700;
     color: #ffffff !important;
     text-transform: uppercase;
-    letter-spacing: 0.6px;
-    margin: 0 0 16px 0;
-    line-height: 1.4;
+    letter-spacing: 0;
+    margin: 0 0 10px 0;
+    line-height: 1.3;
 }
 
 .nem-company-info {
-    font-size: 13px;
-    line-height: 1.75;
-    color: #b5b5b5;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 13.5px;
+    line-height: 1.4;
+    color: #ffffff !important;
 }
 
 .nem-info-text {
-    margin: 0 0 8px 0;
+    margin: 0 0 3px 0;
+    color: #ffffff !important;
+    font-family: 'Times New Roman', Times, serif;
 }
 
 .nem-contact-row {
-    margin-bottom: 6px;
+    margin-bottom: 3px;
+    color: #ffffff !important;
 }
 
 .nem-contact-row strong {
-    color: #ffffff;
+    color: #ffffff !important;
     font-weight: 700;
 }
 
 /* Columns 2 & 3: Menus */
+.nem-col-links {
+    padding-top: 29px;
+}
+
 .nem-footer-menu {
     list-style: none;
     margin: 0;
@@ -822,22 +874,24 @@
 }
 
 .nem-footer-menu li {
-    margin: 0 0 10px 0;
+    margin: 0 0 3px 0;
     padding: 0;
+    line-height: 1.4;
 }
 
 .nem-footer-menu li a {
-    font-size: 13px;
-    color: #b5b5b5 !important;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 13.5px;
+    color: #ffffff !important;
     text-decoration: none !important;
-    line-height: 1.6;
-    transition: color 0.2s ease, padding-left 0.2s ease;
+    line-height: 1.4;
+    transition: opacity 0.2s ease;
     display: inline-block;
 }
 
 .nem-footer-menu li a:hover {
     color: #ffffff !important;
-    padding-left: 4px;
+    opacity: 0.85;
 }
 
 /* Column 4: Payment & BCT */
@@ -847,12 +901,12 @@
 }
 
 .nem-payment-heading {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 14px;
-    font-weight: 500;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 14.5px;
+    font-weight: 700;
     color: #ffffff !important;
-    margin: 0 0 14px 0;
-    line-height: 1.4;
+    margin: 0 0 10px 0;
+    line-height: 1.3;
 }
 
 .nem-payment-icons {
@@ -860,34 +914,34 @@
     align-items: center;
     gap: 8px;
     flex-wrap: wrap;
-    margin-bottom: 18px;
+    margin-bottom: 14px;
 }
 
 .nem-payment-badge {
     background: #ffffff;
-    border-radius: 4px;
-    padding: 5px 8px;
-    height: 30px;
+    border-radius: 2px;
+    padding: 4px 6px;
+    height: 28px;
     box-sizing: border-box;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
 }
 
 .nem-payment-badge img {
-    height: 20px;
+    height: 18px;
     width: auto;
     display: block;
     object-fit: contain;
 }
 
 .nem-bct-wrapper {
-    margin-top: 6px;
+    margin-top: 4px;
 }
 
 .nem-bct-img {
-    width: 135px;
+    width: 130px;
     height: auto;
     display: block;
     transition: opacity 0.2s;
@@ -901,22 +955,23 @@
 .nem-footer-copyright {
     background-color: #ededed;
     border-top: 1px solid #e0e0e0;
-    padding: 14px 0;
+    padding: 12px 0;
 }
 
 .nem-copyright-container {
     max-width: 1320px;
     margin: 0 auto;
     padding: 0 24px;
-    text-align: center;
+    text-align: left; /* Căn lề trái */
+    box-sizing: border-box;
 }
 
 .nem-copyright-text {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 13px;
-    color: #333333;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 13.5px;
+    color: #000000;
     margin: 0;
-    font-weight: 500;
+    font-weight: 700; /* In đậm */
 }
 
 
@@ -1044,6 +1099,9 @@
     }
     .nem-col-company {
         padding-right: 0;
+    }
+    .nem-col-links {
+        padding-top: 0;
     }
 }
 

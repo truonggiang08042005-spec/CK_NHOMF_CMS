@@ -12,22 +12,23 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Enqueue NEM styles and scripts.
  */
 function nem_enqueue_assets() {
-    $theme_version = wp_get_theme()->get( 'Version' );
+    $theme_dir = get_template_directory();
+    $theme_uri = get_template_directory_uri();
 
     // NEM Header & Footer Styles
     wp_enqueue_style(
         'nem-header-footer-style',
-        get_template_directory_uri() . '/assets/css/nem-header-footer.css',
+        $theme_uri . '/assets/css/nem-header-footer.css',
         array(),
-        $theme_version
+        filemtime( $theme_dir . '/assets/css/nem-header-footer.css' )
     );
 
     // NEM Header & Footer Script
     wp_enqueue_script(
         'nem-header-footer-script',
-        get_template_directory_uri() . '/assets/js/nem-header-footer.js',
+        $theme_uri . '/assets/js/nem-header-footer.js',
         array( 'jquery' ),
-        $theme_version,
+        filemtime( $theme_dir . '/assets/js/nem-header-footer.js' ),
         true
     );
 }
