@@ -147,21 +147,31 @@
     top: 100%;
     left: 0;
     background: #ffffff;
-    min-width: 210px;
+    min-width: 200px;
     list-style: none;
     margin: 0;
-    padding: 10px 0;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-    border-radius: 4px;
-    border: 1px solid #f0f0f0;
+    padding: 12px 0 16px;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.09);
+    border-radius: 0;
+    border: none;
     opacity: 0;
     visibility: hidden;
-    transform: translateY(10px);
-    transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
+    transform: translateY(6px);
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
     z-index: 1050;
+    box-sizing: border-box;
 }
 
-.nem-nav-item:hover .nem-simple-dropdown {
+.nem-simple-dropdown::before {
+    content: '';
+    position: absolute;
+    top: -14px;
+    left: 0;
+    width: 100%;
+    height: 14px;
+}
+
+.nem-nav-item:hover > .nem-simple-dropdown {
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
@@ -170,102 +180,167 @@
 .nem-simple-dropdown li {
     margin: 0;
     padding: 0;
+    list-style: none;
 }
 
 .nem-simple-dropdown li a {
     display: block;
-    padding: 10px 20px;
-    font-size: 13px;
-    font-weight: 500;
-    color: #333333 !important;
+    padding: 9.5px 22px;
+    font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 13.5px;
+    font-weight: 400;
+    color: #222222 !important;
     text-decoration: none !important;
-    transition: background-color 0.2s, color 0.2s, padding-left 0.2s;
+    transition: background-color 0.15s, color 0.15s;
+    box-sizing: border-box;
 }
 
 .nem-simple-dropdown li a:hover {
-    background-color: #f8f8f8;
+    background-color: #fbfbfb;
     color: #000000 !important;
-    padding-left: 24px;
 }
 
-/* Mega Menu for SẢN PHẨM */
-.nem-megamenu-panel {
+/* Product Dropdown for SẢN PHẨM (Matches screenshot) */
+.nem-product-dropdown {
     position: absolute;
     top: 100%;
-    left: 50%;
-    transform: translateX(-50%) translateY(10px);
-    width: 960px;
-    max-width: 92vw;
+    left: 0;
     background: #ffffff;
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
-    border-radius: 6px;
-    border: 1px solid #eeeeee;
-    padding: 30px 35px;
-    box-sizing: border-box;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
-    z-index: 1050;
-}
-
-.nem-has-megamenu:hover .nem-megamenu-panel {
-    opacity: 1;
-    visibility: visible;
-    transform: translateX(-50%) translateY(0);
-}
-
-.nem-megamenu-inner {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 25px;
-}
-
-.nem-megamenu-col {
-    display: flex;
-    flex-direction: column;
-}
-
-.nem-col-title {
-    font-family: 'Times New Roman', Times, serif;
-    font-size: 14px;
-    font-weight: 700;
-    color: #111111 !important;
-    text-transform: uppercase;
-    text-decoration: none !important;
-    letter-spacing: 0.5px;
-    margin-bottom: 12px;
-    padding-bottom: 6px;
-    border-bottom: 1.5px solid #111111;
-    display: inline-block;
-}
-
-.nem-col-extra {
-    margin-top: 18px;
-}
-
-.nem-sub-list {
+    width: 200px;
+    min-width: 195px;
     list-style: none;
     margin: 0;
-    padding: 0;
+    padding: 14px 0 16px;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.09);
+    border: none;
+    border-radius: 0;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(6px);
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+    z-index: 1050;
+    box-sizing: border-box;
 }
 
-.nem-sub-list li {
+/* Invisible bridge so mouse hover never drops */
+.nem-product-dropdown::before {
+    content: '';
+    position: absolute;
+    top: -14px;
+    left: 0;
+    width: 100%;
+    height: 14px;
+}
+
+.nem-has-product-dropdown:hover > .nem-product-dropdown,
+.nem-has-product-dropdown.is-open > .nem-product-dropdown,
+.nem-has-dropdown:hover > .nem-product-dropdown,
+.nem-has-dropdown.is-open > .nem-product-dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.nem-pdrop-item {
     margin: 0;
     padding: 0;
+    position: relative;
+    list-style: none;
 }
 
-.nem-sub-list li a {
-    display: block;
-    font-size: 13px;
-    color: #555555 !important;
+.nem-pdrop-link {
+    display: flex;
+    align-items: center;
+    padding: 9.5px 22px;
+    font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 13.5px;
+    font-weight: 400;
+    color: #222222 !important;
     text-decoration: none !important;
-    padding: 5px 0;
-    transition: color 0.2s ease, transform 0.2s ease;
+    line-height: 1.4;
+    transition: color 0.15s ease, background-color 0.15s ease;
+    box-sizing: border-box;
 }
 
-.nem-sub-list li a:hover {
+.nem-pdrop-link:hover,
+.nem-pdrop-item:hover > .nem-pdrop-link {
     color: #000000 !important;
-    transform: translateX(3px);
+    background-color: #fbfbfb;
+}
+
+.nem-menu-chevron {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #111111;
+    margin-left: 5px;
+    line-height: 1;
+    display: inline-block;
+    transition: transform 0.15s ease;
+}
+
+.nem-pdrop-item:hover > .nem-pdrop-link .nem-menu-chevron {
+    color: #000000;
+    transform: translateX(2px);
+}
+
+/* Flyout Submenu for items with children */
+.nem-pdrop-sub {
+    position: absolute;
+    top: 0;
+    left: 100%;
+    min-width: 195px;
+    background: #ffffff;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.09);
+    border-left: 1px solid #f2f2f2;
+    padding: 12px 0 14px;
+    margin: 0;
+    list-style: none;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(4px);
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+    z-index: 1060;
+    box-sizing: border-box;
+}
+
+/* Bridge for flyout submenu */
+.nem-pdrop-sub::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -10px;
+    width: 10px;
+    height: 100%;
+}
+
+.nem-pdrop-item:hover > .nem-pdrop-sub,
+.nem-pdrop-item.is-open > .nem-pdrop-sub {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+}
+
+.nem-pdrop-sub li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.nem-pdrop-sub li a {
+    display: block;
+    padding: 8px 20px;
+    font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    color: #444444 !important;
+    text-decoration: none !important;
+    transition: color 0.15s ease, background-color 0.15s ease;
+    box-sizing: border-box;
+}
+
+.nem-pdrop-sub li a:hover {
+    color: #000000 !important;
+    background-color: #fbfbfb;
 }
 
 /* Header Right Actions */
@@ -1154,7 +1229,9 @@
    ========================================================================== */
 /* Hide default storefront entry header & breadcrumbs on account page */
 .woocommerce-account .entry-header,
-.woocommerce-account .woocommerce-breadcrumb {
+.woocommerce-account .woocommerce-breadcrumb,
+.woocommerce-account .post-edit-link,
+.woocommerce-account .edit-link {
     display: none !important;
 }
 
@@ -1248,17 +1325,18 @@
 /* Main Profile 2-column Grid */
 .nem-profile-grid {
     display: flex;
-    gap: 40px;
+    gap: 35px;
     align-items: flex-start;
 }
 
 /* Left Sidebar Menu */
 .nem-profile-sidebar-col {
-    width: 240px;
+    width: 220px;
     flex-shrink: 0;
     border-right: 1px solid #e5e5e5;
-    padding-right: 30px;
+    padding-right: 25px;
     box-sizing: border-box;
+    min-height: 120px;
 }
 
 .nem-account-nav-list {
@@ -1268,16 +1346,16 @@
 }
 
 .nem-account-nav-item {
-    margin-bottom: 12px;
+    margin-bottom: 14px;
 }
 
 .nem-account-nav-link {
     font-size: 13.5px;
     font-weight: 400;
-    color: #555555 !important;
+    color: #444444 !important;
     text-decoration: none !important;
     display: block;
-    padding: 4px 0;
+    padding: 3px 0;
     transition: color 0.2s ease, font-weight 0.2s ease;
 }
 
@@ -1291,50 +1369,62 @@
 }
 
 .nem-account-nav-logout {
-    margin-top: 24px;
-    padding-top: 12px;
-    border-top: 1px dashed #eee;
-}
-
-.nem-account-nav-logout .nem-account-nav-link {
-    color: #888888 !important;
-}
-
-.nem-account-nav-logout .nem-account-nav-link:hover {
-    color: #e53935 !important;
+    display: none !important;
 }
 
 /* Right Content Area */
 .nem-profile-content-col {
     flex-grow: 1;
-    padding-left: 20px;
+    padding-left: 30px;
     box-sizing: border-box;
+    max-width: 480px;
 }
 
+/* Tab Panels Switching */
+.nem-tab-panel {
+    display: none;
+}
+
+.nem-tab-panel.is-active {
+    display: block;
+    animation: nemFadeIn 0.2s ease-in-out;
+}
+
+@keyframes nemFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(2px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* TAB 1: Dashboard / Account Info */
 .nem-profile-dashboard {
-    max-width: 600px;
+    width: 100%;
 }
 
 .nem-profile-field-group {
-    margin-bottom: 22px;
+    margin-bottom: 20px;
 }
 
 .nem-field-label {
     font-size: 13.5px;
-    font-weight: 500;
-    color: #444444;
+    font-weight: 400;
+    color: #333333;
     display: block;
     margin-bottom: 8px;
 }
 
 .nem-field-box {
     background-color: #eff1f4;
-    border-radius: 4px;
+    border-radius: 0;
     height: 44px;
     display: flex;
     align-items: center;
-    border: 1px solid #e6e8eb;
-    transition: border-color 0.2s;
+    border: none;
 }
 
 .nem-field-input {
@@ -1345,32 +1435,261 @@
     outline: none !important;
     box-shadow: none !important;
     font-family: inherit;
-    font-size: 14px;
+    font-size: 13.5px;
     color: #222222;
     padding: 0 16px !important;
     margin: 0 !important;
 }
 
-.nem-profile-edit-actions {
-    margin-top: 25px;
+/* TAB 2: Orders */
+.nem-orders-wrap {
+    padding-top: 3px;
 }
 
-.nem-btn-edit-account {
-    display: inline-block;
-    background: #111111;
-    color: #ffffff !important;
-    font-size: 12.5px;
-    font-weight: 600;
+.nem-orders-empty {
+    font-size: 14px;
+    color: #222222;
+    line-height: 1.5;
+    font-family: inherit;
+}
+
+/* TAB 3: Address / Shipping info */
+.nem-address-card-wrap {
+    width: 100%;
+}
+
+.nem-address-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 10px;
+}
+
+.nem-address-name-wrap {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+}
+
+.nem-address-name {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #111111;
     text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.nem-address-default-badge {
+    font-size: 13px;
+    font-weight: 400;
+    color: #333333;
+}
+
+.nem-address-actions {
+    font-size: 13px;
+}
+
+.nem-addr-action-btn {
+    color: #1860c2 !important;
     text-decoration: none !important;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.nem-addr-action-btn:hover {
+    color: #0b3e85 !important;
+    text-decoration: underline !important;
+}
+
+.nem-addr-sep {
+    color: #666666;
+    margin: 0 4px;
+}
+
+.nem-address-row {
+    font-size: 13.5px;
+    color: #333333;
+    line-height: 1.6;
+    margin-bottom: 3px;
+}
+
+.nem-address-divider {
+    border: none;
+    border-top: 1px solid #e0e0e0;
+    margin: 22px 0 25px;
+    height: 0;
+}
+
+.nem-btn-add-address {
+    width: 100%;
+    height: 44px;
+    background: #000000;
+    color: #ffffff;
+    font-size: 13.5px;
+    font-weight: 700;
+    text-transform: uppercase;
     letter-spacing: 0.5px;
-    padding: 10px 24px;
-    border-radius: 4px;
+    border: none;
+    border-radius: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     transition: background 0.2s;
 }
 
-.nem-btn-edit-account:hover {
-    background: #333333;
+.nem-btn-add-address:hover {
+    background: #222222;
+}
+
+/* Modal Sửa / Thêm địa chỉ */
+.nem-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.55);
+    z-index: 999999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    box-sizing: border-box;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+
+.nem-modal-overlay.is-open {
+    opacity: 1;
+    visibility: visible;
+}
+
+.nem-modal-dialog {
+    background: #ffffff;
+    width: 100%;
+    max-width: 460px;
+    padding: 30px;
+    box-sizing: border-box;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    animation: nemModalPop 0.25s ease-out;
+}
+
+@keyframes nemModalPop {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.nem-modal-title {
+    font-size: 17px;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin: 0 0 20px;
+    color: #111111;
+    letter-spacing: 0.5px;
+}
+
+.nem-modal-close-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: transparent;
+    border: none;
+    font-size: 26px;
+    cursor: pointer;
+    color: #666;
+    line-height: 1;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nem-modal-close-btn:hover {
+    color: #000;
+}
+
+.nem-modal-form-group {
+    margin-bottom: 16px;
+}
+
+.nem-modal-label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 6px;
+    color: #333;
+}
+
+.nem-modal-input {
+    width: 100%;
+    height: 42px;
+    padding: 0 14px;
+    background: #eff1f4;
+    border: 1px solid #e0e0e0;
+    font-size: 13.5px;
+    box-sizing: border-box;
+    color: #222;
+    outline: none;
+    border-radius: 0;
+    transition: border-color 0.2s, background-color 0.2s;
+}
+
+.nem-modal-input:focus {
+    border-color: #000;
+    background: #ffffff;
+}
+
+.nem-modal-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 25px;
+}
+
+.nem-modal-btn-submit {
+    flex: 1;
+    height: 44px;
+    background: #000000;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border: none;
+    border-radius: 0;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.nem-modal-btn-submit:hover {
+    background: #222222;
+}
+
+.nem-modal-btn-cancel {
+    height: 44px;
+    padding: 0 22px;
+    background: #eff1f4;
+    color: #333333;
+    font-size: 13px;
+    font-weight: 600;
+    border: none;
+    border-radius: 0;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.nem-modal-btn-cancel:hover {
+    background: #e2e5e9;
 }
 
 

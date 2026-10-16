@@ -31,6 +31,10 @@ function nem_enqueue_assets() {
         filemtime( $theme_dir . '/assets/js/nem-header-footer.js' ),
         true
     );
+
+    wp_localize_script( 'nem-header-footer-script', 'nemAjax', array(
+        'ajax_url' => admin_url( 'admin-ajax.php' ),
+    ) );
 }
 add_action( 'wp_enqueue_scripts', 'nem_enqueue_assets', 99 );
 

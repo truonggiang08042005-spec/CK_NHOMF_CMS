@@ -14,7 +14,19 @@ $current_user = wp_get_current_user();
 $user_id      = $current_user->ID;
 
 // Fullname
-$fullname = ! empty( $current_user->display_name ) ? $current_user->display_name : 'Nguyễn Giang';
+$first_name = get_user_meta( $user_id, 'billing_first_name', true );
+if ( empty( $first_name ) ) {
+    $first_name = get_user_meta( $user_id, 'first_name', true );
+}
+$last_name = get_user_meta( $user_id, 'billing_last_name', true );
+if ( empty( $last_name ) ) {
+    $last_name = get_user_meta( $user_id, 'last_name', true );
+}
+
+$fullname = trim( $last_name . ' ' . $first_name );
+if ( empty( $fullname ) ) {
+    $fullname = ! empty( $current_user->display_name ) ? $current_user->display_name : 'Nguyễn Giang';
+}
 
 // Country
 $billing_country = get_user_meta( $user_id, 'billing_country', true );
@@ -36,28 +48,22 @@ if ( empty( $phone ) ) {
 <div class="nem-profile-dashboard">
     <div class="nem-profile-field-group">
         <label class="nem-field-label" for="nem_profile_fullname">Họ tên</label>
-        <div class="nem-field-box" id="nem_profile_fullname">
-            <input type="text" class="nem-field-input" value="<?php echo esc_attr( $fullname ); ?>" readonly />
+        <div class="nem-field-box">
+            <input type="text" id="nem_profile_fullname" class="nem-field-input" value="<?php echo esc_attr( $fullname ); ?>" readonly />
         </div>
     </div>
 
     <div class="nem-profile-field-group">
         <label class="nem-field-label" for="nem_profile_country">Quốc gia:</label>
-        <div class="nem-field-box" id="nem_profile_country">
-            <input type="text" class="nem-field-input" value="<?php echo esc_attr( $country_name ); ?>" readonly />
+        <div class="nem-field-box">
+            <input type="text" id="nem_profile_country" class="nem-field-input" value="<?php echo esc_attr( $country_name ); ?>" readonly />
         </div>
     </div>
 
     <div class="nem-profile-field-group">
         <label class="nem-field-label" for="nem_profile_phone">Số điện thoại:</label>
-        <div class="nem-field-box" id="nem_profile_phone">
-            <input type="text" class="nem-field-input" value="<?php echo esc_attr( $phone ); ?>" readonly />
+        <div class="nem-field-box">
+            <input type="text" id="nem_profile_phone" class="nem-field-input" value="<?php echo esc_attr( $phone ); ?>" readonly />
         </div>
-    </div>
-
-    <div class="nem-profile-edit-actions">
-        <a href="<?php echo esc_url( wc_customer_edit_account_url() ); ?>" class="nem-btn-edit-account">
-            Chỉnh sửa thông tin
-        </a>
     </div>
 </div>
