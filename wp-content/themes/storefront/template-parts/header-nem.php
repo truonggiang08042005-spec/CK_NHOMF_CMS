@@ -18,7 +18,11 @@ if ( $is_logged_in ) {
 } else {
     $user_display_name = 'Tài khoản';
 }
-$logo_url = get_template_directory_uri() . '/assets/images/nem/logo.png';
+$img_dir         = get_template_directory_uri() . '/assets/images/nem/';
+$logo_url        = $img_dir . 'logo.png';
+$account_img_url = $img_dir . 'account.png';
+$cart_img_url    = $img_dir . 'cart.png';
+$search_img_url  = $img_dir . 'search.png';
 ?>
 
 <div class="nem-header-sticky-wrapper">
@@ -130,9 +134,9 @@ $logo_url = get_template_directory_uri() . '/assets/images/nem/logo.png';
         <div class="nem-header-actions">
             <!-- Search Icon -->
             <button type="button" class="nem-action-btn nem-search-trigger" id="nemSearchTrigger" title="Tìm kiếm">
-                <svg class="nem-svg-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="10.5" cy="10.5" r="7.5"></circle>
-                    <line x1="21" y1="21" x2="15.8" y2="15.8"></line>
+                <svg class="nem-header-icon-svg nem-search-icon-svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="10.5" cy="10.5" r="7.5" />
+                    <line x1="16" y1="16" x2="22" y2="22" />
                 </svg>
             </button>
 
@@ -142,12 +146,12 @@ $logo_url = get_template_directory_uri() . '/assets/images/nem/logo.png';
             <!-- User Account -->
             <div class="nem-user-wrapper nem-has-dropdown">
                 <a href="<?php echo $account_url; ?>" class="nem-user-link">
-                    <svg class="nem-svg-icon nem-user-icon" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="10"></circle>
-                        <circle cx="12" cy="9" r="3.5"></circle>
-                        <path d="M5.5 19a8.5 8.5 0 0 1 13 0"></path>
+                    <svg class="nem-header-icon-svg nem-account-icon-svg" viewBox="0 0 24 24" width="22" height="22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="10" stroke="#000000" stroke-width="1.8" />
+                        <circle cx="12" cy="8.7" r="3.2" fill="#000000" />
+                        <path d="M5.3 19.3 C6.6 15.6 9 14.5 12 14.5 C15 14.5 17.4 15.6 18.7 19.3 C16.9 21 14.6 22 12 22 C9.4 22 7.1 21 5.3 19.3 Z" fill="#000000" />
                     </svg>
-                    <span class="nem-user-name"><?php echo esc_html( $user_display_name ); ?></span>
+                    <span class="nem-user-name">Tài khoản</span>
                 </a>
                 <div class="nem-user-dropdown-panel <?php echo $is_logged_in ? 'nem-is-logged-in' : 'nem-is-logged-out'; ?>">
                     <?php if ( $is_logged_in ) : ?>
@@ -172,16 +176,14 @@ $logo_url = get_template_directory_uri() . '/assets/images/nem/logo.png';
                 </div>
             </div>
 
+            <!-- Vertical Divider -->
+            <span class="nem-divider-pipe"></span>
+
             <!-- Cart Section -->
             <div class="nem-cart-wrapper nem-has-dropdown">
                 <a href="<?php echo $cart_url; ?>" class="nem-cart-link" id="nemHeaderCartLink">
                     <div class="nem-cart-bag-icon">
-                        <svg viewBox="0 0 24 24" width="22" height="24" fill="#000000" stroke="#000000" stroke-width="1.2">
-                            <!-- Bag Body -->
-                            <path d="M5 7L3 21C3 21.6 3.4 22 4 22H20C20.6 22 21 21.6 21 21L19 7H5Z" fill="#111111" stroke="#111111"></path>
-                            <!-- Handle -->
-                            <path d="M8 8V5C8 3.3 9.3 2 11 2H13C14.7 2 16 3.3 16 5V8" fill="none" stroke="#111111" stroke-width="2" stroke-linecap="round"></path>
-                        </svg>
+                        <span class="nem-cart-handle"></span>
                         <span class="nem-cart-badge nem-cart-count"><?php echo esc_html( $cart_count ); ?></span>
                     </div>
                     <span class="nem-cart-label">Giỏ hàng</span>
