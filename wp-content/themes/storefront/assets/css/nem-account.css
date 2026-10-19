@@ -1,0 +1,467 @@
+/* ==========================================================================
+   NEM - Trang Tài khoản (Đăng nhập / Đăng ký / Đăng ký bản tin)
+   Tỷ lệ theo mẫu nemshop.vn/account/login, font Times New Roman.
+   ========================================================================== */
+
+.nem-auth-page {
+	--nem-font: 'Times New Roman', Times, serif;
+	--nem-black: #000;
+	--nem-text: #222;
+	--nem-muted: #8c8c8c;
+	--nem-line: #e5e5e5;
+	--nem-link: #2f80ed;
+	--nem-wrap: 1320px;
+	overflow-x: hidden;
+}
+
+/* Ẩn tiêu đề "My account" mặc định của Storefront */
+.nem-auth-page .entry-header,
+.nem-auth-page .woocommerce-MyAccount-navigation {
+	display: none !important;
+}
+
+.nem-auth-page .hentry,
+.nem-auth-page .site-main,
+.nem-auth-page #content,
+.nem-auth-page .site-content {
+	margin: 0 !important;
+	margin-bottom: 0 !important;
+	padding: 0 !important;
+	border: 0 !important;
+}
+
+/* --------------------------------------------------------------------------
+   Breadcrumb "TRANG CHỦ / TÀI KHOẢN"
+   -------------------------------------------------------------------------- */
+.nem-auth-breadcrumb {
+	font-family: var(--nem-font);
+	border-bottom: 1px solid var(--nem-line);
+	background: #fff;
+}
+
+.nem-auth-breadcrumb__inner {
+	max-width: var(--nem-wrap);
+	margin: 0 auto;
+	padding: 0 24px;
+	height: 46px;
+	display: flex;
+	align-items: center;
+	gap: 5px;
+	font-size: 13px;
+	text-transform: uppercase;
+	color: var(--nem-text);
+	box-sizing: border-box;
+}
+
+.nem-auth-breadcrumb a {
+	color: var(--nem-text) !important;
+	text-decoration: none !important;
+	transition: opacity .2s ease;
+}
+
+.nem-auth-breadcrumb a:hover {
+	opacity: .6;
+}
+
+/* --------------------------------------------------------------------------
+   2 cột Đăng nhập / Đăng ký
+   -------------------------------------------------------------------------- */
+.nem-auth {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	max-width: var(--nem-wrap);
+	margin: 0 auto;
+	padding: 128px 24px 130px;
+	box-sizing: border-box;
+	font-family: var(--nem-font);
+	color: var(--nem-text);
+}
+
+.nem-auth__col {
+	padding-top: 12px;
+	padding-bottom: 24px;
+	animation: nemFadeUp .5s ease both;
+}
+
+/* Theo mẫu: cột trái lùi vào ~9%, cột phải lùi ~17% tính từ đường kẻ, form rộng ~73% mỗi nửa */
+.nem-auth__col--login {
+	padding-left: 9.2%;
+	padding-right: 8%;
+}
+
+.nem-auth__col--register {
+	padding-left: 17.5%;
+	border-left: 1px solid var(--nem-line);
+	animation-delay: .08s;
+}
+
+.nem-auth__box {
+	width: 100%;
+	max-width: 466px;
+}
+
+.nem-auth__title {
+	font-family: var(--nem-font) !important;
+	font-size: 30px;
+	font-weight: 700;
+	text-transform: uppercase;
+	color: var(--nem-black);
+	line-height: 1.2;
+	letter-spacing: 0;
+	margin: 0 0 26px;
+	padding: 0;
+}
+
+.nem-auth__desc {
+	font-size: 14px;
+	line-height: 1.6;
+	color: var(--nem-text);
+	margin: 0 0 30px;
+}
+
+.nem-auth__form {
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+
+.nem-auth__field {
+	margin-bottom: 12px;
+}
+
+.nem-auth__field label {
+	display: block;
+	font-family: var(--nem-font);
+	font-size: 14px;
+	font-weight: 400;
+	color: var(--nem-muted);
+	margin: 0 0 6px;
+}
+
+.nem-auth .nem-auth__field input.input-text {
+	display: block;
+	width: 100%;
+	height: 40px;
+	padding: 0 12px;
+	font-family: var(--nem-font);
+	font-size: 14px;
+	color: var(--nem-text);
+	background: #fff;
+	border: 1px solid var(--nem-line);
+	border-radius: 0;
+	box-shadow: none;
+	box-sizing: border-box;
+	transition: border-color .2s ease;
+}
+
+.nem-auth .nem-auth__field input.input-text::placeholder {
+	color: #9b9b9b;
+	opacity: 1;
+}
+
+.nem-auth .nem-auth__field input.input-text:focus {
+	outline: none;
+	border-color: var(--nem-black);
+	background: #fff;
+}
+
+/* Nút con mắt hiện mật khẩu của WooCommerce */
+.nem-auth .password-input {
+	display: block;
+	position: relative;
+}
+
+.nem-auth .show-password-input {
+	top: 50% !important;
+	transform: translateY(-50%);
+}
+
+.nem-auth__forgot {
+	text-align: right;
+	margin: 14px 0 44px;
+}
+
+.nem-auth__forgot a {
+	font-size: 14px;
+	color: var(--nem-link) !important;
+	text-decoration: none !important;
+}
+
+.nem-auth__forgot a:hover {
+	text-decoration: underline !important;
+}
+
+/* Checkbox */
+.nem-auth__check {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	font-family: var(--nem-font);
+	font-size: 14px;
+	color: var(--nem-text);
+	margin: 10px 0 0;
+	cursor: pointer;
+}
+
+.nem-auth__check input[type="checkbox"] {
+	width: 13px;
+	height: 13px;
+	margin: 0;
+	accent-color: var(--nem-black);
+	cursor: pointer;
+	flex-shrink: 0;
+}
+
+.nem-auth__check a {
+	color: var(--nem-link) !important;
+	text-decoration: none !important;
+}
+
+.nem-auth__check a:hover {
+	text-decoration: underline !important;
+}
+
+/* Nút đen - Luôn giữ màu đen tuyền theo chuẩn mẫu NEM */
+.nem-auth button.nem-auth__btn,
+.nem-auth button.woocommerce-form-login__submit,
+.nem-auth button.woocommerce-form-register__submit,
+.nem-auth button.nem-auth__btn:disabled,
+.nem-auth button.woocommerce-form-register__submit:disabled {
+	display: block;
+	width: 100%;
+	height: 40px;
+	margin: 0;
+	padding: 0 16px;
+	font-family: var(--nem-font);
+	font-size: 14px;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0;
+	color: #ffffff !important;
+	background: #000000 !important;
+	background-color: #000000 !important;
+	border: 1px solid #000000 !important;
+	border-radius: 0 !important;
+	cursor: pointer !important;
+	opacity: 1 !important;
+	box-shadow: none !important;
+	transition: background .25s ease, color .25s ease;
+}
+
+.nem-auth__col--register button.nem-auth__btn,
+.nem-auth__col--register button.woocommerce-form-register__submit {
+	margin-top: 30px;
+}
+
+.nem-auth button.nem-auth__btn:hover,
+.nem-auth button.nem-auth__btn:focus-visible {
+	background: #ffffff !important;
+	background-color: #ffffff !important;
+	color: #000000 !important;
+	border-color: #000000 !important;
+	outline: none;
+}
+
+/* Thông báo lỗi WooCommerce */
+.nem-auth-page .woocommerce-notices-wrapper,
+.nem-auth-page .woocommerce-error,
+.nem-auth-page .woocommerce-message,
+.nem-auth-page .woocommerce-info {
+	font-family: var(--nem-font);
+	max-width: calc(var(--nem-wrap) - 48px);
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.nem-auth-page .woocommerce-notices-wrapper:not(:empty) {
+	padding-top: 30px;
+}
+
+.nem-auth-page .woocommerce-notices-wrapper:not(:empty) + .nem-auth,
+.nem-auth-page .woocommerce-error + .nem-auth {
+	padding-top: 60px;
+}
+
+/* --------------------------------------------------------------------------
+   ĐĂNG KÝ BẢN TIN - Liền mạch với footer, 0 khoảng hở
+   -------------------------------------------------------------------------- */
+.nem-nl {
+	background: #efeff3;
+	font-family: var(--nem-font);
+	color: var(--nem-black);
+	text-align: center;
+	margin: 0 !important;
+	margin-bottom: 0 !important;
+	padding: 0;
+	border: 0;
+}
+
+/* Loại bỏ hoàn toàn khoảng trống giữa khối bản tin và footer */
+.nem-auth-page .site-footer,
+.nem-auth-page #colophon,
+.nem-nl + .site-footer,
+.nem-nl + #colophon {
+	margin: 0 !important;
+	margin-top: 0 !important;
+	padding: 0 !important;
+	padding-top: 0 !important;
+	border: 0 !important;
+}
+
+.nem-auth-page .nem-footer-wrapper,
+.nem-nl + .site-footer .nem-footer-wrapper,
+.nem-nl + #colophon .nem-footer-wrapper {
+	margin-top: 0 !important;
+}
+
+/* Khoảng cách trên, dưới và chiều rộng của khối Đăng ký bản tin */
+.nem-nl__inner {
+	max-width: 760px;
+	margin: 0 auto;
+	padding: 60px 24px 50px; /* 60px: khoảng cách trên | 50px: khoảng cách dưới */
+}
+
+.nem-nl__title {
+	font-family: var(--nem-font) !important;
+	font-size: 32px;
+	font-weight: 700;
+	text-transform: uppercase;
+	color: var(--nem-black);
+	letter-spacing: 0;
+	line-height: 1.2;
+	margin: 0 0 12px;
+	padding: 0;
+}
+
+.nem-nl__desc {
+	font-size: 13px;
+	font-weight: 700;
+	margin: 0 0 30px;
+	color: var(--nem-black);
+}
+
+.nem-nl__form {
+	display: flex;
+	max-width: 590px;
+	margin: 0 auto;
+}
+
+.nem-nl .nem-nl__input {
+	flex: 1;
+	min-width: 0;
+	height: 43px;
+	padding: 0 12px;
+	font-family: var(--nem-font);
+	font-size: 14px;
+	color: var(--nem-text);
+	background: #fff;
+	border: 1px solid #d8d8d8;
+	border-right: 0;
+	border-radius: 0;
+	box-shadow: none;
+}
+
+.nem-nl .nem-nl__input::placeholder {
+	color: #777;
+	opacity: 1;
+}
+
+.nem-nl .nem-nl__input:focus {
+	outline: none;
+	border-color: var(--nem-black);
+}
+
+.nem-nl button.nem-nl__btn {
+	flex: 0 0 143px;
+	height: 43px;
+	margin: 0;
+	padding: 0 16px;
+	font-family: var(--nem-font);
+	font-size: 15px;
+	font-weight: 700;
+	text-transform: uppercase;
+	color: #fff;
+	background: var(--nem-black);
+	border: 1px solid var(--nem-black);
+	border-radius: 0;
+	cursor: pointer;
+	transition: background .25s ease, color .25s ease;
+}
+
+.nem-nl button.nem-nl__btn:hover {
+	background: #fff;
+	color: var(--nem-black);
+}
+
+.nem-nl__msg {
+	font-size: 14px;
+	margin: 14px 0 0;
+}
+
+.nem-nl__msg--success { color: #1e8e3e; }
+.nem-nl__msg--info    { color: #555; }
+.nem-nl__msg--error   { color: #d93025; }
+
+.nem-nl__social {
+	display: flex;
+	justify-content: center;
+	gap: 8px;
+	margin-top: 40px;
+}
+
+.nem-nl__icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 32px;
+	height: 32px;
+	border-radius: 50%;
+	transition: transform .2s ease, opacity .2s ease;
+}
+
+.nem-nl__icon:hover {
+	transform: translateY(-2px);
+	opacity: .9;
+}
+
+.nem-nl__icon--fb { background: #1877f2; }
+.nem-nl__icon--ig { background: #e4405f; }
+.nem-nl__icon--yt { background: #ff0000; }
+
+/* --------------------------------------------------------------------------
+   Animation + Responsive
+   -------------------------------------------------------------------------- */
+@keyframes nemFadeUp {
+	from { opacity: 0; transform: translateY(10px); }
+	to   { opacity: 1; transform: none; }
+}
+
+@media (max-width: 1024px) {
+	.nem-auth__col--login    { padding-left: 4%; padding-right: 6%; }
+	.nem-auth__col--register { padding-left: 8%; }
+}
+
+@media (max-width: 768px) {
+	.nem-auth {
+		grid-template-columns: 1fr;
+		padding: 50px 20px 60px;
+	}
+
+	.nem-auth__col--login,
+	.nem-auth__col--register {
+		padding-left: 0;
+		padding-right: 0;
+	}
+
+	.nem-auth__col--register {
+		border-left: 0;
+		border-top: 1px solid var(--nem-line);
+		margin-top: 30px;
+		padding-top: 40px;
+	}
+
+	.nem-auth__box { max-width: none; }
+	.nem-auth__title { font-size: 26px; }
+	.nem-nl__title { font-size: 26px; }
+	.nem-nl button.nem-nl__btn { flex-basis: 110px; }
+}
