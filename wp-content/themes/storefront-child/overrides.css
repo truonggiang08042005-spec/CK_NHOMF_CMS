@@ -1,0 +1,24 @@
+.hero{position:relative}
+.nem-header nav{margin-right:auto}
+.nem-home button.menu-toggle{padding:0;border:0;float:none;flex-shrink:0;width:25px;max-width:25px}
+.nem-home button.menu-toggle::before,.nem-home button.menu-toggle::after{content:none}
+.nem-home .nem-header{width:100%;max-width:100%}
+.nem-home .header-actions{flex-shrink:0}
+.payment-logos{display:flex;gap:5px;align-items:center;margin-top:15px;flex-wrap:wrap}
+.nem-home .payment-logos img{width:48px;height:30px;object-fit:contain;background:white;border-radius:2px}
+.nem-home .hero img,.nem-home .features img,.nem-home .collection img{border-radius:0}
+.hero-slide[hidden]{display:none}
+.hero-prev,.hero-next{position:absolute;top:46%;border:0;background:#24251aa6;color:#fff;padding:18px;font-size:23px;line-height:1}
+.hero-prev{left:20px}.hero-next{right:20px}
+.hero-dots{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);display:flex;gap:8px}
+.hero-dots button{border:1px solid white;border-radius:50%;width:14px;height:14px;padding:0;background:transparent}
+.hero-dots button.active{background:white}
+.nem-home button:focus-visible,.nem-home a:focus-visible{outline:2px solid #b59844;outline-offset:3px}
+.nem-home .menu-toggle{width:auto}
+.nem-home .nem-search[hidden]{display:none}
+.nem-home .nem-footer p{margin:0}
+.nem-home .header-actions button{color:#222}
+.nem-home .newsletter button{border-radius:0}
+.nem-home .nem-product img{border-radius:0}
+.nem-home .nem-header .nem-logo img{width:100%}
+@media(max-width:760px){.hero-prev,.hero-next{font-size:16px;padding:8px}.hero-prev{left:8px}.hero-next{right:8px}.hero-dots{bottom:8px}.hero-dots button{width:9px;height:9px}}
