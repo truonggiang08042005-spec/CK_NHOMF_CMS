@@ -4,6 +4,11 @@
  * Kiểm tra điều khoản khi người dùng nhấn submit.
  */
 ( function () {
+	document.querySelectorAll('input[type="tel"]').forEach(function (input) {
+		input.addEventListener('input', function () {
+			this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);
+		});
+	});
 	var form = document.querySelector( '.woocommerce-form-register' );
 	var terms = document.getElementById( 'reg_terms' );
 	var btn = document.getElementById( 'nem-register-submit' );

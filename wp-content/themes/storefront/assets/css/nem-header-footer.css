@@ -388,6 +388,26 @@
     position: relative;
 }
 
+.nem-user-name {
+    display: inline-block;
+    max-width: 180px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+.nem-user-dropdown-name,
+.nem-address-name,
+.nem-address-row {
+    overflow-wrap: anywhere;
+}
+
+#nemAddressDetails[hidden],
+#nemAddressEmpty[hidden] {
+    display: none;
+}
+
 .nem-account-icon-svg {
     display: block;
     width: 22px;
@@ -1235,8 +1255,13 @@
     display: none !important;
 }
 
-.woocommerce-account .site-main {
+.woocommerce-account .site-main,
+.woocommerce-account .hentry {
     margin-bottom: 0 !important;
+}
+
+.woocommerce-account .nem-footer-wrapper {
+    margin-top: 0;
 }
 
 .woocommerce-account #primary {

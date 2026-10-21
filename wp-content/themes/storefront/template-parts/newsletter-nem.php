@@ -20,7 +20,7 @@ $nem_nl_messages = array(
 			<input type="hidden" name="action" value="nem_newsletter_subscribe" />
 			<?php wp_nonce_field( 'nem_newsletter', 'nem_newsletter_nonce' ); ?>
 			<label class="screen-reader-text" for="nem-nl-email">Email</label>
-			<input type="email" class="nem-nl__input" id="nem-nl-email" name="nem_newsletter_email" placeholder="Vui lòng nhập email..." required />
+			<input maxlength="250" type="email" class="nem-nl__input" id="nem-nl-email" name="nem_newsletter_email" placeholder="Vui lòng nhập email..." required />
 			<button type="submit" class="nem-nl__btn" id="nem-nl-submit">Đăng ký</button>
 		</form>
 
