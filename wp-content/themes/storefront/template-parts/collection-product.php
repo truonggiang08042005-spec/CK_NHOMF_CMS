@@ -3,10 +3,13 @@
 defined( 'ABSPATH' ) || exit;
 $product = $args['product'];
 $sku = $args['sku'];
-$images = array_map( 'nem_collection_asset', (array) $product->get_meta( '_nem_collection_images' ) );
-$primary = $images[0] ?? wp_get_attachment_image_url( $product->get_image_id(), 'large' );
+$image_files = $product->get_meta( '_nem_collection_images' );
+$image_files = is_array( $image_files ) ? array_values( array_filter( $image_files, function ( $filename ) { return is_string( $filename ) && '' !== trim( $filename ); } ) ) : array();
+$images = array_map( 'nem_collection_asset', $image_files );
+$primary = $images[0] ?? ( wp_get_attachment_image_url( $product->get_image_id(), 'large' ) ?: wc_placeholder_img_src( 'large' ) );
 $gallery = $product->get_gallery_image_ids();
 $secondary = $images[1] ?? ( ! empty( $gallery ) ? wp_get_attachment_image_url( $gallery[0], 'large' ) : $primary );
+$secondary = $secondary ?: $primary;
 ?>
 <article class="nem-collection-product" data-sku="<?php echo esc_attr( $sku ); ?>">
 	<a class="nem-collection-product-image" href="<?php echo esc_url( $product->get_permalink() ); ?>" aria-label="<?php echo esc_attr( 'Xem thêm ' . $product->get_name() ); ?>">

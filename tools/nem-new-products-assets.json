@@ -1,0 +1,475 @@
+{
+    "source":  "https://nemshop.vn/collections/san-pham-moi",
+    "banner":  "https://cdn.hstatic.net/files/200000182297/file/1920x500_eaa207f280064e22aca63a80c5f3403d.jpg",
+    "products":  [
+                     {
+                         "sku":  "Z03062",
+                         "name":  "CHÂN VÁY THIẾT KẾ Z03062",
+                         "source":  "https://nemshop.vn/products/chan-vay-dai-9515",
+                         "price":  "999000",
+                         "images":  [
+                                        "https://cdn.hstatic.net/products/200000182297/sm030521232664760402p999dt_z030621542664300402p999dt__3__860f40e72a2d4c23959156af88e60884_1024x1024.jpg",
+                                        "https://cdn.hstatic.net/products/200000182297/sm030521232664760402p999dt_z030621542664300402p999dt__4__d7073f8a71cf4ed5a17ba26199ae881a_1024x1024.jpg"
+                                    ],
+                         "tags":  [
+                                      "Chân váy",
+                                      "Giá mới",
+                                      "Chân váy bút chì"
+                                  ],
+                         "variants":  [
+                                          {
+                                              "price":  "999000",
+                                              "color":  "Nâu",
+                                              "size":  "Size 4",
+                                              "available":  true
+                                          },
+                                          {
+                                              "price":  "999000",
+                                              "color":  "Nâu",
+                                              "size":  "Size 6",
+                                              "available":  true
+                                          },
+                                          {
+                                              "price":  "999000",
+                                              "color":  "Nâu",
+                                              "size":  "Size 8",
+                                              "available":  true
+                                          },
+                                          {
+                                              "price":  "999000",
+                                              "color":  "Nâu",
+                                              "size":  "Size 10",
+                                              "available":  true
+                                          }
+                                      ]
+                     },
+                     {
+                         "sku":  "AK02852",
+                         "name":  "ÁO CỘC TAY THIẾT KẾ AK02852",
+                         "source":  "https://nemshop.vn/products/ao-cong-so-coc-tay-2784",
+                         "price":  "1099000",
+                         "images":  [
+                                        "https://cdn.hstatic.net/products/200000182297/ak028521312663130401p1099dt_z027221542663160401p1099dt__3__e195ebb364244a94996a4fae5753cab5_1024x1024.jpg",
+                                        "https://cdn.hstatic.net/products/200000182297/ak028521312663130401p1099dt_z027221542663160401p1099dt__5__971f7af70d284176a8f4f9ef3b6fa59e_1024x1024.jpg"
+                                    ],
+                         "tags":  [
+                                      "Áo sơ mi",
+                                      "Giá mới",
+                                      "Áo vest"
+                                  ],
+                         "variants":  [
+                                          {
+                                              "price":  "1099000",
+                                              "color":  "Trắng, trắng kem",
+                                              "size":  "Size 4",
+                                              "available":  true
+                                          },
+                                          {
+                                              "price":  "1099000",
+                                              "color":  "Trắng, trắng kem",
+                                              "size":  "Size 6",
+                                              "available":  true
+                                          },
+                                          {
+                                              "price":  "1099000",
+                                              "color":  "Trắng, trắng kem",
+                                              "size":  "Size 8",
+                                              "available":  true
+                                          },
+                                          {
+                                              "price":  "1099000",
+                                              "color":  "Trắng, trắng kem",
+                                              "size":  "Size 10",
+                                              "available":  true
+                                          }
+                                      ]
+                     },
+                     {
+                         "sku":  "D03632",
+                         "name":  "ĐẦM THIẾT KẾ D03632",
+                         "source":  "https://nemshop.vn/products/dam-coc-tay-48116",
+                         "price":  "1599000",
+                         "images":  [
+                                        "https://cdn.hstatic.net/products/200000182297/d036321412663450601p1599dt__4__e0236406ab43495688435fdc3483acb3_1024x1024.jpg",
+                                        "https://cdn.hstatic.net/products/200000182297/d036321412663450601p1599dt__8__700b7887b1e142f6984f0ccfb72755e3_1024x1024.jpg"
+                                    ],
+                         "tags":  [
+                                      "Giá mới",
+                                      "Đầm",
+                                      "Đầm xoè"
+                                  ],
+                         "variants":  [
+                                          {
+                                              "price":  "1599000",
+                                              "color":  "Hồng",
+                                              "size":  "Size 6",
+                                              "available":  true
+                                          },
+                                          {
+                                              "price":  "1599000",
+                                              "color":  "Hồng",
+                                              "size":  "Size 8",
+                                              "available":  true
+                                          },
+                                          {
+                                              "price":  "1599000",
+                                              "color":  "Hồng",
+                                              "size":  "Size 10",
+                                              "available":  true
+                                          },
+                                          {
+                                              "price":  "1599000",
+                                              "color":  "Hồng",
+                                              "size":  "Size 12",
+                                              "available":  true
+                                          }
+                                      ]
+                     },
+                     {
+                         "sku":  "D03782",
+                         "name":  "ĐẦM SUÔNG THIẾT KẾ D03782",
+                         "source":  "https://nemshop.vn/products/dam-coc-tay-48115",
+                         "price":  "1599000",
+                         "images":  [
+                                        "https://cdn.hstatic.net/products/200000182297/d037821412663120601p1599dt__5__3eea36552c6c4047a6920c78371a3ec0_1024x1024.jpg",
+                                        "https://cdn.hstatic.net/products/200000182297/d037821412663120601p1599dt__2__a2843f3d92544f64a3144c0fbe433ce4_1024x1024.jpg"
+                                    ],
+                         "tags":  [
+                                      "Giá mới",
+                                      "Đầm suông",
+                                      "Đầm"
+                                  ],
+                         "variants":  [
+                                          {
+                                              "price":  "1599000",
+                                              "color":  "Đỏ",
+                                              "size":  "Size 6",
+                                              "available":  true
+                                          },
+                                          {
+                                              "price":  "1599000",
+                                              "color":  "Đỏ",
+                                              "size":  "Size 8",
+                                              "available":  true
+                                          },
+                                          {
+                                              "price":  "1599000",
+                                              "color":  "Đỏ",
+                                              "size":  "Size 10",
+                                              "available":  true
+                                          },
+                                          {
+                                              "price":  "1599000",
+                                              "color":  "Đỏ",
+                                              "size":  "Size 12",
+                                              "available":  false
+                                          }
+                                      ]
+                     },
+                     {
+                         "sku":  "Z02722",
+                         "name":  "CHÂN VÁY THIẾT KẾ Z02722",
+                         "source":  "https://nemshop.vn/products/chan-vay-dai-9513",
+                         "price":  "1099000",
+                         "images":  [
+                                        "https://cdn.hstatic.net/products/200000182297/ak028521312663130401p1099dt_z027221542663160401p1099dt__2__a605da93d7454f429fd2f93e9c9ec217_1024x1024.jpg",
+                                        "https://cdn.hstatic.net/products/200000182297/ak028521312663130401p1099dt_z027221542663160401p1099dt__5__0cc9de85f23742d481353e325c05debf_1024x1024.jpg"
+                                    ],
+                         "tags":  [
+                                      "Giá mới",
+                                      "Chân váy xếp ly"
+                                  ],
+                         "variants":  [
+                                          {
+                                              "price":  "1099000",
+                                              "color":  "Xanh",
+                                              "size":  "Size 4",
+                                              "available":  true
+                                          },
+                                          {
+                                              "price":  "1099000",
+                                              "color":  "Xanh",
+                                              "size":  "Size 6",
+                                              "available":  true
+                                          },
+                                          {
+                                              "price":  "1099000",
+                                              "color":  "Xanh",
+                                              "size":  "Size 8",
+                                              "available":  true
+                                          }
+                                      ]
+                     },
+                     {
+                         "sku":  "SM03162",
+                         "name":  "ÁO SƠ MI THIẾT KẾ SM03162",
+                         "source":  "https://nemshop.vn/products/so-mi-nu-dai-tay-10563",
+                         "price":  "899000",
+                         "images":  [
+                                        "https://cdn.hstatic.net/products/200000182297/sm031621232664530401p899dt_q024621722663140410p999dt__9__b7e6ccc990fe4899835cee2b127fa2e7_1024x1024.jpg",
+                                        "https://cdn.hstatic.net/products/200000182297/sm031621232664530401p899dt_q024621722663140410p999dt__2__b18ccb8257144a7d9fa4a586324045df_1024x1024.jpg"
+                                    ],
+                         "tags":  [
+                                      "Giá mới",
+                                      "Áo sơ mi",
+                                      "Áo sơ mi dài tay"
+                                  ],
+                         "variants":  [
+                                          {
+                                              "price":  "899000",
+                                              "color":  "Trắng",
+                                              "size":  "Size 4",
+                                              "available":  true
+                                          },
+                                          {
+                                              "price":  "899000",
+                                              "color":  "Trắng",
+                                              "size":  "Size 6",
+                                              "available":  true
+                                          },
+                                          {
+                                              "price":  "899000",
+                                              "color":  "Trắng",
+                                              "size":  "Size 8",
+                                              "available":  true
+                                          },
+                                          {
+                                              "price":  "899000",
+                                              "color":  "Trắng",
+                                              "size":  "Size 10",
+                                              "available":  true
+                                          }
+                                      ]
+                     },
+                     {
+                         "sku":  "D02822",
+                         "name":  "ĐẦM THIẾT KẾ D02822",
+                         "source":  "https://nemshop.vn/products/dam-coc-tay-48113",
+                         "price":  "1399000",
+                         "images":  [
+                                        "https://cdn.hstatic.net/products/200000182297/d028223412663960401p1399dt.jpg__3__a993119b2e134c75b58547c7af50920a_1024x1024.jpg",
+                                        "https://cdn.hstatic.net/products/200000182297/d028223412663960401p1399dt.jpg_71b90e368289471bb94b5f9f716d6353_1024x1024.jpg"
+                                    ],
+                         "tags":  [
+                                      "Giá mới",
+                                      "Đầm suông",
+                                      "Đầm",
+                                      "giá  mới"
+                                  ],
+                         "variants":  [
+                                          {
+                                              "price":  "1399000",
+                                              "color":  "Xanh",
+                                              "size":  "Size 4",
+                                              "available":  true
+                                          },
+                                          {
+                                              "price":  "1399000",
+                                              "color":  "Xanh",
+                                              "size":  "Size 6",
+                                              "available":  true
+                                          },
+                                          {
+                                              "price":  "1399000",
+                                              "color":  "Xanh",
+                                              "size":  "Size 8",
+                                              "available":  true
+                                          }
+                                      ]
+                     },
+                     {
+                         "sku":  "AK02232",
+                         "name":  "ÁO CÔNG SỞ THIẾT KẾ AK02232",
+                         "source":  "https://nemshop.vn/products/ao-cong-so-coc-tay-2783",
+                         "price":  "1099000",
+                         "images":  [
+                                        "https://cdn.hstatic.net/products/200000182297/ak022321312663140674p1099dt_q022421722663140674p999dt_6__30f4aedd899349e2bd0648a35873bd43_1024x1024.jpg",
+                                        "https://cdn.hstatic.net/products/200000182297/ak022321312663140674p1099dt_q022421722663140674p999dt_4__175640bd91714ec6ab050b2af0296d60_1024x1024.jpg"
+                                    ],
+                         "tags":  [
+                                      "Áo kiểu nữ",
+                                      "Áo sơ mi kiểu nữ",
+                                      "Giá mới"
+                                  ],
+                         "variants":  [
+                                          {
+                                              "price":  "1099000",
+                                              "color":  "Nâu",
+                                              "size":  "Size 6",
+                                              "available":  true
+                                          },
+                                          {
+                                              "price":  "1099000",
+                                              "color":  "Nâu",
+                                              "size":  "Size 8",
+                                              "available":  true
+                                          },
+                                          {
+                                              "price":  "1099000",
+                                              "color":  "Nâu",
+                                              "size":  "Size 10",
+                                              "available":  true
+                                          }
+                                      ]
+                     },
+                     {
+                         "sku":  "D02842",
+                         "name":  "ĐẦM CỘC TAY D02842",
+                         "source":  "https://nemshop.vn/products/dam-coc-tay-48111",
+                         "price":  "1799000",
+                         "images":  [
+                                        "https://cdn.hstatic.net/products/200000182297/d028421412663160601p1799dt__3886f82c7d0b4283985e973e3b7df64d_1024x1024.png",
+                                        "https://cdn.hstatic.net/products/200000182297/d028421412663160601p1799dt__6a3fed36516045c080e12ef31aed8bec_1024x1024.png"
+                                    ],
+                         "tags":  [
+                                      "Giá mới",
+                                      "Đầm suông",
+                                      "Đầm xoè",
+                                      "Đầm"
+                                  ],
+                         "variants":  [
+                                          {
+                                              "price":  "1799000",
+                                              "color":  "Xanh",
+                                              "size":  "Size 4",
+                                              "available":  false
+                                          },
+                                          {
+                                              "price":  "1799000",
+                                              "color":  "Xanh",
+                                              "size":  "Size 6",
+                                              "available":  true
+                                          },
+                                          {
+                                              "price":  "1799000",
+                                              "color":  "Xanh",
+                                              "size":  "Size 8",
+                                              "available":  true
+                                          },
+                                          {
+                                              "price":  "1799000",
+                                              "color":  "Xanh",
+                                              "size":  "Size 10",
+                                              "available":  true
+                                          }
+                                      ]
+                     },
+                     {
+                         "sku":  "SM03792",
+                         "name":  "ÁO SƠ MI NỮ THIẾT KẾ SM03792",
+                         "source":  "https://nemshop.vn/products/so-mi-nu-coc-tay-20001",
+                         "price":  "799000",
+                         "images":  [
+                                        "https://cdn.hstatic.net/products/200000182297/sm037921212663130401p799dt_z033323542664980401p999dt__3__32d5cd35ad5344938dfb77cf457a1a0b_1024x1024.jpg",
+                                        "https://cdn.hstatic.net/products/200000182297/sm037921212663130401p799dt_z033323542664980401p999dt__7__0a95cbd1a32c4c9790fc9f6715905de6_1024x1024.jpg"
+                                    ],
+                         "tags":  [
+                                      "Áo sơ  mi ngắn tay",
+                                      "Giá mới",
+                                      "Áo sơ mi"
+                                  ],
+                         "variants":  [
+                                          {
+                                              "price":  "799000",
+                                              "color":  "Trắng",
+                                              "size":  "Size 4",
+                                              "available":  true
+                                          },
+                                          {
+                                              "price":  "799000",
+                                              "color":  "Trắng",
+                                              "size":  "Size 6",
+                                              "available":  true
+                                          },
+                                          {
+                                              "price":  "799000",
+                                              "color":  "Trắng",
+                                              "size":  "Size 8",
+                                              "available":  true
+                                          }
+                                      ]
+                     },
+                     {
+                         "sku":  "D03012",
+                         "name":  "ĐẦM GẤM THIẾT KẾ D03012",
+                         "source":  "https://nemshop.vn/products/dam-coc-tay-48110",
+                         "price":  "1599000",
+                         "images":  [
+                                        "https://cdn.hstatic.net/products/200000182297/d030121412664360601p1599dt__3__8d1cbade838b4c2fa08c5139bcd4110a_1024x1024.jpg",
+                                        "https://cdn.hstatic.net/products/200000182297/d030121412664360601p1599dt__6__d9639ce5c63d42879fa3dc6a015ded06_1024x1024.jpg"
+                                    ],
+                         "tags":  [
+                                      "Giá mới",
+                                      "Đầm xòe",
+                                      "Đầm"
+                                  ],
+                         "variants":  [
+                                          {
+                                              "price":  "1599000",
+                                              "color":  "Xanh",
+                                              "size":  "Size 6",
+                                              "available":  false
+                                          },
+                                          {
+                                              "price":  "1599000",
+                                              "color":  "Xanh",
+                                              "size":  "Size 8",
+                                              "available":  true
+                                          },
+                                          {
+                                              "price":  "1599000",
+                                              "color":  "Xanh",
+                                              "size":  "Size 10",
+                                              "available":  false
+                                          },
+                                          {
+                                              "price":  "1599000",
+                                              "color":  "Xanh",
+                                              "size":  "Size 12",
+                                              "available":  true
+                                          }
+                                      ]
+                     },
+                     {
+                         "sku":  "D03022",
+                         "name":  "ĐẦM GẤM THIẾT KẾ D03022",
+                         "source":  "https://nemshop.vn/products/dam-coc-tay-48109",
+                         "price":  "1599000",
+                         "images":  [
+                                        "https://cdn.hstatic.net/products/200000182297/d030221412664320601p1599dt__4__a95a8f3311b340a69af94eb34f34874d_1024x1024.jpg",
+                                        "https://cdn.hstatic.net/products/200000182297/d030221412664320601p1599dt__7__ae11ff8cf62b45e9bf7a33f36fb6a194_1024x1024.jpg"
+                                    ],
+                         "tags":  [
+                                      "Giá mới",
+                                      "Đầm xoè",
+                                      "Đầm"
+                                  ],
+                         "variants":  [
+                                          {
+                                              "price":  "1599000",
+                                              "color":  "Đỏ",
+                                              "size":  "Size 6",
+                                              "available":  true
+                                          },
+                                          {
+                                              "price":  "1599000",
+                                              "color":  "Đỏ",
+                                              "size":  "Size 8",
+                                              "available":  true
+                                          },
+                                          {
+                                              "price":  "1599000",
+                                              "color":  "Đỏ",
+                                              "size":  "Size 10",
+                                              "available":  true
+                                          },
+                                          {
+                                              "price":  "1599000",
+                                              "color":  "Đỏ",
+                                              "size":  "Size 12",
+                                              "available":  true
+                                          }
+                                      ]
+                     }
+                 ]
+}

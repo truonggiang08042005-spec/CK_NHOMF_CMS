@@ -117,7 +117,7 @@ $search_img_url  = $img_dir . 'search.png';
 
                 <!-- SẢN PHẨM MỚI -->
                 <li class="nem-nav-item">
-                    <a href="<?php echo $shop_url; ?>?orderby=date" class="nem-nav-link">SẢN PHẨM MỚI</a>
+                    <a href="<?php echo esc_url( nem_new_products_url() ); ?>" class="nem-nav-link">SẢN PHẨM MỚI</a>
                 </li>
 
                 <!-- NEM PLUS+ -->
@@ -279,7 +279,7 @@ $search_img_url  = $img_dir . 'search.png';
                         <li><a href="<?php echo $shop_url; ?>?category=set-bo">Set bộ</a></li>
                     </ul>
                 </li>
-                <li class="nem-m-item"><a href="<?php echo $shop_url; ?>?orderby=date">SẢN PHẨM MỚI</a></li>
+                <li class="nem-m-item"><a href="<?php echo esc_url( nem_new_products_url() ); ?>">SẢN PHẨM MỚI</a></li>
                 <li class="nem-m-item"><a href="<?php echo esc_url( $nem_plus_url ); ?>">NEM PLUS+</a></li>
                 <li class="nem-m-item nem-m-has-sub">
                     <a href="<?php echo $shop_url; ?>?on_sale=1">SẢN PHẨM SALE</a>
