@@ -1,0 +1,173 @@
+/* Collection landing page: two alternating product / editorial stories. */
+.nem-collections-page #content > .col-full {
+    max-width: none;
+    margin: 0;
+    padding: 0;
+}
+
+.nem-collections-page .site-main,
+.nem-collections-page .content-area {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    float: none;
+}
+
+.nem-collections-page .nem-footer-wrapper { margin-top: 0; }
+.nem-collections-container {
+    width: calc(100% - 80px);
+    max-width: 1460px;
+    margin: 0 auto;
+    font-family: 'Arial', sans-serif;
+    color: #171717;
+}
+
+.nem-collections-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 20px 0 16px;
+    font-size: 12px;
+}
+.nem-collections-breadcrumb a { color: #666; text-decoration: none; }
+.nem-collection-story { scroll-margin-top: 100px; }
+.nem-collection-story + .nem-collection-story::before {
+    content: '';
+    display: block;
+    width: 66%;
+    height: 1px;
+    margin: 140px auto 110px;
+    background: #d6d6d6;
+}
+.nem-collection-banner { display: block; margin-bottom: 90px; }
+.nem-collection-banner img { display: block; width: 100%; height: auto; border-radius: 0; }
+.nem-collection-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 3fr) minmax(0, 1.9fr);
+    align-items: start;
+    gap: 80px;
+}
+.nem-collection-layout-reverse { grid-template-columns: minmax(0, 1.9fr) minmax(0, 3fr); }
+.nem-collection-layout-reverse .nem-collection-editorials { grid-column: 1; grid-row: 1; }
+.nem-collection-layout-reverse .nem-collection-products-and-copy { grid-column: 2; grid-row: 1; }
+.nem-collection-products { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 10px; }
+.nem-collection-product { min-width: 0; margin: 0; text-align: center; }
+.nem-collection-product-image {
+    display: block;
+    position: relative;
+    aspect-ratio: 2 / 3;
+    overflow: hidden;
+    isolation: isolate;
+    background: #f0f0ed;
+}
+.nem-collection-product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: 0;
+    transition: opacity .45s ease;
+}
+.nem-collection-product-image .nem-collection-image-secondary { position: absolute; inset: 0; opacity: 0; }
+.nem-collection-product-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10%;
+    background: rgb(0 0 0 / 35%);
+    transform: translateX(-101%);
+    transition: transform .4s ease;
+}
+.nem-collection-view-more {
+    width: 100%;
+    border: 1px solid #fff;
+    padding: 9px 8px;
+    font-size: clamp(14px, 1.4vw, 24px);
+    font-weight: 700;
+    line-height: 1.15;
+    color: #fff;
+    text-align: center;
+}
+.nem-collection-product-image:hover .nem-collection-image-secondary,
+.nem-collection-product-image:focus-visible .nem-collection-image-secondary { opacity: 1; }
+.nem-collection-product-image:hover .nem-collection-product-overlay,
+.nem-collection-product-image:focus-visible .nem-collection-product-overlay { transform: translateX(0); }
+.nem-collection-product-image:focus-visible { outline: 2px solid #111; outline-offset: 3px; }
+.nem-catalog-product-media { display: block; position: relative; aspect-ratio: 2 / 3; overflow: hidden; isolation: isolate; margin-bottom: 18px; }
+.woocommerce ul.products li.product .nem-catalog-product-media > img { display: block; width: 100%; height: 100%; margin: 0; object-fit: cover; border-radius: 0; transition: opacity .45s ease; }
+.woocommerce ul.products li.product .nem-catalog-product-media > .nem-catalog-image-secondary { position: absolute; inset: 0; opacity: 0; }
+.woocommerce ul.products li.product .nem-catalog-product-media:hover > .nem-catalog-image-secondary,
+.woocommerce ul.products li.product .woocommerce-LoopProduct-link:focus-visible .nem-catalog-image-secondary { opacity: 1; }
+.nem-catalog-product-media:hover .nem-collection-product-overlay,
+.woocommerce-LoopProduct-link:focus-visible .nem-collection-product-overlay { transform: translateX(0); }
+.nem-collection-product h3 {
+    margin: 12px 0 16px;
+    font-size: clamp(11px, .85vw, 14px);
+    line-height: 1.4;
+    font-weight: 500;
+}
+.nem-collection-product h3 a { color: #8c8c8c; text-decoration: none; }
+.nem-collection-product h3 a:hover { color: #111; }
+.nem-collection-product-price { color: #111; font-weight: 700; font-size: 16px; line-height: 1.4; }
+.nem-collection-product-price del { color: #858585; font-size: 12px; font-weight: 400; margin-left: 8px; }
+.nem-collection-product-price ins { background: none; color: #e94141; font-weight: 700; }
+.nem-collection-sale { position: absolute; top: 10px; right: 10px; color: #e94141; background: #fff; padding: 2px 5px; font-size: 12px; z-index: 3; }
+.nem-collection-copy { margin-top: 14px; }
+.nem-collection-copy h2 { margin: 0 0 18px; font-size: clamp(22px, 2vw, 34px); font-weight: 700; line-height: 1.2; letter-spacing: -.5px; }
+.nem-collection-copy p { margin: 0 0 18px; font-size: 15px; line-height: 1.5; color: #555; text-align: justify; }
+.nem-collection-more { display: block; width: 45%; min-width: 180px; border: 1px solid #777; padding: 8px 20px; font-size: 12px; line-height: 1.2; color: #444; text-align: center; text-decoration: none; transition: color .2s, background .2s; }
+.nem-collection-layout-reverse .nem-collection-more { margin-left: auto; }
+.nem-collection-more:hover, .nem-collection-more:focus-visible { background: #111; color: #fff; border-color: #111; }
+.nem-collection-editorials { display: grid; gap: 30px; }
+.nem-collection-editorials a, .nem-collection-editorials img { display: block; width: 100%; border-radius: 0; }
+.nem-collection-editorials img { height: auto; }
+.nem-collections-main { padding-bottom: 140px !important; }
+.nem-collection-newsletter { padding: 65px 24px 48px; margin: 0; text-align: center; background: #efeff3; color: #111; font-family: Arial, sans-serif; }
+.nem-collection-newsletter h2 { margin: 0 0 12px; font-size: 28px; font-weight: 700; }
+.nem-collection-newsletter p { margin: 0 0 26px; font-size: 14px; }
+.nem-collection-newsletter form { display: flex; max-width: 670px; margin: 0 auto; }
+.nem-collection-newsletter input[type='email'] { flex: 1; width: 0; min-width: 0; padding: 14px 20px; border: 1px solid #d6d6d6; border-radius: 0; background: #fff; box-shadow: none; font-size: 14px; }
+.nem-collection-newsletter button { padding: 12px 38px; background: #000; border: 1px solid #000; color: #fff; border-radius: 0; font-size: 14px; white-space: nowrap; }
+.nem-collection-newsletter button:hover { background: #333; }
+.nem-collection-socials { display: flex; justify-content: center; gap: 14px; margin-top: 35px; }
+.nem-collection-socials a { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; color: #fff; }
+.nem-collection-socials svg { width: 23px; height: 23px; fill: currentColor; }
+.nem-collection-facebook { background: #1877f2; }
+.nem-collection-instagram { background: linear-gradient(45deg, #ffb34b, #e4315c, #a82495); }
+.nem-collection-youtube { background: #f00; }
+@media (max-width: 1100px) {
+    .nem-collection-layout { gap: 35px; }
+    .nem-collection-banner { margin-bottom: 55px; }
+    .nem-collection-copy h2 { font-size: 23px; }
+    .nem-collection-copy p { font-size: 13px; }
+    .nem-collection-product-price { font-size: 14px; }
+    .nem-collection-story + .nem-collection-story::before { margin: 85px auto 65px; }
+}
+@media (max-width: 700px) {
+    .nem-collections-container { width: calc(100% - 32px); }
+    .nem-collections-breadcrumb { font-size: 10px; padding: 16px 0; }
+    .nem-collection-layout, .nem-collection-layout-reverse { grid-template-columns: 1fr; gap: 30px; }
+    .nem-collection-layout-reverse .nem-collection-products-and-copy,
+    .nem-collection-layout-reverse .nem-collection-editorials { grid-column: auto; grid-row: auto; }
+    .nem-collection-editorials { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+    .nem-collection-banner { margin-bottom: 30px; }
+    .nem-collection-product h3 { margin-bottom: 8px; min-height: 31px; }
+    .nem-collection-copy h2 { font-size: 22px; margin-top: 20px; }
+    .nem-collection-story + .nem-collection-story::before { margin: 50px auto; }
+    .nem-collections-main { padding-bottom: 55px !important; }
+    .nem-collection-newsletter { padding: 45px 20px 35px; }
+    .nem-collection-newsletter h2 { font-size: 23px; }
+    .nem-collection-newsletter p { font-size: 12px; }
+    .nem-collection-newsletter button { padding: 12px 18px; font-size: 12px; }
+}
+@media (hover: none) {
+    .nem-collection-product-overlay { inset: auto 0 0; transform: none; padding: 10px 15%; background: rgb(0 0 0 / 25%); }
+    .nem-collection-view-more { font-size: 12px; padding: 6px; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .nem-collection-product-image img, .nem-collection-product-overlay,
+    .woocommerce ul.products li.product .nem-catalog-product-media > img { transition: none; }
+}

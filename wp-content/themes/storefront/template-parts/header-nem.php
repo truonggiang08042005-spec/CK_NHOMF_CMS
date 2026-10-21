@@ -36,9 +36,10 @@ $logo_url = get_template_directory_uri() . '/assets/images/nem/logo.png';
                 <!-- SẢN PHẨM -->
                 <li class="nem-nav-item nem-has-megamenu">
                     <a href="<?php echo $shop_url; ?>" class="nem-nav-link">
-                        SẢN PHẨM <span class="nem-arrow-down">⌵</span>
+                        SẢN PHẨM
                     </a>
-                    <div class="nem-megamenu-panel">
+                    <button type="button" class="nem-menu-toggle" aria-label="Mở menu Sản phẩm" aria-expanded="false" aria-controls="nemProductsMenu"><span class="nem-arrow-down" aria-hidden="true">⌵</span></button>
+                    <div class="nem-megamenu-panel" id="nemProductsMenu">
                         <div class="nem-megamenu-inner">
                             <div class="nem-megamenu-col">
                                 <a href="<?php echo $shop_url; ?>?category=dam" class="nem-col-title">ĐẦM</a>
@@ -103,9 +104,10 @@ $logo_url = get_template_directory_uri() . '/assets/images/nem/logo.png';
                 <!-- SẢN PHẨM SALE -->
                 <li class="nem-nav-item nem-has-dropdown">
                     <a href="<?php echo $shop_url; ?>?on_sale=1" class="nem-nav-link">
-                        SẢN PHẨM SALE <span class="nem-arrow-down">⌵</span>
+                        SẢN PHẨM SALE
                     </a>
-                    <ul class="nem-simple-dropdown">
+                    <button type="button" class="nem-menu-toggle" aria-label="Mở menu Sản phẩm sale" aria-expanded="false" aria-controls="nemSaleMenu"><span class="nem-arrow-down" aria-hidden="true">⌵</span></button>
+                    <ul class="nem-simple-dropdown" id="nemSaleMenu">
                         <li><a href="<?php echo $shop_url; ?>?sale=199k">CHỈ TỪ 199K</a></li>
                         <li><a href="<?php echo $shop_url; ?>?sale=70">SALE UP 70%</a></li>
                     </ul>
@@ -114,13 +116,14 @@ $logo_url = get_template_directory_uri() . '/assets/images/nem/logo.png';
                 <!-- BỘ SƯU TẬP -->
                 <li class="nem-nav-item nem-has-dropdown">
                     <a href="<?php echo $home_url; ?>bo-suu-tap/" class="nem-nav-link">
-                        BỘ SƯU TẬP <span class="nem-arrow-down">⌵</span>
+                        BỘ SƯU TẬP
                     </a>
-                    <ul class="nem-simple-dropdown">
-                        <li><a href="<?php echo $shop_url; ?>?collection=giao-thoi">GIAO THỜI</a></li>
-                        <li><a href="<?php echo $shop_url; ?>?collection=nhip-thanh-pho">Nhịp Thành phố</a></li>
-                        <li><a href="<?php echo $shop_url; ?>?collection=thoi-nha">Áo dài THỜI NHÃ</a></li>
-                        <li><a href="<?php echo $shop_url; ?>?collection=nhe-buoc-moi-ngay">NHẸ BƯỚC MỖI NGÀY</a></li>
+                    <button type="button" class="nem-menu-toggle" aria-label="Mở menu Bộ sưu tập" aria-expanded="false" aria-controls="nemCollectionsMenu"><span class="nem-arrow-down" aria-hidden="true">⌵</span></button>
+                    <ul class="nem-simple-dropdown" id="nemCollectionsMenu">
+                        <li><a href="<?php echo esc_url( nem_collection_url( 'giao-thoi' ) ); ?>">GIAO THỜI</a></li>
+                        <li><a href="<?php echo esc_url( nem_collection_url( 'nhip-thanh-pho' ) ); ?>">Nhịp Thành phố</a></li>
+                        <li><a href="<?php echo esc_url( nem_collection_url( 'thoi-nha' ) ); ?>">Áo dài THỜI NHÃ</a></li>
+                        <li><a href="<?php echo esc_url( nem_collection_url( 'nhe-buoc-moi-ngay' ) ); ?>">NHẸ BƯỚC MỖI NGÀY</a></li>
                     </ul>
                 </li>
             </ul>

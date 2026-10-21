@@ -72,3 +72,4 @@ if ( version_compare( get_bloginfo( 'version' ), '4.7.3', '>=' ) && ( is_admin()
 
 // NEM Fashion Header & Footer customizations
 require 'inc/nem-custom-functions.php';
+require 'inc/nem-collections.php';

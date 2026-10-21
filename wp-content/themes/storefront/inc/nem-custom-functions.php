@@ -19,7 +19,7 @@ function nem_enqueue_assets() {
         'nem-header-footer-style',
         get_template_directory_uri() . '/assets/css/nem-header-footer.css',
         array(),
-        $theme_version
+        filemtime( get_template_directory() . '/assets/css/nem-header-footer.css' )
     );
 
     // NEM Header & Footer Script
@@ -27,7 +27,7 @@ function nem_enqueue_assets() {
         'nem-header-footer-script',
         get_template_directory_uri() . '/assets/js/nem-header-footer.js',
         array( 'jquery' ),
-        $theme_version,
+        filemtime( get_template_directory() . '/assets/js/nem-header-footer.js' ),
         true
     );
 }
