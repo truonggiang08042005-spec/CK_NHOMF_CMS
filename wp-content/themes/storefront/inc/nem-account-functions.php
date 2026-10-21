@@ -19,6 +19,30 @@ function nem_is_auth_page() {
 	return function_exists( 'is_account_page' ) && is_account_page() && ! is_user_logged_in();
 }
 
+/** Customer name shared by the account page and header. */
+function nem_customer_display_name() {
+	$user = wp_get_current_user();
+	$name = trim( get_user_meta( $user->ID, 'last_name', true ) . ' ' . get_user_meta( $user->ID, 'first_name', true ) );
+	if ( '' === $name ) {
+		$name = trim( get_user_meta( $user->ID, 'billing_last_name', true ) . ' ' . get_user_meta( $user->ID, 'billing_first_name', true ) );
+	}
+	return '' !== $name ? $name : ( $user->display_name ?: $user->user_login );
+}
+
+/** Validate original input before sanitizing, including crafted POST requests. */
+function nem_validate_customer_field( $value, $label, $phone = false ) {
+	if ( ! is_string( $value ) ) {
+		return $label . ' không hợp lệ.';
+	}
+	if ( '' === trim( $value ) ) {
+		return 'Vui lòng nhập ' . $label . '.';
+	}
+	if ( $phone ) {
+		return preg_match( '/\A[0-9]{1,10}\z/', $value ) ? '' : 'Số điện thoại chỉ được chứa chữ số từ 0 đến 9 và không quá 10 ký tự.';
+	}
+	return mb_strlen( $value, 'UTF-8' ) > 250 ? $label . ' không được quá 250 ký tự.' : '';
+}
+
 /**
  * Bật đăng ký, cho khách tự đặt mật khẩu, tự sinh username từ email.
  */
@@ -43,6 +67,13 @@ add_action( 'init', function () {
  * CSS + JS cho trang.
  */
 add_action( 'wp_enqueue_scripts', function () {
+	if ( function_exists( 'is_account_page' ) && is_account_page() && is_user_logged_in() ) {
+		wp_enqueue_script( 'nem-profile', get_template_directory_uri() . '/assets/js/nem-profile.js', array(), filemtime( get_template_directory() . '/assets/js/nem-profile.js' ), true );
+		wp_localize_script( 'nem-profile', 'nemProfile', array(
+			'ajax_url' => admin_url( 'admin-ajax.php' ),
+			'nonce'    => wp_create_nonce( 'nem_profile_address' ),
+		) );
+	}
 	if ( ! nem_is_auth_page() ) {
 		return;
 	}
@@ -153,7 +184,7 @@ function nem_handle_newsletter_subscribe() {
 	}
 
 	$email  = isset( $_POST['nem_newsletter_email'] ) ? sanitize_email( wp_unslash( $_POST['nem_newsletter_email'] ) ) : '';
-	$status = is_email( $email ) ? nem_newsletter_add_email( $email ) : 'invalid';
+	$status = mb_strlen( $email, 'UTF-8' ) <= 250 && is_email( $email ) ? nem_newsletter_add_email( $email ) : 'invalid';
 
 	wp_safe_redirect( add_query_arg( 'nem_newsletter', $status, $redirect ) . '#nem-newsletter' );
 	exit;
@@ -167,20 +198,11 @@ add_action( 'admin_post_nem_newsletter_subscribe', 'nem_handle_newsletter_subscr
 
 add_action( 'woocommerce_register_post', function ( $username, $email, $errors ) {
 	// phpcs:disable WordPress.Security.NonceVerification.Missing -- WooCommerce đã kiểm tra nonce.
-	$last_name  = isset( $_POST['nem_last_name'] ) ? trim( wp_unslash( $_POST['nem_last_name'] ) ) : '';
-	$first_name = isset( $_POST['nem_first_name'] ) ? trim( wp_unslash( $_POST['nem_first_name'] ) ) : '';
-	$phone      = isset( $_POST['nem_phone'] ) ? trim( wp_unslash( $_POST['nem_phone'] ) ) : '';
-
-	if ( '' === $last_name ) {
-		$errors->add( 'nem_last_name_error', 'Vui lòng nhập Họ.' );
-	}
-	if ( '' === $first_name ) {
-		$errors->add( 'nem_first_name_error', 'Vui lòng nhập Tên.' );
-	}
-	if ( '' === $phone ) {
-		$errors->add( 'nem_phone_error', 'Vui lòng nhập Số điện thoại.' );
-	} elseif ( ! preg_match( '/^(\+84|0)[0-9]{9,10}$/', preg_replace( '/[\s\.\-]/', '', $phone ) ) ) {
-		$errors->add( 'nem_phone_error', 'Số điện thoại không hợp lệ.' );
+	foreach ( array( 'nem_last_name' => 'Họ', 'nem_first_name' => 'Tên', 'nem_phone' => 'Số điện thoại', 'email' => 'Email', 'password' => 'Mật khẩu' ) as $key => $label ) {
+		$value = isset( $_POST[ $key ] ) ? wp_unslash( $_POST[ $key ] ) : '';
+		if ( $message = nem_validate_customer_field( $value, $label, 'nem_phone' === $key ) ) {
+			$errors->add( $key . '_error', $message );
+		}
 	}
 	if ( empty( $_POST['nem_terms'] ) ) {
 		$errors->add( 'nem_terms_error', 'Bạn cần đồng ý với điều khoản của NEM.' );
@@ -220,50 +242,51 @@ add_action( 'woocommerce_created_customer', function ( $customer_id ) {
 /**
  * AJAX cập nhật hoặc lưu thông tin địa chỉ từ trang Profile
  */
-add_action( 'wp_ajax_nem_save_profile_address', function() {
+function nem_check_profile_request() {
 	if ( ! is_user_logged_in() ) {
-		wp_send_json_error( array( 'message' => 'Bạn cần đăng nhập.' ) );
+		wp_send_json_error( array( 'message' => 'Bạn cần đăng nhập.' ), 401 );
 	}
+	if ( ! check_ajax_referer( 'nem_profile_address', 'nonce', false ) ) {
+		wp_send_json_error( array( 'message' => 'Phiên làm việc đã hết hạn. Vui lòng tải lại trang.' ), 403 );
+	}
+}
 
+add_action( 'wp_ajax_nem_save_profile_address', function() {
+	nem_check_profile_request();
+	$data = array();
+	foreach ( array( 'fullname' => 'Họ và tên', 'phone' => 'Số điện thoại', 'country' => 'Quốc gia', 'address' => 'Địa chỉ' ) as $key => $label ) {
+		$value = isset( $_POST[ $key ] ) ? wp_unslash( $_POST[ $key ] ) : '';
+		$message = nem_validate_customer_field( $value, $label, 'phone' === $key );
+		if ( $message ) {
+			wp_send_json_error( array( 'message' => $message ), 422 );
+		}
+		$data[ $key ] = sanitize_text_field( $value );
+		if ( '' === $data[ $key ] ) {
+			wp_send_json_error( array( 'message' => $label . ' không hợp lệ.' ), 422 );
+		}
+	}
 	$user_id = get_current_user_id();
-
-	$fullname = isset( $_POST['fullname'] ) ? sanitize_text_field( wp_unslash( $_POST['fullname'] ) ) : '';
-	$phone    = isset( $_POST['phone'] ) ? sanitize_text_field( wp_unslash( $_POST['phone'] ) ) : '';
-	$country  = isset( $_POST['country'] ) ? sanitize_text_field( wp_unslash( $_POST['country'] ) ) : 'Vietnam';
-	$address  = isset( $_POST['address'] ) ? sanitize_text_field( wp_unslash( $_POST['address'] ) ) : 'Vietnam';
-
-	if ( ! empty( $fullname ) ) {
-		$parts = explode( ' ', trim( $fullname ) );
-		$first_name = array_pop( $parts );
-		$last_name  = implode( ' ', $parts );
-
-		update_user_meta( $user_id, 'billing_first_name', $first_name );
-		update_user_meta( $user_id, 'first_name', $first_name );
-		update_user_meta( $user_id, 'billing_last_name', $last_name );
-		update_user_meta( $user_id, 'last_name', $last_name );
-		wp_update_user( array(
-			'ID'           => $user_id,
-			'display_name' => $fullname,
-		) );
+	$parts = preg_split( '/\s+/u', $data['fullname'] );
+	$first_name = array_pop( $parts );
+	$last_name = implode( ' ', $parts );
+	$result = wp_update_user( array( 'ID' => $user_id, 'display_name' => $data['fullname'], 'first_name' => $first_name, 'last_name' => $last_name ) );
+	if ( is_wp_error( $result ) ) {
+		wp_send_json_error( array( 'message' => 'Không thể lưu thông tin. Vui lòng thử lại.' ), 500 );
 	}
+	update_user_meta( $user_id, 'billing_first_name', $first_name );
+	update_user_meta( $user_id, 'billing_last_name', $last_name );
+	update_user_meta( $user_id, 'billing_phone', $data['phone'] );
+	update_user_meta( $user_id, 'billing_country', in_array( $data['country'], array( 'Vietnam', 'Việt Nam' ), true ) ? 'VN' : $data['country'] );
+	update_user_meta( $user_id, 'billing_address_1', $data['address'] );
+	wp_send_json_success( $data );
+} );
 
-	if ( ! empty( $phone ) ) {
-		update_user_meta( $user_id, 'billing_phone', $phone );
+add_action( 'wp_ajax_nem_delete_profile_address', function() {
+	nem_check_profile_request();
+	$user_id = get_current_user_id();
+	foreach ( array( 'billing_address_1', 'billing_address_2', 'billing_city', 'billing_state', 'billing_postcode', 'billing_country', 'billing_company', 'billing_phone' ) as $key ) {
+		delete_user_meta( $user_id, $key );
 	}
-
-	if ( ! empty( $country ) ) {
-		update_user_meta( $user_id, 'billing_country', ( 'Vietnam' === $country || 'Việt Nam' === $country ) ? 'VN' : $country );
-	}
-
-	if ( ! empty( $address ) ) {
-		update_user_meta( $user_id, 'billing_address_1', $address );
-	}
-
-	wp_send_json_success( array(
-		'fullname' => $fullname,
-		'phone'    => $phone,
-		'country'  => $country,
-		'address'  => $address,
-	) );
+	wp_send_json_success( array( 'message' => 'Đã xóa thông tin giao hàng.' ) );
 } );
 

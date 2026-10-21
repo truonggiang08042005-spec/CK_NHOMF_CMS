@@ -34,12 +34,12 @@ do_action( 'woocommerce_before_customer_login_form' ); ?>
 
 				<div class="nem-auth__field">
 					<label for="username">Email</label>
-					<input type="text" class="input-text" name="username" id="username" autocomplete="username" placeholder="Email" value="<?php echo $nem_post( 'username' ); // phpcs:ignore ?>" required aria-required="true" />
+					<input maxlength="250" type="text" class="input-text" name="username" id="username" autocomplete="username" placeholder="Email" value="<?php echo $nem_post( 'username' ); // phpcs:ignore ?>" required aria-required="true" />
 				</div>
 
 				<div class="nem-auth__field">
 					<label for="password">Mật khẩu</label>
-					<input type="password" class="input-text" name="password" id="password" autocomplete="current-password" placeholder="Mật khẩu" required aria-required="true" />
+					<input maxlength="250" type="password" class="input-text" name="password" id="password" autocomplete="current-password" placeholder="Mật khẩu" required aria-required="true" />
 				</div>
 
 				<?php do_action( 'woocommerce_login_form' ); ?>
@@ -68,27 +68,27 @@ do_action( 'woocommerce_before_customer_login_form' ); ?>
 
 				<div class="nem-auth__field">
 					<label for="reg_last_name">Họ</label>
-					<input type="text" class="input-text" name="nem_last_name" id="reg_last_name" autocomplete="family-name" placeholder="Họ" value="<?php echo $nem_post( 'nem_last_name' ); // phpcs:ignore ?>" required />
+					<input maxlength="250" type="text" class="input-text" name="nem_last_name" id="reg_last_name" autocomplete="family-name" placeholder="Họ" value="<?php echo $nem_post( 'nem_last_name' ); // phpcs:ignore ?>" required />
 				</div>
 
 				<div class="nem-auth__field">
 					<label for="reg_first_name">Tên</label>
-					<input type="text" class="input-text" name="nem_first_name" id="reg_first_name" autocomplete="given-name" placeholder="Tên" value="<?php echo $nem_post( 'nem_first_name' ); // phpcs:ignore ?>" required />
+					<input maxlength="250" type="text" class="input-text" name="nem_first_name" id="reg_first_name" autocomplete="given-name" placeholder="Tên" value="<?php echo $nem_post( 'nem_first_name' ); // phpcs:ignore ?>" required />
 				</div>
 
 				<div class="nem-auth__field">
 					<label for="reg_email">Email</label>
-					<input type="email" class="input-text" name="email" id="reg_email" autocomplete="email" placeholder="Email" value="<?php echo $nem_post( 'email' ); // phpcs:ignore ?>" required aria-required="true" />
+					<input maxlength="250" type="email" class="input-text" name="email" id="reg_email" autocomplete="email" placeholder="Email" value="<?php echo $nem_post( 'email' ); // phpcs:ignore ?>" required aria-required="true" />
 				</div>
 
 				<div class="nem-auth__field">
 					<label for="reg_phone">Số điện thoại</label>
-					<input type="tel" class="input-text" name="nem_phone" id="reg_phone" autocomplete="tel" placeholder="Số điện thoại" value="<?php echo $nem_post( 'nem_phone' ); // phpcs:ignore ?>" required />
+					<input maxlength="10" inputmode="numeric" pattern="[0-9]{1,10}" title="Chỉ nhập chữ số, tối đa 10 ký tự" type="tel" class="input-text" name="nem_phone" id="reg_phone" autocomplete="tel" placeholder="Số điện thoại" value="<?php echo $nem_post( 'nem_phone' ); // phpcs:ignore ?>" required />
 				</div>
 
 				<div class="nem-auth__field">
 					<label for="reg_password">Mật khẩu</label>
-					<input type="password" class="input-text" name="password" id="reg_password" autocomplete="new-password" placeholder="Mật khẩu" required aria-required="true" />
+					<input maxlength="250" type="password" class="input-text" name="password" id="reg_password" autocomplete="new-password" placeholder="Mật khẩu" required aria-required="true" />
 				</div>
 
 				<label class="nem-auth__check" for="reg_newsletter">

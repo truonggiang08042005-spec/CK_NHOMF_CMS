@@ -14,7 +14,7 @@ $cart_count  = ( function_exists( 'WC' ) && is_object( WC()->cart ) ) ? WC()->ca
 $is_logged_in = is_user_logged_in();
 if ( $is_logged_in ) {
     $current_user = wp_get_current_user();
-    $user_display_name = ! empty( $current_user->display_name ) ? $current_user->display_name : 'Nguyễn Giang';
+    $user_display_name = nem_customer_display_name();
 } else {
     $user_display_name = 'Tài khoản';
 }
@@ -168,13 +168,13 @@ $search_img_url  = $img_dir . 'search.png';
                         <circle cx="12" cy="8.7" r="3.2" fill="#000000" />
                         <path d="M5.3 19.3 C6.6 15.6 9 14.5 12 14.5 C15 14.5 17.4 15.6 18.7 19.3 C16.9 21 14.6 22 12 22 C9.4 22 7.1 21 5.3 19.3 Z" fill="#000000" />
                     </svg>
-                    <span class="nem-user-name">Tài khoản</span>
+                    <span class="nem-user-name" title="<?php echo esc_attr( $user_display_name ); ?>"><?php echo esc_html( $user_display_name ); ?></span>
                 </a>
                 <div class="nem-user-dropdown-panel <?php echo $is_logged_in ? 'nem-is-logged-in' : 'nem-is-logged-out'; ?>">
                     <?php if ( $is_logged_in ) : ?>
                         <div class="nem-user-dropdown-header">
                             <span class="nem-user-badge">Khách hàng</span>
-                            <strong><?php echo esc_html( $user_display_name ); ?></strong>
+                            <strong class="nem-user-dropdown-name"><?php echo esc_html( $user_display_name ); ?></strong>
                         </div>
                         <ul class="nem-user-links">
                             <li><a href="<?php echo $account_url; ?>">Thông tin tài khoản</a></li>
