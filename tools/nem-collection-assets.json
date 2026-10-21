@@ -1,0 +1,85 @@
+{
+  "source": "https://nemshop.vn/pages/bo-suu-tap",
+  "banners": {
+    "banner_section_coll_1.png": "https://theme.hstatic.net/200000182297/1000887316/14/banner_section_coll_1.png?v=3219",
+    "banner_section_coll_2_1.png": "https://theme.hstatic.net/200000182297/1000887316/14/banner_section_coll_2_1.png?v=3219",
+    "banner_section_coll_2_2.png": "https://theme.hstatic.net/200000182297/1000887316/14/banner_section_coll_2_2.png?v=3219",
+    "banner_section_coll_3.png": "https://theme.hstatic.net/200000182297/1000887316/14/banner_section_coll_3.png?v=3219",
+    "banner_section_coll_4_1.png": "https://theme.hstatic.net/200000182297/1000887316/14/banner_section_coll_4_1.png?v=3219",
+    "banner_section_coll_4_2.png": "https://theme.hstatic.net/200000182297/1000887316/14/banner_section_coll_4_2.png?v=3219"
+  },
+  "products": [
+    {
+      "sku": "AD0235",
+      "name": "ÁO DÀI ĐINH NƠ AD0235",
+      "price": "1899000",
+      "images": [
+        "https://cdn.hstatic.net/products/200000182297/ad023522582663450401p1899dt_q023822782663530401p799dt__6_.jpg_e1b335edebde48bb8d9c3db8976f59d7_1024x1024.png",
+        "https://cdn.hstatic.net/products/200000182297/ad023522582663450401p1899dt_q023822782663530401p799dt__4_.jpg_a34d9480657e4e638be07dfc0c36852a_1024x1024.png"
+      ]
+    },
+    {
+      "sku": "AD02402",
+      "name": "ÁO DÀI VÀNG HOA NHÍ AD02402",
+      "price": "1699000",
+      "images": [
+        "https://cdn.hstatic.net/products/200000182297/ad024022582663450401p1699dt_q024122782663450401p799dt.jpg__13__8692d10873b64fc7ac7d9599c0709e02_1024x1024.png",
+        "https://cdn.hstatic.net/products/200000182297/ad024022582663450401p1699dt_q024122782663450401p799dt.jpg__11__2229d98cb38e4a84bf42fd844efaeb51_1024x1024.png"
+      ]
+    },
+    {
+      "sku": "AD02372",
+      "name": "ÁO DÀI LỤA HỒNG HỌA TIẾT AD02372",
+      "price": "1699000",
+      "images": [
+        "https://cdn.hstatic.net/products/200000182297/ad023722582663520601p1699dt_q023922782663520601p799dt.jpg__3__6e5b1363fb8a4f6c8fbc6b1c82b1ae51_1024x1024.png",
+        "https://cdn.hstatic.net/products/200000182297/ad023722582663520601p1699dt_q023922782663520601p799dt.jpg__8__75f431a0367243dc979c893d6b50607b_1024x1024.png"
+      ]
+    },
+    {
+      "sku": "AD02362",
+      "name": "ÁO DÀI TAY LỠ HỌA TIẾT AD02362",
+      "price": "1699000",
+      "images": [
+        "https://cdn.hstatic.net/products/200000182297/ad023622582663560601p1699dt_q023822782663530401p799dt.jpg__3__1e6c45f11eb94da8bd44e7ab57d3725c_1024x1024.png",
+        "https://cdn.hstatic.net/products/200000182297/ad023622582663560601p1699dt_q023822782663530401p799dt.jpg__2__837d0046bf184d1cbd7893b903ca1e8a_1024x1024.png"
+      ]
+    },
+    {
+      "sku": "D64282",
+      "name": "ĐẦM SUÔNG PHỐI TÚI 2 BÊN D64282",
+      "price": "979300",
+      "images": [
+        "https://cdn.hstatic.net/products/200000182297/1.8_ba137cbcc84a4797bb14fe41e54eae64_master_c51314bc55964a84bb24eee91ab80920_1024x1024.jpg",
+        "https://cdn.hstatic.net/products/200000182297/d642823412663860428p1399dt.jpg__7__ca64def272994201a3ba95f7c51ce98e_1024x1024.jpg"
+      ]
+    },
+    {
+      "sku": "AL62372",
+      "name": "ÁO LEN NGẮN TAY AL62372",
+      "price": "599000",
+      "images": [
+        "https://cdn.hstatic.net/products/200000182297/cac_c1ea38f4105a47208beb49d4072148c9_1024x1024.jpg",
+        "https://cdn.hstatic.net/products/200000182297/al623723932663040470p599dt_q671123732663960491p799dt.jpg__5__7e87e1056ba8457c9a800b684bce6ea5_1024x1024.jpg"
+      ]
+    },
+    {
+      "sku": "Q67112",
+      "name": "QUẦN JEANS ỐNG SUÔNG Q67112",
+      "price": "799000",
+      "images": [
+        "https://cdn.hstatic.net/products/200000182297/1_47795a0adf2f4389942525c2d6d8182b_1024x1024.jpg",
+        "https://cdn.hstatic.net/products/200000182297/al624023932663040470p599dt_q671123732663960491p799dt__2__2__816cde7487394efa937ed85583c73bfd_1024x1024.jpg"
+      ]
+    },
+    {
+      "sku": "Q67102",
+      "name": "QUẦN JEANS XANH ĐẬM Q67102",
+      "price": "799000",
+      "images": [
+        "https://cdn.hstatic.net/products/200000182297/2_91ddc535589b42f49ba4581710d73b86_1024x1024.jpg",
+        "https://cdn.hstatic.net/products/200000182297/al623623932663020470p599dt_q671023732663960491p799dt__3__2__25d510c031c54afd9d100c4ce3c5405c_1024x1024.jpg"
+      ]
+    }
+  ]
+}

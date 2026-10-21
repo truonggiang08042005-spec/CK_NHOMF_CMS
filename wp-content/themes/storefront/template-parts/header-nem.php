@@ -9,6 +9,9 @@ $shop_url    = function_exists( 'wc_get_page_permalink' ) ? esc_url( wc_get_page
 $cart_url    = function_exists( 'wc_get_cart_url' ) ? esc_url( wc_get_cart_url() ) : $home_url . 'cart/';
 $account_url = function_exists( 'wc_get_page_permalink' ) ? esc_url( wc_get_page_permalink( 'myaccount' ) ) : $home_url . 'my-account/';
 $cart_count  = ( function_exists( 'WC' ) && is_object( WC()->cart ) ) ? WC()->cart->get_cart_contents_count() : 0;
+$nem_plus_term = get_term_by( 'slug', 'nem-plus', 'product_cat' );
+$nem_plus_url = $nem_plus_term ? get_term_link( $nem_plus_term ) : $shop_url;
+if ( is_wp_error( $nem_plus_url ) ) { $nem_plus_url = $shop_url; }
 
 // Determine display name
 $is_logged_in = is_user_logged_in();
@@ -40,9 +43,10 @@ $search_img_url  = $img_dir . 'search.png';
                 <!-- SẢN PHẨM -->
                 <li class="nem-nav-item nem-has-dropdown nem-has-product-dropdown">
                     <a href="<?php echo $shop_url; ?>" class="nem-nav-link">
-                        SẢN PHẨM <span class="nem-arrow-down">⌵</span>
+                        SẢN PHẨM
                     </a>
-                    <ul class="nem-product-dropdown">
+                    <button type="button" class="nem-menu-toggle" aria-label="Mở menu Sản phẩm" aria-expanded="false" aria-controls="nemProductsMenu"><span class="nem-arrow-down" aria-hidden="true">⌵</span></button>
+                    <ul class="nem-product-dropdown" id="nemProductsMenu">
                         <li class="nem-pdrop-item nem-has-sub">
                             <a href="<?php echo $shop_url; ?>?category=dam" class="nem-pdrop-link">
                                 Đầm <span class="nem-menu-chevron">›</span>
@@ -118,15 +122,16 @@ $search_img_url  = $img_dir . 'search.png';
 
                 <!-- NEM PLUS+ -->
                 <li class="nem-nav-item">
-                    <a href="<?php echo $shop_url; ?>?collection=nem-plus" class="nem-nav-link">NEM PLUS+</a>
+                    <a href="<?php echo esc_url( $nem_plus_url ); ?>" class="nem-nav-link">NEM PLUS+</a>
                 </li>
 
                 <!-- SẢN PHẨM SALE -->
                 <li class="nem-nav-item nem-has-dropdown">
                     <a href="<?php echo $shop_url; ?>?on_sale=1" class="nem-nav-link">
-                        SẢN PHẨM SALE <span class="nem-arrow-down">⌵</span>
+                        SẢN PHẨM SALE
                     </a>
-                    <ul class="nem-simple-dropdown">
+                    <button type="button" class="nem-menu-toggle" aria-label="Mở menu Sản phẩm sale" aria-expanded="false" aria-controls="nemSaleMenu"><span class="nem-arrow-down" aria-hidden="true">⌵</span></button>
+                    <ul class="nem-simple-dropdown" id="nemSaleMenu">
                         <li><a href="<?php echo $shop_url; ?>?sale=199k">CHỈ TỪ 199K</a></li>
                         <li><a href="<?php echo $shop_url; ?>?sale=70">SALE UP 70%</a></li>
                     </ul>
@@ -135,9 +140,10 @@ $search_img_url  = $img_dir . 'search.png';
                 <!-- BỘ SƯU TẬP -->
                 <li class="nem-nav-item nem-has-dropdown">
                     <a href="<?php echo $home_url; ?>bo-suu-tap/" class="nem-nav-link">
-                        BỘ SƯU TẬP <span class="nem-arrow-down">⌵</span>
+                        BỘ SƯU TẬP
                     </a>
-                    <ul class="nem-simple-dropdown">
+                    <button type="button" class="nem-menu-toggle" aria-label="Mở menu Bộ sưu tập" aria-expanded="false" aria-controls="nemCollectionsMenu"><span class="nem-arrow-down" aria-hidden="true">⌵</span></button>
+                    <ul class="nem-simple-dropdown" id="nemCollectionsMenu">
                         <li><a href="<?php echo $shop_url; ?>?collection=giao-thoi">GIAO THỜI</a></li>
                         <li><a href="<?php echo $shop_url; ?>?collection=nhip-thanh-pho">Nhịp Thành phố</a></li>
                         <li><a href="<?php echo $shop_url; ?>?collection=thoi-nha">Áo dài THỜI NHÃ</a></li>
@@ -274,7 +280,7 @@ $search_img_url  = $img_dir . 'search.png';
                     </ul>
                 </li>
                 <li class="nem-m-item"><a href="<?php echo $shop_url; ?>?orderby=date">SẢN PHẨM MỚI</a></li>
-                <li class="nem-m-item"><a href="<?php echo $shop_url; ?>?collection=nem-plus">NEM PLUS+</a></li>
+                <li class="nem-m-item"><a href="<?php echo esc_url( $nem_plus_url ); ?>">NEM PLUS+</a></li>
                 <li class="nem-m-item nem-m-has-sub">
                     <a href="<?php echo $shop_url; ?>?on_sale=1">SẢN PHẨM SALE</a>
                     <button type="button" class="nem-m-sub-toggle">+</button>

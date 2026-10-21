@@ -76,3 +76,6 @@ require 'inc/nem-custom-functions.php';
 
 // NEM Fashion Account page (Đăng nhập / Đăng ký / Bản tin)
 require 'inc/nem-account-functions.php';
+
+// NEM collection page and catalog interactions.
+require 'inc/nem-collections.php';
