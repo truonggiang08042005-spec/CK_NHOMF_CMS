@@ -83,7 +83,34 @@
       const update=()=>{$$('button',group).forEach(button=>{const available=[...select.options].find(option=>option.value===button.dataset.value);button.disabled=!available||available.disabled;button.classList.toggle('is-selected',select.value===button.dataset.value);button.setAttribute('aria-pressed',String(select.value===button.dataset.value));});};
       select.addEventListener('change',update);if(window.jQuery)window.jQuery(select.closest('form')).on('woocommerce_update_variation_values found_variation reset_data',update);update();
     });
+    // Auto-select initial variation options if none selected
+    $$('.npe-purchase .variations select').forEach(select => {
+      if (!select.value && select.options.length > 1) {
+        const first = [...select.options].find(opt => opt.value);
+        if (first) {
+          select.value = first.value;
+          if (window.jQuery) window.jQuery(select).trigger('change');
+          select.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+      }
+    });
     if(window.jQuery){const form=window.jQuery('.npe-purchase form.variations_form');form.on('show_variation',(_event,variation,purchasable)=>{const buy=$('.npe-buy-now');if(buy)buy.disabled=!purchasable||!variation.is_in_stock;if(variation.image?.full_src)setPhoto(variation.image.full_src);});form.on('hide_variation',()=>{const buy=$('.npe-buy-now');if(buy)buy.disabled=true;});if(form.length){const buy=$('.npe-buy-now');if(buy)buy.disabled=!form.find('input.variation_id').val();}}
+    document.addEventListener('click', event => {
+      const buyBtn = event.target.closest('.npe-buy-now');
+      if (!buyBtn) return;
+      const form = buyBtn.closest('form.cart');
+      if (!form) return;
+      let hidden = form.querySelector('input[name="npe_buy_now"]');
+      if (!hidden) {
+        hidden = document.createElement('input');
+        hidden.type = 'hidden';
+        hidden.name = 'npe_buy_now';
+        hidden.value = '1';
+        form.appendChild(hidden);
+      } else {
+        hidden.value = '1';
+      }
+    });
     const record=$('#npe-current-product');let recent=read('npe_recent').filter(item=>item&&typeof item.name==='string'&&typeof item.url==='string'&&Number.isInteger(item.id));
     if(record){try{const product=JSON.parse(record.textContent);recent=[product,...recent.filter(item=>item.id!==product.id)].slice(0,12);write('npe_recent',recent);}catch{}}
     const recentSection=$('.npe-recent'),recentTrack=$('.npe-product-track',recentSection||document);

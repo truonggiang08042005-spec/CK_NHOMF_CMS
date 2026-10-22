@@ -1,0 +1,621 @@
+/* NEM Fashion - Checkout Experience CSS */
+:root {
+  --nem-primary: #111111;
+  --nem-bg: #f5f5f7;
+  --nem-card-bg: #ffffff;
+  --nem-border: #e8e8ed;
+  --nem-text: #1d1d1f;
+  --nem-text-muted: #86868b;
+  --nem-radius: 12px;
+  --nem-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+body.nem-checkout-body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--nem-bg);
+  color: var(--nem-text);
+  font-family: var(--nem-font);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+.nem-checkout-body * {
+  box-sizing: border-box;
+}
+
+.nem-checkout-container {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 24px 20px 60px;
+}
+
+/* Header */
+.nem-checkout-header {
+  padding: 18px 0 24px;
+  text-align: left;
+}
+
+.nem-checkout-logo {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  color: #111;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+/* Auth Banner (Image 2) */
+.nem-checkout-auth-banner {
+  background: var(--nem-card-bg);
+  border-radius: var(--nem-radius);
+  padding: 16px 22px;
+  margin-bottom: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border: 1px solid var(--nem-border);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+}
+
+.nem-checkout-auth-text {
+  font-size: 14px;
+  color: #2c2c2e;
+  font-weight: 400;
+}
+
+.nem-checkout-auth-btn {
+  display: inline-block;
+  background: #ececf0;
+  color: #1c1c1e;
+  padding: 9px 22px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+
+.nem-checkout-auth-btn:hover {
+  background: #dfdfe4;
+  color: #000;
+}
+
+/* Layout Grid */
+.nem-checkout-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(320px, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.nem-checkout-left,
+.nem-checkout-right {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* Cards */
+.nem-card {
+  background: var(--nem-card-bg);
+  border-radius: var(--nem-radius);
+  padding: 22px 24px;
+  border: 1px solid var(--nem-border);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+}
+
+.nem-card-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1c1c1e;
+  margin: 0 0 18px;
+  letter-spacing: -0.2px;
+}
+
+/* Form Controls */
+.nem-form-group {
+  margin-bottom: 14px;
+  position: relative;
+}
+
+.nem-form-group:last-child {
+  margin-bottom: 0;
+}
+
+.nem-input {
+  width: 100%;
+  height: 46px;
+  padding: 0 16px;
+  background: #ffffff;
+  border: 1px solid #dcdce2;
+  border-radius: 8px;
+  font-size: 13.5px;
+  color: #1c1c1e;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.nem-input:focus {
+  border-color: #111111;
+  box-shadow: 0 0 0 1px #111111;
+}
+
+.nem-input::placeholder {
+  color: #9a9aa0;
+}
+
+.nem-input-with-icon {
+  position: relative;
+}
+
+.nem-input-icon-right {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+}
+
+/* Country Box */
+.nem-country-box {
+  border: 1px solid #dcdce2;
+  border-radius: 8px;
+  padding: 8px 16px;
+  background: #ffffff;
+}
+
+.nem-country-label {
+  font-size: 11px;
+  color: #8e8e93;
+  margin-bottom: 2px;
+  line-height: 1;
+}
+
+.nem-country-value {
+  font-size: 13.5px;
+  font-weight: 500;
+  color: #1c1c1e;
+}
+
+/* Shipping Method Placeholder Card */
+.nem-shipping-placeholder {
+  background: #f7f7f9;
+  border: 1px solid #e8e8ed;
+  border-radius: 8px;
+  padding: 13px 16px;
+  font-size: 13.5px;
+  color: #8e8e93;
+}
+
+/* Payment Methods List */
+.nem-payment-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.nem-payment-item {
+  border: 1px solid #e0e0e5;
+  border-radius: 8px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  cursor: pointer;
+  background: #ffffff;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+}
+
+.nem-payment-item.is-selected {
+  border: 1.5px solid #111111;
+  background: #ffffff;
+}
+
+.nem-payment-radio {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid #c7c7cc;
+  border-radius: 50%;
+  outline: none;
+  cursor: pointer;
+  margin: 0;
+  display: grid;
+  place-content: center;
+  flex-shrink: 0;
+  transition: border-color 0.2s;
+}
+
+.nem-payment-radio:checked {
+  border-color: #111111;
+}
+
+.nem-payment-radio:checked::before {
+  content: "";
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #111111;
+}
+
+.nem-payment-icon {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.nem-payment-text {
+  font-size: 13.5px;
+  color: #222;
+  font-weight: 500;
+  flex: 1;
+}
+
+.nem-payment-badges {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  margin-top: 4px;
+}
+
+.nem-badge {
+  font-size: 9px;
+  font-weight: 700;
+  padding: 1px 4px;
+  border-radius: 3px;
+  border: 1px solid #d0d0d5;
+  color: #555;
+  background: #f8f8f8;
+}
+
+/* Order Note */
+.nem-note-input {
+  height: 48px;
+}
+
+/* RIGHT COLUMN: Cart Items */
+.nem-cart-items {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.nem-cart-item {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #f0f0f4;
+}
+
+.nem-cart-item:last-child {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.nem-cart-thumb {
+  width: 60px;
+  height: 75px;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #f5f3ee;
+  flex-shrink: 0;
+  border: 1px solid #eee;
+}
+
+.nem-cart-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.nem-cart-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.nem-cart-top-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.nem-cart-item-title {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #1c1c1e;
+  line-height: 1.4;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.nem-cart-delete-btn {
+  background: none;
+  border: none;
+  color: #8e8e93;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s;
+  flex-shrink: 0;
+}
+
+.nem-cart-delete-btn:hover {
+  color: #e44141;
+}
+
+.nem-cart-variant-pill {
+  display: inline-block;
+  background: #f4f4f7;
+  color: #636366;
+  font-size: 11.5px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin: 5px 0 10px;
+}
+
+.nem-cart-bottom-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.nem-cart-price {
+  font-size: 14px;
+  font-weight: 700;
+  color: #111111;
+}
+
+/* Stepper Quantity [ - ] [ 1 ] [ + ] */
+.nem-stepper {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid #dcdce2;
+  border-radius: 6px;
+  height: 28px;
+  background: #ffffff;
+  overflow: hidden;
+}
+
+.nem-stepper-btn {
+  background: #ffffff;
+  border: none;
+  width: 26px;
+  height: 100%;
+  font-size: 14px;
+  color: #1c1c1e;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: background 0.15s;
+}
+
+.nem-stepper-btn:hover {
+  background: #f0f0f4;
+}
+
+.nem-stepper-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.nem-stepper-input {
+  width: 32px;
+  height: 100%;
+  border: none;
+  border-left: 1px solid #e8e8ed;
+  border-right: 1px solid #e8e8ed;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 600;
+  color: #1c1c1e;
+  outline: none;
+  padding: 0;
+  -moz-appearance: textfield;
+}
+
+.nem-stepper-input::-webkit-inner-spin-button,
+.nem-stepper-input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Coupon Card */
+.nem-coupon-row-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #f0f0f4;
+  margin-bottom: 12px;
+  cursor: pointer;
+}
+
+.nem-coupon-label-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13.5px;
+  color: #1c1c1e;
+  font-weight: 500;
+}
+
+.nem-coupon-arrow {
+  color: #8e8e93;
+  font-size: 14px;
+}
+
+.nem-coupon-input-group {
+  display: flex;
+  gap: 8px;
+}
+
+.nem-coupon-input {
+  flex: 1;
+  height: 42px;
+  border: 1px solid #dcdce2;
+  border-radius: 6px;
+  padding: 0 14px;
+  font-size: 13px;
+  outline: none;
+}
+
+.nem-coupon-input:focus {
+  border-color: #111;
+}
+
+.nem-coupon-btn {
+  background: #111111;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  padding: 0 18px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+
+.nem-coupon-btn:hover {
+  background: #333333;
+}
+
+/* Order Summary */
+.nem-summary-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.nem-summary-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 13.5px;
+  color: #3a3a3c;
+}
+
+.nem-summary-row.is-total {
+  font-size: 15px;
+  font-weight: 700;
+  color: #1c1c1e;
+  padding-top: 12px;
+  border-top: 1px solid #f0f0f4;
+}
+
+.nem-summary-row.is-total .nem-summary-value {
+  font-size: 17px;
+  font-weight: 800;
+}
+
+.nem-checkout-submit-btn {
+  width: 100%;
+  height: 48px;
+  background: #000000;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 14.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.1s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 0.3px;
+}
+
+.nem-checkout-submit-btn:hover {
+  opacity: 0.9;
+}
+
+.nem-checkout-submit-btn:active {
+  transform: scale(0.99);
+}
+
+.nem-checkout-submit-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Footer note */
+.nem-checkout-footer {
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid #e5e5ea;
+  text-align: center;
+  font-size: 11px;
+  color: #8e8e93;
+}
+
+/* Notice / Alerts */
+.nem-checkout-alert {
+  background: #fee;
+  border: 1px solid #fcc;
+  color: #c00;
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 18px;
+  font-size: 13px;
+}
+
+/* City dropdown / picker modal */
+.nem-address-picker {
+  position: relative;
+}
+
+.nem-address-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: #fff;
+  border: 1px solid #dcdce2;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+  max-height: 260px;
+  overflow-y: auto;
+  margin-top: 4px;
+}
+
+.nem-address-option {
+  padding: 10px 14px;
+  font-size: 13px;
+  color: #222;
+  cursor: pointer;
+  border-bottom: 1px solid #f5f5f7;
+}
+
+.nem-address-option:hover {
+  background: #f7f7f9;
+}
+
+/* Responsive */
+@media (max-width: 860px) {
+  .nem-checkout-grid {
+    grid-template-columns: 1fr;
+  }
+  .nem-checkout-container {
+    padding: 16px 14px 40px;
+  }
+}

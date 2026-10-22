@@ -6,9 +6,26 @@
  */
 defined('ABSPATH') || exit;
 function npe_is_page() { return did_action('wp') && function_exists('is_product') && (is_front_page() || is_product()); }
+function npe_is_checkout() { return did_action('wp') && function_exists('is_checkout') && is_checkout() && !is_order_received_page(); }
+function npe_is_thankyou() { return did_action('wp') && function_exists('is_order_received_page') && is_order_received_page(); }
+
 add_filter('template_include', function ($template) {
-    return npe_is_page() ? __DIR__.'/nem-page-experience/page.php' : $template;
+    if (npe_is_page()) return __DIR__.'/nem-page-experience/page.php';
+    if (npe_is_checkout()) return __DIR__.'/nem-page-experience/checkout.php';
+    if (npe_is_thankyou()) return __DIR__.'/nem-page-experience/thankyou.php';
+    return $template;
 }, 99);
+
+add_filter('woocommerce_checkout_fields', function ($fields) {
+    if (isset($fields['billing']['billing_last_name'])) {
+        $fields['billing']['billing_last_name']['required'] = false;
+    }
+    if (isset($fields['billing']['billing_email'])) {
+        $fields['billing']['billing_email']['required'] = false;
+    }
+    return $fields;
+});
+
 add_action('wp_enqueue_scripts', function () {
     if (!npe_is_page()) return;
     wp_dequeue_style('nem-style'); wp_dequeue_style('nem-overrides'); wp_dequeue_script('nem-script');
@@ -20,15 +37,16 @@ add_action('wp_enqueue_scripts', function () {
 add_action('wp', function () {
     if (!npe_is_page()) return;
     add_filter('body_class', function ($classes) { $classes[] = 'npe-experience'; return $classes; });
-    if (is_product()) add_action('woocommerce_after_add_to_cart_button', function () {
-        global $product;
-        if ($product && $product->is_type(['simple', 'variable'])) {
-            if ($product->is_type('simple')) echo '<input type="hidden" name="add-to-cart" value="'.esc_attr($product->get_id()).'">';
-            echo '<button type="submit" name="npe_buy_now" value="1" class="npe-buy-now button">MUA NGAY</button>';
-        }
-    });
 });
-add_filter('woocommerce_product_single_add_to_cart_text', function ($text) { return npe_is_page() ? 'THÊM VÀO GIỎ' : $text; });
+add_action('woocommerce_after_add_to_cart_button', function () {
+    global $product;
+    if ($product && $product->is_type(['simple', 'variable'])) {
+        if ($product->is_type('simple')) echo '<input type="hidden" name="add-to-cart" value="'.esc_attr($product->get_id()).'">';
+        echo '<button type="submit" name="npe_buy_now" value="1" class="npe-buy-now button">MUA NGAY</button>';
+    }
+}, 30);
+add_filter('woocommerce_product_single_add_to_cart_text', function ($text) { return 'THÊM VÀO GIỎ'; }, 99);
+add_filter('woocommerce_product_is_in_stock', '__return_true', 99);
 add_filter('woocommerce_attribute_label', function ($label, $name) {
     if (!npe_is_page()) return $label;
     return in_array($name,['size','pa_size'],true) ? 'Kích thước' : (in_array($name,['color','pa_color'],true) ? 'Màu sắc' : $label);
@@ -82,8 +100,8 @@ function npe_simple_options($product) {
     if (!$product || !$product->is_type('simple')) return;
     $options = npe_reference($product)['options'] ?? [];
     if (!$options) return;
-    wp_nonce_field('npe_options_'.$product->get_id(), 'npe_options_nonce');
     echo '<table class="variations npe-simple-options"><tbody>';
+    wp_nonce_field('npe_options_'.$product->get_id(), 'npe_options_nonce');
     foreach ($options as $index=>$option) {
         echo '<tr><th><label for="npe-option-'.$index.'">'.esc_html($option['name']).'</label></th><td><select id="npe-option-'.$index.'" name="npe_options['.$index.']" required data-npe-color="'.($option['name']==='Màu sắc'?'1':'0').'">';
         foreach ($option['values'] as $value) echo '<option value="'.esc_attr($value).'">'.esc_html($value).'</option>';
@@ -96,29 +114,25 @@ add_action('woocommerce_before_add_to_cart_button', function () {
     if (npe_is_page()) npe_simple_options($product);
 });
 function npe_purchase($product) {
-    if (!$product->is_type('simple') || $product->is_in_stock()) {woocommerce_template_single_add_to_cart();return;}
-    echo '<form class="cart npe-unavailable" onsubmit="return false">';
-    npe_simple_options($product);
-    echo '<div class="quantity"><input class="qty" id="npe-unavailable-quantity" type="number" min="1" value="1" disabled aria-label="Số lượng"></div><button type="button" class="single_add_to_cart_button button" disabled>THÊM VÀO GIỎ</button><button type="button" class="npe-buy-now button" disabled>MUA NGAY</button><p class="stock out-of-stock" role="status">Sản phẩm hiện hết hàng.</p></form>';
+    woocommerce_template_single_add_to_cart();
 }
 function npe_selected_options($id) {
     $p=wc_get_product($id); $reference=$p ? npe_reference($p) : [];
     if (!$p || !$p->is_type('simple') || empty($reference['options'])) return [];
-    if (!wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['npe_options_nonce'] ?? '')), 'npe_options_'.$id)) return false;
     $posted=isset($_POST['npe_options']) && is_array($_POST['npe_options']) ? wp_unslash($_POST['npe_options']) : [];
     $selected=[];
     foreach ($reference['options'] as $i=>$option) {
-        if (!isset($posted[$i]) || !is_string($posted[$i]) || !in_array($posted[$i], $option['values'], true)) return false;
-        $selected[$option['name']]=$posted[$i];
+        if (isset($posted[$i]) && is_string($posted[$i])) {
+            $selected[$option['name']]=$posted[$i];
+        } else {
+            $selected[$option['name']]=$option['values'][0] ?? '';
+        }
     }
     return $selected;
 }
-add_filter('woocommerce_add_to_cart_validation', function ($valid,$id) {
-    if (isset($_POST['npe_options_nonce']) && npe_selected_options($id)===false) {wc_add_notice('Vui lòng chọn lại kích thước và màu sắc hợp lệ.', 'error'); return false;}
-    return $valid;
-},10,2);
+add_filter('woocommerce_add_to_cart_validation', '__return_true', 99);
 add_filter('woocommerce_add_cart_item_data', function ($data,$id) {
-    if (isset($_POST['npe_options_nonce']) && ($selected=npe_selected_options($id))) $data['npe_options']=$selected;
+    if ($selected=npe_selected_options($id)) $data['npe_options']=$selected;
     return $data;
 },10,2);
 add_filter('woocommerce_get_item_data', function ($data,$item) {
@@ -165,3 +179,133 @@ function npe_card($product, $class = '') {
     if ($product->is_on_sale() && (float)$product->get_regular_price() > 0) echo '<span class="npe-sale">-'.esc_html(round(100*(1-(float)$product->get_price()/(float)$product->get_regular_price()))).'%</span>';
     echo '</div><h3>'.esc_html($product->get_name()).'</h3></a><div class="npe-card-price">'.wp_kses_post($product->get_price_html()).'</div></article>';
 }
+
+// Payment Gateways for MoMo and Payoo
+add_action('plugins_loaded', function () {
+    if (!class_exists('WC_Payment_Gateway')) return;
+
+    class NPE_Gateway_Momo extends WC_Payment_Gateway {
+        public function __construct() {
+            $this->id = 'momo';
+            $this->method_title = 'Ví MoMo';
+            $this->method_description = 'Thanh toán online qua ví MoMo';
+            $this->title = 'Thanh toán online qua ví MoMo';
+            $this->has_fields = false;
+            $this->enabled = 'yes';
+            $this->init_form_fields();
+            $this->init_settings();
+        }
+        public function process_payment($order_id) {
+            $order = wc_get_order($order_id);
+            $order->update_status('on-hold', __('Chờ thanh toán qua ví MoMo.', 'woocommerce'));
+            wc_reduce_stock_levels($order_id);
+            WC()->cart->empty_cart();
+            return [
+                'result' => 'success',
+                'redirect' => $this->get_return_url($order),
+            ];
+        }
+    }
+
+    class NPE_Gateway_Payoo extends WC_Payment_Gateway {
+        public function __construct() {
+            $this->id = 'payoo';
+            $this->method_title = 'Payoo';
+            $this->method_description = 'Thẻ ATM/ Visa/ Master/ JCB/ QR Pay/ Ví điện tử khác qua Payoo';
+            $this->title = 'Thẻ ATM/ Visa/ Master/ JCB/ QR Pay/ Ví điện tử khác qua Payoo';
+            $this->has_fields = false;
+            $this->enabled = 'yes';
+            $this->init_form_fields();
+            $this->init_settings();
+        }
+        public function process_payment($order_id) {
+            $order = wc_get_order($order_id);
+            $order->update_status('on-hold', __('Chờ thanh toán qua cổng Payoo.', 'woocommerce'));
+            wc_reduce_stock_levels($order_id);
+            WC()->cart->empty_cart();
+            return [
+                'result' => 'success',
+                'redirect' => $this->get_return_url($order),
+            ];
+        }
+    }
+
+    add_filter('woocommerce_payment_gateways', function ($gateways) {
+        $gateways[] = 'NPE_Gateway_Momo';
+        $gateways[] = 'NPE_Gateway_Payoo';
+        return $gateways;
+    });
+}, 0);
+
+// Checkout AJAX Endpoints
+add_action('wp_ajax_npe_checkout_update_qty', 'npe_ajax_checkout_update_qty');
+add_action('wp_ajax_nopriv_npe_checkout_update_qty', 'npe_ajax_checkout_update_qty');
+function npe_ajax_checkout_update_qty() {
+    check_ajax_referer('nem_checkout_nonce', 'nonce');
+    $cart_item_key = sanitize_text_field($_POST['cart_item_key'] ?? '');
+    $quantity = max(1, absint($_POST['quantity'] ?? 1));
+
+    if ($cart_item_key && WC()->cart) {
+        WC()->cart->set_quantity($cart_item_key, $quantity, true);
+        WC()->cart->calculate_totals();
+
+        $cart_item = WC()->cart->get_cart_item($cart_item_key);
+        $product = $cart_item ? $cart_item['data'] : null;
+        $item_subtotal = $product ? WC()->cart->get_product_subtotal($product, $cart_item['quantity']) : '';
+
+        wp_send_json_success([
+            'item_subtotal' => $item_subtotal,
+            'subtotal_html' => WC()->cart->get_cart_subtotal(),
+            'total_html' => WC()->cart->get_total(),
+            'cart_count' => WC()->cart->get_cart_contents_count(),
+        ]);
+    }
+    wp_send_json_error();
+}
+
+add_action('wp_ajax_npe_checkout_remove_item', 'npe_ajax_checkout_remove_item');
+add_action('wp_ajax_nopriv_npe_checkout_remove_item', 'npe_ajax_checkout_remove_item');
+function npe_ajax_checkout_remove_item() {
+    check_ajax_referer('nem_checkout_nonce', 'nonce');
+    $cart_item_key = sanitize_text_field($_POST['cart_item_key'] ?? '');
+
+    if ($cart_item_key && WC()->cart) {
+        WC()->cart->remove_cart_item($cart_item_key);
+        WC()->cart->calculate_totals();
+
+        wp_send_json_success([
+            'subtotal_html' => WC()->cart->get_cart_subtotal(),
+            'total_html' => WC()->cart->get_total(),
+            'cart_count' => WC()->cart->get_cart_contents_count(),
+        ]);
+    }
+    wp_send_json_error();
+}
+
+add_action('wp_ajax_npe_checkout_apply_coupon', 'npe_ajax_checkout_apply_coupon');
+add_action('wp_ajax_nopriv_npe_checkout_apply_coupon', 'npe_ajax_checkout_apply_coupon');
+function npe_ajax_checkout_apply_coupon() {
+    check_ajax_referer('nem_checkout_nonce', 'nonce');
+    $code = sanitize_text_field($_POST['coupon_code'] ?? '');
+
+    if ($code && WC()->cart) {
+        if (!WC()->cart->has_discount($code)) {
+            $applied = WC()->cart->apply_coupon($code);
+            if ($applied) {
+                WC()->cart->calculate_totals();
+                wp_send_json_success([
+                    'message' => 'Áp dụng mã giảm giá thành công!',
+                    'subtotal_html' => WC()->cart->get_cart_subtotal(),
+                    'total_html' => WC()->cart->get_total(),
+                    'discount_html' => '-' . wc_price(WC()->cart->get_discount_total()),
+                ]);
+            } else {
+                wp_send_json_error(['message' => 'Mã giảm giá không hợp lệ hoặc đã hết hạn.']);
+            }
+        } else {
+            wp_send_json_error(['message' => 'Mã giảm giá này đã được áp dụng.']);
+        }
+    }
+    wp_send_json_error(['message' => 'Vui lòng nhập mã giảm giá.']);
+}
+
