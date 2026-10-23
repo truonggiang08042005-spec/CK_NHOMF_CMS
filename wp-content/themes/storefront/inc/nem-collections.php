@@ -128,7 +128,8 @@ function nem_collection_newsletter_subscribe() {
 			}
 		}
 	}
-	wp_safe_redirect( add_query_arg( 'newsletter', $status, home_url( '/bo-suu-tap/' ) ) . '#nem-collection-newsletter' );
+	$return_path = isset( $_POST['return_to'] ) && 'san-pham-moi' === $_POST['return_to'] ? '/san-pham-moi/' : '/bo-suu-tap/';
+	wp_safe_redirect( add_query_arg( 'newsletter', $status, home_url( $return_path ) ) . '#nem-collection-newsletter' );
 	exit;
 }
 add_action( 'admin_post_nem_collection_newsletter', 'nem_collection_newsletter_subscribe' );

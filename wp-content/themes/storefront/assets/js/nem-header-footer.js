@@ -27,9 +27,11 @@
                     var destination = new URL(link.href, location.href);
                     var current = new URL(location.href);
                     var isCollection = /\/bo-suu-tap\/?$/.test(destination.pathname);
+                    var isNewProducts = /\/san-pham-moi\/?$/.test(destination.pathname);
                     var currentCollection = current.searchParams.get('collection');
                     var knownCollection = ['thoi-nha', 'nhe-buoc-moi-ngay', 'giao-thoi', 'nhip-thanh-pho'].indexOf(currentCollection) !== -1;
                     var active = isCollection ? /\/bo-suu-tap\/?$/.test(current.pathname) || knownCollection : destination.pathname === current.pathname && destination.search === current.search;
+                    if (isNewProducts && /\/shop\/?$/.test(current.pathname) && current.searchParams.get('orderby') === 'date') active = true;
                     item.classList.toggle('is-active', active);
                     if (active) link.setAttribute('aria-current', 'page');
                 }
