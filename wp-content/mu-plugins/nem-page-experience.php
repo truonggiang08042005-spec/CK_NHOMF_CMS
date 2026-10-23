@@ -180,6 +180,19 @@ function npe_card($product, $class = '') {
     echo '</div><h3>'.esc_html($product->get_name()).'</h3></a><div class="npe-card-price">'.wp_kses_post($product->get_price_html()).'</div></article>';
 }
 
+// WooCommerce includes spoken price labels. Keep them visually hidden even
+// when the theme's accessibility stylesheet is absent or cached.
+function nem_accessible_price_labels($html) {
+    return str_replace('class="screen-reader-text">', 'class="screen-reader-text" style="position:absolute!important;clip-path:inset(50%)!important;width:1px!important;height:1px!important;overflow:hidden!important;white-space:nowrap!important;padding:0!important;border:0!important">', $html);
+}
+add_filter('woocommerce_get_price_html', 'nem_accessible_price_labels', 100);
+add_filter('woocommerce_format_sale_price', 'nem_accessible_price_labels', 100);
+
+// Cover prices inserted by variations, cart updates, and other product widgets.
+add_action('wp_head', function () {
+    echo '<style id="nem-price-accessibility">.price .screen-reader-text,.npe-card-price .screen-reader-text,.npe-price .screen-reader-text,.nem-price .screen-reader-text,.woocommerce-Price-amount~.screen-reader-text{position:absolute!important;clip-path:inset(50%)!important;width:1px!important;height:1px!important;overflow:hidden!important;white-space:nowrap!important;padding:0!important;border:0!important}</style>';
+}, 100);
+
 // Payment Gateways for MoMo and Payoo
 add_action('plugins_loaded', function () {
     if (!class_exists('WC_Payment_Gateway')) return;

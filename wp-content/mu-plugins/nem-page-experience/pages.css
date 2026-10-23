@@ -36,3 +36,19 @@ body.npe-experience .screen-reader-text{border:0;clip:rect(1px,1px,1px,1px);clip
 .npe-card-price{display:flex;justify-content:center;align-items:baseline;flex-wrap:wrap;gap:8px}
 .npe-card-price ins{order:1;color:#ff3737;text-decoration:none;background:none}
 .npe-card-price del{order:2;margin:0;color:#888;font-weight:400;text-decoration:line-through}
+
+/* Compact product review summary. */
+.npe-reviews{position:relative;padding-top:12px;padding-bottom:30px}
+.npe-reviews>h2{font-size:24px;font-weight:400;line-height:1.4;margin-bottom:18px}
+.npe-review-summary{padding-right:130px}
+.npe-review-stars{position:relative;display:block;width:max-content;margin-left:14px;color:#dedb00;font:18px/1 Arial,sans-serif;letter-spacing:0;white-space:nowrap}
+.npe-review-stars:has(.npe-review-stars-fill){color:#ddd}
+.npe-review-stars-fill{position:absolute;top:0;left:0;overflow:hidden;color:#dedb00}
+.npe-review-summary p{font-size:12px;line-height:1.4;margin:2px 0 14px}
+.npe-review-count{font-size:12px;font-weight:700;line-height:1.5;margin:0 0 10px}
+.npe-review-count span{display:inline-block;margin-left:8px;padding:0 4px;background:#efefef;font-weight:400}
+.npe-reviews .npe-review-toggle{position:absolute;right:0;top:46px;float:none;display:inline-flex;align-items:center;gap:3px;background:#fff;border:1px solid #888;padding:6px 9px;color:#222;font-size:12px;line-height:1.4}
+.npe-review-toggle svg{flex-shrink:0}
+.npe-reviews .woocommerce-noreviews{display:none}
+.npe-reviews #review_form_wrapper{margin-top:18px}
+@media(max-width:760px){.npe-reviews>h2{font-size:20px}.npe-reviews .npe-review-toggle{top:43px}}
