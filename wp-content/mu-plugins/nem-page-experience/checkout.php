@@ -102,8 +102,8 @@ $default_city = $current_user->ID ? get_user_meta($current_user->ID, 'billing_ci
                                 <span class="nem-payment-icon">
                                     <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
                                         <rect width="28" height="28" rx="6" fill="#A50064"/>
-                                        <circle cx="9" cy="14" r="4.5" stroke="#FFFFFF" stroke-width="1.8"/>
-                                        <circle cx="19" cy="14" r="4.5" stroke="#FFFFFF" stroke-width="1.8"/>
+                                        <text x="14" y="12" text-anchor="middle" fill="white" font-family="Arial,sans-serif" font-size="13" font-weight="700">mo</text>
+                                        <text x="14" y="23" text-anchor="middle" fill="white" font-family="Arial,sans-serif" font-size="13" font-weight="700">mo</text>
                                     </svg>
                                 </span>
                                 <span class="nem-payment-text">Thanh toán online qua ví MoMo</span>
@@ -113,18 +113,17 @@ $default_city = $current_user->ID ? get_user_meta($current_user->ID, 'billing_ci
                             <label class="nem-payment-item">
                                 <input type="radio" name="payment_method" value="payoo" class="nem-payment-radio">
                                 <span class="nem-payment-icon">
-                                    <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-                                        <rect width="28" height="28" rx="6" fill="#0072CE"/>
-                                        <path d="M7 14C7 10.134 10.134 7 14 7V21C10.134 21 7 17.866 7 14Z" fill="#FFFFFF"/>
+                                    <svg class="nem-payoo-logo" width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+                                        <text x="14" y="17" text-anchor="middle" fill="#268ac2" font-family="Arial,sans-serif" font-size="7" font-style="italic">Payoo</text>
                                     </svg>
                                 </span>
                                 <div class="nem-payment-text">
                                     <div>Thẻ ATM/ Visa/ Master/ JCB/ QR Pay/ Ví điện tử khác qua Payoo</div>
                                     <div class="nem-payment-badges">
-                                        <span class="nem-badge">ATM</span>
-                                        <span class="nem-badge" style="color:#1a1f71">VISA</span>
-                                        <span class="nem-badge" style="color:#eb001b">MC</span>
-                                        <span class="nem-badge" style="color:#0079c1">JCB</span>
+                                        <svg viewBox="0 0 25 14" role="img" aria-label="ATM"><rect x="1" y="1" width="23" height="12" rx="2" fill="#f5f5f5" stroke="#aaa"/><text x="12.5" y="10" text-anchor="middle" font-family="Arial" font-size="8" fill="#555">ATM</text></svg>
+                                        <svg viewBox="0 0 32 14" role="img" aria-label="Visa"><text x="1" y="11" fill="#15469a" font-family="Arial" font-style="italic" font-weight="bold" font-size="13">VISA</text></svg>
+                                        <svg viewBox="0 0 22 14" role="img" aria-label="JCB"><rect x="1" y="1" width="6" height="12" rx="1" fill="#1264a3"/><rect x="8" y="1" width="6" height="12" rx="1" fill="#d72a3b"/><rect x="15" y="1" width="6" height="12" rx="1" fill="#199950"/><text x="11" y="10" text-anchor="middle" fill="white" font-family="Arial" font-weight="bold" font-size="9">JCB</text></svg>
+                                        <svg viewBox="0 0 24 14" role="img" aria-label="Mastercard"><circle cx="9" cy="7" r="6" fill="#eb001b"/><circle cx="16" cy="7" r="6" fill="#f79e1b" fill-opacity=".9"/></svg>
                                     </div>
                                 </div>
                             </label>
@@ -288,7 +287,7 @@ $default_city = $current_user->ID ? get_user_meta($current_user->ID, 'billing_ci
 
         <!-- Footer -->
         <footer class="nem-checkout-footer">
-            Powered by haravan
+            <span>Powered by</span> <span class="nem-haravan-brand"><svg class="nem-haravan-mark" width="24" height="24" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><g fill="currentColor"><path d="M7 8 23 6l2 18-17 4L7 8Zm-4 3 3-1 1 17-3-2L3 11Z"/><path d="m24 9 4 2-1 10-2 2-1-14Z"/></g><path d="M11 9V6a5 5 0 0 1 10 0v2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M12 12v10m7-11v10m-7-5 7-1" fill="none" stroke="#f5f5f7" stroke-width="2.2"/><path d="M2 24c-4 9 16 7 29-11M3 27c5 3 19-3 26-10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span>haravan</span></span>
         </footer>
     </div>
 

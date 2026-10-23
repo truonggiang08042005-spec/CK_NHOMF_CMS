@@ -197,36 +197,48 @@ body.nem-checkout-body {
 .nem-payment-options {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 0;
+  border: 1px solid #e5e5e5;
+  border-radius: 7px;
+  overflow: hidden;
 }
 
 .nem-payment-item {
-  border: 1px solid #e0e0e5;
-  border-radius: 8px;
-  padding: 14px 16px;
+  border: 1px solid transparent;
+  border-bottom-color: #ededed;
+  border-radius: 0;
+  padding: 10px;
+  min-height: 48px;
+  margin: 0;
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 8px;
   cursor: pointer;
   background: #ffffff;
   transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
 }
 
 .nem-payment-item.is-selected {
-  border: 1.5px solid #111111;
+  border: 1px solid #555;
+  border-radius: 6px;
   background: #ffffff;
 }
+.nem-payment-item:last-child:not(.is-selected){border-bottom-color:transparent}
+.nem-payment-item:focus-within{outline:2px solid #555;outline-offset:-3px}
 
 .nem-payment-radio {
   appearance: none;
   -webkit-appearance: none;
-  width: 18px;
-  height: 18px;
-  border: 2px solid #c7c7cc;
+  width: 17px;
+  height: 17px;
+  border: 4px solid #dedede;
   border-radius: 50%;
   outline: none;
   cursor: pointer;
   margin: 0;
+  padding: 0;
+  background: #fff;
+  box-shadow: none;
   display: grid;
   place-content: center;
   flex-shrink: 0;
@@ -239,15 +251,15 @@ body.nem-checkout-body {
 
 .nem-payment-radio:checked::before {
   content: "";
-  width: 9px;
-  height: 9px;
+  width: 0;
+  height: 0;
   border-radius: 50%;
   background: #111111;
 }
 
 .nem-payment-icon {
-  width: 32px;
-  height: 32px;
+  width: 26px;
+  height: 26px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -255,11 +267,16 @@ body.nem-checkout-body {
 }
 
 .nem-payment-text {
-  font-size: 13.5px;
+  font-size: 13px;
   color: #222;
-  font-weight: 500;
+  font-weight: 400;
   flex: 1;
+  min-width: 0;
+  line-height: 1.45;
 }
+.nem-payment-icon>svg{display:block;width:26px;height:26px}
+.nem-payment-icon .nem-payoo-logo{border:1px solid #eee;border-radius:2px;background:white}
+.nem-payment-badges svg{display:block;width:auto;height:12px}
 
 .nem-payment-badges {
   display: flex;
@@ -562,7 +579,7 @@ body.nem-checkout-body {
   margin-top: 40px;
   padding-top: 20px;
   border-top: 1px solid #e5e5ea;
-  text-align: center;
+  text-align: right;
   font-size: 11px;
   color: #8e8e93;
 }
@@ -619,3 +636,7 @@ body.nem-checkout-body {
     padding: 16px 14px 40px;
   }
 }
+
+.nem-checkout-footer{display:flex;justify-content:flex-end;align-items:center;gap:6px}
+.nem-haravan-brand{display:inline-flex;align-items:center;gap:3px;color:#808080;letter-spacing:1px;font-size:14px}
+.nem-haravan-mark{display:block;flex-shrink:0;color:#808080}

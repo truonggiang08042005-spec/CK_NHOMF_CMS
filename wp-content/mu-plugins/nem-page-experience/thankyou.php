@@ -110,7 +110,7 @@ $order = $order_id ? wc_get_order($order_id) : null;
         </div>
 
         <footer class="nem-checkout-footer">
-            Powered by haravan
+            <span>Powered by</span> <span class="nem-haravan-brand"><svg class="nem-haravan-mark" width="24" height="24" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><g fill="currentColor"><path d="M7 8 23 6l2 18-17 4L7 8Zm-4 3 3-1 1 17-3-2L3 11Z"/><path d="m24 9 4 2-1 10-2 2-1-14Z"/></g><path d="M11 9V6a5 5 0 0 1 10 0v2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M12 12v10m7-11v10m-7-5 7-1" fill="none" stroke="#f5f5f7" stroke-width="2.2"/><path d="M2 24c-4 9 16 7 29-11M3 27c5 3 19-3 26-10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span>haravan</span></span>
         </footer>
     </div>
     <?php wp_footer(); ?>

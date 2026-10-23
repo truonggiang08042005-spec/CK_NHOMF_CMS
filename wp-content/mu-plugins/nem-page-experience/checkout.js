@@ -10,14 +10,13 @@
 
     // Payment method selection
     const paymentItems = document.querySelectorAll('.nem-payment-item');
-    paymentItems.forEach(item => {
-      item.addEventListener('click', () => {
-        paymentItems.forEach(el => el.classList.remove('is-selected'));
-        item.classList.add('is-selected');
-        const radio = item.querySelector('.nem-payment-radio');
-        if (radio) radio.checked = true;
-      });
+    const syncPaymentSelection = () => paymentItems.forEach(item => {
+      item.classList.toggle('is-selected', !!item.querySelector('.nem-payment-radio')?.checked);
     });
+    paymentItems.forEach(item => {
+      item.querySelector('.nem-payment-radio')?.addEventListener('change', syncPaymentSelection);
+    });
+    syncPaymentSelection();
 
     // Helper: Format VND
     const formatVND = num => {
