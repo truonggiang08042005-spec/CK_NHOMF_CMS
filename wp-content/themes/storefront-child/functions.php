@@ -5,21 +5,7 @@ add_action('wp_enqueue_scripts', function () {
     wp_enqueue_style('nem-overrides', get_stylesheet_directory_uri().'/overrides.css', ['nem-style'], '1.0.0');
     wp_enqueue_script('nem-script', get_stylesheet_directory_uri().'/nem.js', [], '1.0.0', true);
 }, 99);
-add_action('admin_menu', function () {
-    add_theme_page('Nội dung trang chủ NEM', 'Trang chủ NEM', 'manage_options', 'nem-home', function () {
-        if (!current_user_can('manage_options')) return;
-        if (isset($_POST['nem_config'])) {
-            check_admin_referer('nem_settings');
-            $data=json_decode(wp_unslash($_POST['nem_config']), true);
-            if (is_array($data)) { update_option('nem_home_content', map_deep($data, 'sanitize_textarea_field')); echo '<div class="notice notice-success"><p>Đã lưu nội dung.</p></div>'; }
-            else echo '<div class="notice notice-error"><p>JSON không hợp lệ. Chưa lưu thay đổi.</p></div>';
-        }
-        echo '<div class="wrap"><h1>Nội dung trang chủ NEM</h1><p>Chỉnh banner, tiêu đề, thông tin liên hệ và liên kết bằng JSON. Sản phẩm quản lý tại Sản phẩm; blog quản lý tại Bài viết. Ảnh dùng ID trong Thư viện.</p><form method="post">';
-        wp_nonce_field('nem_settings');
-        echo '<textarea name="nem_config" style="width:100%;min-height:600px;font-family:monospace">'.esc_textarea(wp_json_encode(get_option('nem_home_content'), JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES)).'</textarea>';
-        submit_button(); echo '</form></div>';
-    });
-});
+require_once __DIR__.'/home-admin.php';
 add_action('init', function () {
     register_post_type('nem_subscriber', ['label'=>'Đăng ký bản tin', 'public'=>false, 'show_ui'=>true, 'supports'=>['title'], 'capability_type'=>'post', 'capabilities'=>['create_posts'=>'do_not_allow'], 'map_meta_cap'=>true]);
 });
