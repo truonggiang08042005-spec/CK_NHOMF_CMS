@@ -14,3 +14,25 @@ body.npe-experience{margin:0;background:#fff;color:#171717;font:14px/1.6 Arial,H
 
 /* Shared home/product utility header, matched to the supplied reference. */
 .npe-header .npe-actions{gap:0;color:#000;align-items:center}.npe-header .npe-actions>.npe-search-toggle{padding:0 23px 0 0;border-right:1px solid #d8d8d8;height:19px;align-items:center}.npe-header .npe-actions>.npe-account-link{padding:0 21px;margin-left:21px;gap:9px!important;border-right:1px solid #d8d8d8;height:19px;font-family:Georgia,"Times New Roman",serif;font-size:14px;line-height:19px}.npe-header .npe-account-link svg{width:22px;height:22px}.npe-header .npe-bag{margin-left:20px}.npe-header .npe-bag>a{gap:7px;font-family:Georgia,"Times New Roman",serif;font-size:14px;line-height:19px}.npe-header .npe-bag-icon svg{width:23px;height:24px}.npe-header .npe-bag-icon .npe-cart-count{color:#fff;left:5px;top:11px;min-width:13px;text-align:center;font:10px/11px Arial,sans-serif}.npe-header .npe-actions .npe-cart-label{line-height:19px}@media(max-width:1150px){.npe-header .npe-actions>.npe-search-toggle{padding-right:14px}.npe-header .npe-actions>.npe-account-link{margin-left:14px;padding:0 14px}.npe-header .npe-bag{margin-left:14px}}@media(max-width:760px){.npe-header .npe-actions>.npe-search-toggle{padding-right:12px}.npe-header .npe-actions>.npe-account-link{margin-left:12px;padding:0 12px}.npe-header .npe-bag{margin-left:12px}}
+
+/* Homepage controls matching the reference. */
+.npe-features h2{font-weight:700}
+.npe-features span{letter-spacing:0;white-space:nowrap}
+.npe-hero>button.npe-hero-prev,.npe-hero>button.npe-hero-next{top:50%;transform:translateY(-50%);width:40px;height:40px;padding:0;background:#24251ab3;font-size:24px;line-height:40px;opacity:1}
+.npe-hero-prev{left:12px}.npe-hero-next{right:12px}
+.npe-home-slider{position:relative;min-width:0}
+.npe-blog>div.npe-home-slider{display:block}
+.npe-home-track{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;scroll-snap-type:x mandatory}
+.npe-home-track::-webkit-scrollbar{display:none}
+.npe-home-track>.npe-card{flex:0 0 calc((100% - 24px)/4);min-width:0;scroll-snap-align:start}
+.npe-blog-track{gap:18px}
+.npe-blog-track>a{flex:0 0 calc((100% - 36px)/3);min-width:0;scroll-snap-align:start}
+.npe-home-next{position:absolute;right:0;top:40%;z-index:2;width:28px;height:32px;border:0;padding:0;background:#24251a80;color:#fff;font-size:26px;line-height:32px}
+.npe-home-next:hover{background:#24251ab3}
+.npe-home-next:disabled{display:none}
+@media(max-width:760px){.npe-hero>button.npe-hero-prev,.npe-hero>button.npe-hero-next{width:30px;height:30px;font-size:20px;line-height:30px}.npe-home-track>.npe-card{flex-basis:calc((100% - 8px)/2)}.npe-blog-track>a{flex-basis:100%}}
+/* Keep WooCommerce price announcements accessible without displaying them. */
+body.npe-experience .screen-reader-text{border:0;clip:rect(1px,1px,1px,1px);clip-path:inset(50%);height:1px;margin:-1px;overflow:hidden;padding:0;position:absolute!important;width:1px;word-wrap:normal!important}
+.npe-card-price{display:flex;justify-content:center;align-items:baseline;flex-wrap:wrap;gap:8px}
+.npe-card-price ins{order:1;color:#ff3737;text-decoration:none;background:none}
+.npe-card-price del{order:2;margin:0;color:#888;font-weight:400;text-decoration:line-through}
