@@ -139,6 +139,9 @@ function nem_shop_filter_categories($query) {
 add_action('woocommerce_product_query', 'nem_shop_filter_categories');
 
 function nem_shop_archive_setup() {
+    if (function_exists('is_cart') && is_cart()) {
+        remove_action('storefront_sidebar', 'storefront_get_sidebar', 10);
+    }
     if (!nem_is_shop_archive()) return;
     remove_action('storefront_sidebar', 'storefront_get_sidebar', 10);
     remove_action('woocommerce_before_shop_loop', 'storefront_sorting_wrapper', 9);
