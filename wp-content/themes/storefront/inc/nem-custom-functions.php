@@ -50,102 +50,242 @@ function nem_is_product_search() {
 	);
 }
 
-/**
- * Load the custom product search layout instead of WooCommerce's shop archive.
- */
-function nem_product_search_template( $template ) {
-	if ( nem_is_product_search() ) {
-		$search_template = get_template_directory() . '/search.php';
+function nem_is_shop_archive() {
+	return function_exists( 'is_shop' ) && ( is_shop() || is_product_taxonomy() );
+}
 
-		if ( file_exists( $search_template ) ) {
-			return $search_template;
+function nem_shop_selected_category_filters() {
+	if ( isset( $_GET['nem_category'] ) ) {
+		$raw      = wp_unslash( $_GET['nem_category'] );
+		$values   = is_array( $raw ) ? $raw : array( $raw );
+		$selected = array();
+
+		foreach ( $values as $value ) {
+			if ( is_scalar( $value ) && ctype_digit( (string) $value ) ) {
+				$term_id = absint( $value );
+				if ( $term_id && term_exists( $term_id, 'product_cat' ) ) {
+					$selected[] = $term_id;
+				}
+			}
 		}
+
+		return array_values( array_unique( $selected ) );
 	}
 
-	return $template;
+	$queried = get_queried_object();
+	return $queried instanceof WP_Term && 'product_cat' === $queried->taxonomy
+		? array( (int) $queried->term_id )
+		: array();
 }
-add_filter( 'template_include', 'nem_product_search_template', 99 );
 
-/**
- * Enqueue the product search stylesheet only on product search pages.
- */
-function nem_enqueue_product_search_styles() {
-	if ( ! nem_is_product_search() ) {
-		return;
-	}
+function nem_shop_custom_attribute_values( $filter_key ) {
+	static $values_by_key = null;
 
-	$search_css = get_template_directory() . '/assets/css/search-results.css';
-
-	if ( file_exists( $search_css ) ) {
-		wp_enqueue_style(
-			'nem-product-search',
-			get_template_directory_uri() . '/assets/css/search-results.css',
-			array( 'storefront-style', 'storefront-woocommerce-style' ),
-			filemtime( $search_css )
+	if ( null === $values_by_key ) {
+		$values_by_key = array(
+			'size'  => array(),
+			'color' => array(),
 		);
-	}
-}
-add_action( 'wp_enqueue_scripts', 'nem_enqueue_product_search_styles', 100 );
+		$products      = get_posts(
+			array(
+				'post_type'              => 'product',
+				'post_status'            => 'publish',
+				'posts_per_page'         => -1,
+				'fields'                 => 'ids',
+				'meta_query'             => array(
+					array(
+						'key'     => '_product_attributes',
+						'compare' => 'EXISTS',
+					),
+				),
+				'no_found_rows'          => true,
+				'update_post_meta_cache' => true,
+				'update_post_term_cache' => false,
+			)
+		);
 
-/**
- * Show the sale percentage on product search results.
- */
-function nem_product_search_sale_flash( $html, $post, $product ) {
-	if ( ! nem_is_product_search() || ! ( $product instanceof WC_Product ) ) {
-		return $html;
-	}
-
-	$discount_percentage = 0;
-
-	if ( $product instanceof WC_Product_Variable ) {
-		foreach ( $product->get_children() as $variation_id ) {
-			$variation = wc_get_product( $variation_id );
-
-			if ( ! $variation instanceof WC_Product ) {
+		foreach ( $products as $product_id ) {
+			$attributes = get_post_meta( $product_id, '_product_attributes', true );
+			if ( ! is_array( $attributes ) ) {
 				continue;
 			}
 
-			$regular_price = (float) $variation->get_regular_price();
-			$sale_price    = (float) $variation->get_sale_price();
+			foreach ( $attributes as $attribute ) {
+				if ( ! is_array( $attribute ) || ! empty( $attribute['is_taxonomy'] ) ) {
+					continue;
+				}
 
-			if ( $regular_price > 0 && $sale_price > 0 && $sale_price < $regular_price ) {
-				$discount_percentage = max(
-					$discount_percentage,
-					round( ( $regular_price - $sale_price ) / $regular_price * 100 )
-				);
+				$name = remove_accents( strtolower( sanitize_title( $attribute['name'] ?? '' ) ) );
+				$key  = preg_match( '/^(size|kich-co|kichco)$/', $name )
+					? 'size'
+					: ( preg_match( '/^(color|colour|mau-sac|mausac)$/', $name ) ? 'color' : null );
+
+				if ( null === $key || ! isset( $attribute['value'] ) || ! is_scalar( $attribute['value'] ) ) {
+					continue;
+				}
+
+				foreach ( explode( '|', (string) $attribute['value'] ) as $value ) {
+					$value = trim( $value );
+					$slug  = sanitize_title( $value );
+					if ( '' !== $value && '' !== $slug ) {
+						$values_by_key[ $key ][ $slug ] = $value;
+					}
+				}
 			}
 		}
-	} else {
-		$regular_price = (float) $product->get_regular_price();
-		$sale_price    = (float) $product->get_sale_price();
 
-		if ( $regular_price > 0 && $sale_price > 0 && $sale_price < $regular_price ) {
-			$discount_percentage = round( ( $regular_price - $sale_price ) / $regular_price * 100 );
+		foreach ( $values_by_key as &$values ) {
+			uasort( $values, 'strnatcasecmp' );
+		}
+		unset( $values );
+	}
+
+	return $values_by_key[ $filter_key ] ?? array();
+}
+
+function nem_shop_filter_categories( $query ) {
+	if ( ! nem_is_shop_archive() ) {
+		return;
+	}
+
+	$categories = nem_shop_selected_category_filters();
+	if ( $categories ) {
+		$tax_query   = (array) $query->get( 'tax_query' );
+		$tax_query[] = array(
+			'taxonomy'         => 'product_cat',
+			'field'            => 'term_id',
+			'terms'            => $categories,
+			'operator'         => 'IN',
+			'include_children' => true,
+		);
+		$query->set( 'tax_query', $tax_query );
+	}
+
+	$custom_attribute_filters = array();
+	foreach ( array( 'size', 'color' ) as $filter_key ) {
+		$parameter = 'nem_attribute_' . $filter_key;
+		if ( ! isset( $_GET[ $parameter ] ) || ! is_scalar( $_GET[ $parameter ] ) ) {
+			continue;
+		}
+
+		$values        = nem_shop_custom_attribute_values( $filter_key );
+		$selected_slugs = array_filter(
+			array_map(
+				'sanitize_title',
+				explode( ',', sanitize_text_field( wp_unslash( $_GET[ $parameter ] ) ) )
+			)
+		);
+		$value_queries = array();
+
+		foreach ( $selected_slugs as $slug ) {
+			if ( ! isset( $values[ $slug ] ) ) {
+				continue;
+			}
+
+			$attribute_pattern = preg_quote( $filter_key, '/' );
+			$value_pattern     = preg_quote( $values[ $slug ], '/' );
+			$value_queries[]   = array(
+				'key'     => '_product_attributes',
+				'value'   => '"' . $attribute_pattern . '";a:[^}]*"value";s:[0-9]+:"([^"]*[|][[:space:]]*)?' . $value_pattern . '([[:space:]]*[|][^"]*)?"',
+				'compare' => 'REGEXP',
+			);
+		}
+
+		if ( $value_queries ) {
+			$custom_attribute_filters[] = array_merge(
+				array( 'relation' => 'OR' ),
+				$value_queries
+			);
 		}
 	}
 
-	if ( $discount_percentage < 1 ) {
-		return $html;
+	if ( $custom_attribute_filters ) {
+		$meta_query   = (array) $query->get( 'meta_query' );
+		$meta_query[] = array_merge(
+			array( 'relation' => 'AND' ),
+			$custom_attribute_filters
+		);
+		$query->set( 'meta_query', $meta_query );
+	}
+}
+add_action( 'woocommerce_product_query', 'nem_shop_filter_categories' );
+
+function nem_shop_archive_setup() {
+	if ( function_exists( 'is_cart' ) && is_cart() ) {
+		remove_action( 'storefront_sidebar', 'storefront_get_sidebar', 10 );
 	}
 
-	return '<span class="onsale">-' . esc_html( $discount_percentage ) . '%</span>';
-}
-add_filter( 'woocommerce_sale_flash', 'nem_product_search_sale_flash', 10, 3 );
-
-/**
- * Add the image overlay and view-more label to product search cards.
- */
-function nem_product_search_image_overlay() {
-	if ( ! nem_is_product_search() ) {
+	if ( ! nem_is_shop_archive() ) {
 		return;
 	}
-	?>
-	<span class="nem-search-image-overlay" aria-hidden="true">
-		<span class="nem-search-view-more"><?php esc_html_e( 'Xem thêm', 'storefront' ); ?></span>
-	</span>
-	<?php
+
+	remove_action( 'storefront_sidebar', 'storefront_get_sidebar', 10 );
+	remove_action( 'woocommerce_before_shop_loop', 'storefront_sorting_wrapper', 9 );
+	remove_action( 'woocommerce_before_shop_loop', 'woocommerce_catalog_ordering', 10 );
+	remove_action( 'woocommerce_before_shop_loop', 'woocommerce_result_count', 20 );
+	remove_action( 'woocommerce_before_shop_loop', 'storefront_woocommerce_pagination', 30 );
+	remove_action( 'woocommerce_before_shop_loop', 'storefront_sorting_wrapper_close', 31 );
+	remove_action( 'woocommerce_after_shop_loop', 'storefront_sorting_wrapper', 9 );
+	remove_action( 'woocommerce_after_shop_loop', 'woocommerce_catalog_ordering', 10 );
+	remove_action( 'woocommerce_after_shop_loop', 'woocommerce_result_count', 20 );
+	remove_action( 'woocommerce_after_shop_loop', 'storefront_sorting_wrapper_close', 31 );
 }
-add_action( 'woocommerce_before_shop_loop_item_title', 'nem_product_search_image_overlay', 11 );
+add_action( 'wp', 'nem_shop_archive_setup', 20 );
+
+function nem_shop_newsletter() {
+	if ( nem_is_shop_archive() ) {
+		get_template_part( 'template-parts/collection-newsletter' );
+	}
+}
+add_action( 'storefront_before_footer', 'nem_shop_newsletter', 10 );
+
+function nem_shop_breadcrumbs( $crumbs ) {
+	if ( ! is_shop() || ! $crumbs ) {
+		return $crumbs;
+	}
+
+	$crumbs[0][0] = 'TRANG CHỦ';
+	$last         = count( $crumbs ) - 1;
+	$crumbs[ $last ][0] = 'TẤT CẢ SẢN PHẨM';
+	return $crumbs;
+}
+add_filter( 'woocommerce_get_breadcrumb', 'nem_shop_breadcrumbs' );
+
+function nem_product_search_template( $template ) {
+	if ( ! nem_is_product_search() ) {
+		return $template;
+	}
+
+	$search_template = get_template_directory() . '/search.php';
+	return is_readable( $search_template ) ? $search_template : $template;
+}
+add_filter( 'template_include', 'nem_product_search_template', 99 );
+
+function nem_enqueue_shop_assets() {
+	if ( ! nem_is_shop_archive() && ! nem_is_product_search() ) {
+		return;
+	}
+
+	$theme_dir = get_template_directory();
+	$theme_uri = get_template_directory_uri();
+	$shop_css  = $theme_dir . '/assets/css/nem-shop.css';
+	$shop_js   = $theme_dir . '/assets/js/nem-shop.js';
+
+	wp_enqueue_style(
+		'nem-shop',
+		$theme_uri . '/assets/css/nem-shop.css',
+		array( 'storefront-style', 'nem-collections' ),
+		filemtime( $shop_css )
+	);
+	wp_enqueue_script(
+		'nem-shop',
+		$theme_uri . '/assets/js/nem-shop.js',
+		array(),
+		filemtime( $shop_js ),
+		true
+	);
+}
+add_action( 'wp_enqueue_scripts', 'nem_enqueue_shop_assets', 101 );
 
 /**
  * Update WooCommerce Cart Fragment dynamically.

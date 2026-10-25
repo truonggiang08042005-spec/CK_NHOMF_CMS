@@ -40,8 +40,10 @@ function nem_collection_url( $slug ) {
 }
 
 function nem_collection_catalog_effects() {
-	// Product search has its own image overlay and stylesheet.
-	return function_exists( 'is_shop' ) && ! is_search() && ( is_shop() || is_product_taxonomy() || is_product() );
+	return function_exists( 'is_shop' ) && (
+		is_search() && function_exists( 'nem_is_product_search' ) && nem_is_product_search() ||
+		! is_search() && ( is_shop() || is_product_taxonomy() || is_product() )
+	);
 }
 
 function nem_is_collection_page() {

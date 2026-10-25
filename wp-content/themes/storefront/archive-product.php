@@ -83,7 +83,7 @@ do_action('woocommerce_before_main_content');
 if (is_shop()) :
 ?>
     <a class="nem-shop-banner" href="<?php echo esc_url($shop_url); ?>" aria-label="<?php esc_attr_e('Bộ sưu tập Tailor Vietnamese Elegance', 'storefront'); ?>">
-        <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/assets/shop-tailor-banner.jpg'); ?>" alt="<?php esc_attr_e('Tailor Vietnamese Elegance', 'storefront'); ?>" fetchpriority="high">
+        <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/shop-tailor-banner.jpg'); ?>" alt="<?php esc_attr_e('Tailor Vietnamese Elegance', 'storefront'); ?>" fetchpriority="high">
     </a>
 <?php
 endif;
