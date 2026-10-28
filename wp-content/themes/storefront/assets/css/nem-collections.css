@@ -111,10 +111,12 @@
 }
 .nem-collection-product h3 a { color: #8c8c8c; text-decoration: none; }
 .nem-collection-product h3 a:hover { color: #111; }
-.nem-collection-product-price { color: #111; font-weight: 700; font-size: 16px; line-height: 1.4; }
-.nem-collection-product-price del { color: #858585; font-size: 12px; font-weight: 400; margin-left: 8px; }
-.nem-collection-product-price ins { background: none; color: #e94141; font-weight: 700; }
-.nem-collection-sale { position: absolute; top: 10px; right: 10px; color: #e94141; background: #fff; padding: 2px 5px; font-size: 12px; z-index: 3; }
+.nem-collection-product-price { display: flex; align-items: baseline; gap: 10px; color: #111; font-weight: 700; font-size: 16px; line-height: 1.4; }
+.nem-collection-product-price .screen-reader-text { display: none; }
+.nem-collection-product-price ins { order: 1; background: none; color: #e51a1a; font-weight: 700; text-decoration: none; }
+.nem-collection-product-price del { order: 2; color: #222; font-size: 13px; font-weight: 400; margin-left: 0; text-decoration: line-through; }
+.nem-badge-online-only { position: absolute; top: 10px; left: 10px; background: #e94141; color: #fff; padding: 3px 6px; font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; z-index: 3; line-height: 1; }
+.nem-collection-sale { position: absolute; top: 10px; right: 10px; color: #e94141; background: #fff; padding: 2px 6px; font-size: 11px; font-weight: 700; z-index: 3; line-height: 1; }
 .nem-collection-copy { margin-top: 14px; }
 .nem-collection-copy h2 { margin: 0 0 18px; font-size: clamp(22px, 2vw, 34px); font-weight: 700; line-height: 1.2; letter-spacing: -.5px; }
 .nem-collection-copy p { margin: 0 0 18px; font-size: 15px; line-height: 1.5; color: #555; text-align: justify; }

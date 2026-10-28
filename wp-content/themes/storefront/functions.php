@@ -80,3 +80,4 @@ require 'inc/nem-account-functions.php';
 // NEM collection page and catalog interactions.
 require 'inc/nem-collections.php';
 require 'inc/nem-new-products.php';
+require 'inc/nem-plus.php';

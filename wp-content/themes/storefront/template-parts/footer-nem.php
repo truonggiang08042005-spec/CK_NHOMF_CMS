@@ -101,9 +101,9 @@ $home_url  = esc_url( home_url( '/' ) );
     </a>
 
     <!-- Back to top button -->
-    <button type="button" class="nem-float-btn nem-btn-scrolltop" id="nemScrollToTopBtn" title="Lên đầu trang" aria-label="Scroll to top">
-        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="18 15 12 9 6 15"></polyline>
+    <button type="button" class="nem-float-btn nem-btn-scrolltop" id="nemScrollToTopBtn" title="Lên đầu trang" aria-label="Scroll to top" style="padding:0!important;margin:0!important;line-height:0!important;border:none!important;">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" style="display:block!important;width:22px!important;height:22px!important;min-width:22px!important;min-height:22px!important;margin:auto!important;pointer-events:none!important;">
+            <path d="M6 14.5L12 8.5L18 14.5" fill="none" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" style="fill:none!important;stroke:#ffffff!important;stroke-width:3.5!important;stroke-linecap:round!important;stroke-linejoin:round!important;" />
         </svg>
     </button>
 </div>

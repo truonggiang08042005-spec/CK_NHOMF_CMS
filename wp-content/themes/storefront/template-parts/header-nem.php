@@ -9,9 +9,7 @@ $shop_url    = function_exists( 'wc_get_page_permalink' ) ? esc_url( wc_get_page
 $cart_url    = function_exists( 'wc_get_cart_url' ) ? esc_url( wc_get_cart_url() ) : $home_url . 'cart/';
 $account_url = function_exists( 'wc_get_page_permalink' ) ? esc_url( wc_get_page_permalink( 'myaccount' ) ) : $home_url . 'my-account/';
 $cart_count  = ( function_exists( 'WC' ) && is_object( WC()->cart ) ) ? WC()->cart->get_cart_contents_count() : 0;
-$nem_plus_term = get_term_by( 'slug', 'nem-plus', 'product_cat' );
-$nem_plus_url = $nem_plus_term ? get_term_link( $nem_plus_term ) : $shop_url;
-if ( is_wp_error( $nem_plus_url ) ) { $nem_plus_url = $shop_url; }
+$nem_plus_url = function_exists( 'nem_plus_products_url' ) ? nem_plus_products_url() : home_url( '/nem-plus/' );
 
 // Determine display name
 $is_logged_in = is_user_logged_in();
@@ -117,12 +115,12 @@ $search_img_url  = $img_dir . 'search.png';
 
                 <!-- SẢN PHẨM MỚI -->
                 <li class="nem-nav-item">
-                    <a href="<?php echo esc_url( nem_new_products_url() ); ?>" class="nem-nav-link">SẢN PHẨM MỚI</a>
+                    <a href="<?php echo esc_url( nem_new_products_url() ); ?>" class="nem-nav-link <?php echo function_exists( 'nem_is_new_products_page' ) && nem_is_new_products_page() ? 'is-active' : ''; ?>">SẢN PHẨM MỚI</a>
                 </li>
 
                 <!-- NEM PLUS+ -->
                 <li class="nem-nav-item">
-                    <a href="<?php echo esc_url( $nem_plus_url ); ?>" class="nem-nav-link">NEM PLUS+</a>
+                    <a href="<?php echo esc_url( $nem_plus_url ); ?>" class="nem-nav-link <?php echo function_exists( 'nem_is_plus_page' ) && nem_is_plus_page() ? 'is-active' : ''; ?>">NEM PLUS+</a>
                 </li>
 
                 <!-- SẢN PHẨM SALE -->

@@ -22,3 +22,49 @@
 .nem-home .nem-product img{border-radius:0}
 .nem-home .nem-header .nem-logo img{width:100%}
 @media(max-width:760px){.hero-prev,.hero-next{font-size:16px;padding:8px}.hero-prev{left:8px}.hero-next{right:8px}.hero-dots{bottom:8px}.hero-dots button{width:9px;height:9px}}
+
+/* Scroll to top button */
+.nem-btn-scrolltop, .npe-top {
+    padding: 0 !important;
+    margin: 0 !important;
+    line-height: 0 !important;
+    -webkit-appearance: none !important;
+    appearance: none !important;
+    background: #515151 !important;
+    color: #ffffff !important;
+    border-radius: 50% !important;
+    width: 44px !important;
+    height: 44px !important;
+    min-width: 44px !important;
+    min-height: 44px !important;
+    border: none !important;
+    outline: none !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25) !important;
+    cursor: pointer !important;
+}
+.nem-btn-scrolltop svg, .npe-top svg {
+    display: block !important;
+    width: 22px !important;
+    height: 22px !important;
+    stroke: #ffffff !important;
+    fill: none !important;
+    stroke-width: 3.5 !important;
+    margin: auto !important;
+    pointer-events: none !important;
+}
+.nem-btn-scrolltop svg path, .nem-btn-scrolltop svg polyline,
+.npe-top svg path, .npe-top svg polyline {
+    fill: none !important;
+    stroke: #ffffff !important;
+    stroke-width: 3.5 !important;
+    stroke-linecap: round !important;
+    stroke-linejoin: round !important;
+}
+.nem-btn-scrolltop:hover, .npe-top:hover {
+    background: #383838 !important;
+    transform: translateY(-3px) !important;
+}
+

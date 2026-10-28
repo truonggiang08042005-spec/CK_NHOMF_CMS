@@ -8,7 +8,7 @@ $messages = array( 'ok' => 'Cảm ơn bạn đã đăng ký nhận bản tin NEM
 	<p>Đăng ký nhận bản tin NEM để được cập nhật những mẫu thiết kế mới nhất</p>
 	<form action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" method="post">
 		<input type="hidden" name="action" value="nem_collection_newsletter" />
-		<?php if ( isset( $args['return_to'] ) && 'san-pham-moi' === $args['return_to'] ) : ?><input type="hidden" name="return_to" value="san-pham-moi" /><?php endif; ?>
+		<?php if ( ! empty( $args['return_to'] ) ) : ?><input type="hidden" name="return_to" value="<?php echo esc_attr( $args['return_to'] ); ?>" /><?php endif; ?>
 		<?php wp_nonce_field( 'nem_collection_newsletter', 'nem_collection_nonce' ); ?>
 		<label class="screen-reader-text" for="nem-collection-email">Email</label>
 		<input type="email" id="nem-collection-email" name="email" maxlength="250" placeholder="Vui lòng nhập email..." required />

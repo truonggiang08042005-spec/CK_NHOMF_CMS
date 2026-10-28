@@ -1,8 +1,8 @@
 <?php
 defined('ABSPATH') || exit;
 add_action('wp_enqueue_scripts', function () {
-    wp_enqueue_style('nem-style', get_stylesheet_directory_uri().'/nem.css', ['storefront-style'], '1.0.1');
-    wp_enqueue_style('nem-overrides', get_stylesheet_directory_uri().'/overrides.css', ['nem-style'], '1.0.0');
+    wp_enqueue_style('nem-style', get_stylesheet_directory_uri().'/nem.css', ['storefront-style'], filemtime(__DIR__.'/nem.css'));
+    wp_enqueue_style('nem-overrides', get_stylesheet_directory_uri().'/overrides.css', ['nem-style'], filemtime(__DIR__.'/overrides.css'));
     $nem_js = __DIR__.'/nem.js';
     wp_enqueue_script('nem-script', get_stylesheet_directory_uri().'/nem.js', [], filemtime($nem_js), true);
 }, 99);

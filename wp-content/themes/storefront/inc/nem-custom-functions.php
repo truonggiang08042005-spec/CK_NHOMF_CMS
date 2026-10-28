@@ -331,3 +331,13 @@ function nem_account_page_tweaks() {
     }
 }
 add_action( 'wp', 'nem_account_page_tweaks' );
+
+/**
+ * Format sale price: sale price on the left, regular (old) price on the right.
+ */
+add_filter( 'woocommerce_format_sale_price', function ( $price, $regular_price, $sale_price ) {
+    $formatted_reg  = is_numeric( $regular_price ) ? wc_price( $regular_price ) : $regular_price;
+    $formatted_sale = is_numeric( $sale_price ) ? wc_price( $sale_price ) : $sale_price;
+    return '<ins>' . $formatted_sale . '</ins> <del aria-hidden="true">' . $formatted_reg . '</del>';
+}, 10, 3 );
+

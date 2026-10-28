@@ -130,7 +130,14 @@ function nem_collection_newsletter_subscribe() {
 			}
 		}
 	}
-	$return_path = isset( $_POST['return_to'] ) && 'san-pham-moi' === $_POST['return_to'] ? '/san-pham-moi/' : '/bo-suu-tap/';
+	$return_path = '/bo-suu-tap/';
+	if ( isset( $_POST['return_to'] ) ) {
+		if ( 'san-pham-moi' === $_POST['return_to'] ) {
+			$return_path = '/san-pham-moi/';
+		} elseif ( 'nem-plus' === $_POST['return_to'] ) {
+			$return_path = '/nem-plus/';
+		}
+	}
 	wp_safe_redirect( add_query_arg( 'newsletter', $status, home_url( $return_path ) ) . '#nem-collection-newsletter' );
 	exit;
 }

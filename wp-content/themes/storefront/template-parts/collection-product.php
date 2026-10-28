@@ -10,11 +10,15 @@ $primary = $images[0] ?? ( wp_get_attachment_image_url( $product->get_image_id()
 $gallery = $product->get_gallery_image_ids();
 $secondary = $images[1] ?? ( ! empty( $gallery ) ? wp_get_attachment_image_url( $gallery[0], 'large' ) : $primary );
 $secondary = $secondary ?: $primary;
+$is_online_only = 'yes' === $product->get_meta( '_nem_online_only' );
 ?>
 <article class="nem-collection-product" data-sku="<?php echo esc_attr( $sku ); ?>">
 	<a class="nem-collection-product-image" href="<?php echo esc_url( $product->get_permalink() ); ?>" aria-label="<?php echo esc_attr( 'Xem thêm ' . $product->get_name() ); ?>">
 		<img class="nem-collection-image-primary" src="<?php echo esc_url( $primary ); ?>" alt="<?php echo esc_attr( $product->get_name() ); ?>" width="600" height="900" loading="lazy" decoding="async" />
 		<img class="nem-collection-image-secondary" src="<?php echo esc_url( $secondary ); ?>" alt="" aria-hidden="true" width="600" height="900" loading="lazy" decoding="async" />
+		<?php if ( $is_online_only ) : ?>
+			<span class="nem-badge-online-only">ONLINE ONLY</span>
+		<?php endif; ?>
 		<?php if ( $product->is_on_sale() && $product->get_regular_price() ) : ?>
 			<span class="nem-collection-sale">-<?php echo esc_html( round( ( 1 - (float) $product->get_price() / (float) $product->get_regular_price() ) * 100 ) ); ?>%</span>
 		<?php endif; ?>
