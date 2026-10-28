@@ -2,13 +2,12 @@
 .nem-new-products-page #content > .col-full { max-width: none; width: 100%; padding: 0; margin: 0; }
 .nem-new-products-page .site-main { margin: 0; }
 .nem-new-products-page .nem-footer-wrapper { margin-top: 0; }
-.nem-new-products-page .nem-header-inner { max-width: 1508px; }
 .nem-new-main { color: #222; font-family: Arial, sans-serif; }
-.nem-new-container { width: calc(100% - 80px); max-width: 1460px; margin: 0 auto; }
+.nem-new-container { width: calc(100% - 160px); max-width: 1300px; margin: 0 auto; }
 .nem-new-breadcrumb { display: flex; align-items: center; gap: 7px; padding: 19px 0; font-size: 12px; line-height: 1.4; }
 .nem-new-breadcrumb a { color: #555; text-decoration: none; }
 .nem-new-banner img { display: block; width: 100%; height: auto; aspect-ratio: 1920 / 500; object-fit: cover; border-radius: 0; }
-.nem-new-layout { display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: 110px; padding-top: 60px; padding-bottom: 65px; }
+.nem-new-layout { display: grid; grid-template-columns: 230px minmax(0, 1fr); gap: 100px; padding-top: 60px; padding-bottom: 65px; }
 .nem-new-sidebar { font-size: 14px; line-height: 1.8; }
 .nem-new-categories summary { color: #333; font-weight: 600; cursor: pointer; list-style: none; }
 .nem-new-categories summary::-webkit-details-marker { display: none; }
@@ -43,7 +42,7 @@
 .nem-new-products-grid.nem-new-columns-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .nem-new-products-grid .nem-collection-product h3 { font-size: 14px; font-weight: 400; line-height: 1.4; margin: 14px 4px 20px; }
 .nem-new-products-grid .nem-collection-product-price { font-size: 18px; }
-.nem-new-products-grid .nem-collection-sale { position: absolute; top: 0; right: 0; color: #ff473c; background: #ffffff; padding: 6px 14px; font-size: 14px; font-weight: 700; z-index: 3; line-height: 1.2; border-radius: 0; letter-spacing: 0.2px; }
+.nem-new-products-grid .nem-collection-sale { position: absolute; top: 0; right: 0; color: #ff473c; background: #ffffff; padding: 6px 22px; font-size: 14px; font-weight: 700; z-index: 3; line-height: 1.2; border-radius: 0; letter-spacing: 0.2px; }
 .nem-new-pagination { margin-top: 55px; }
 .nem-new-pagination ul { display: flex; justify-content: center; align-items: center; gap: 10px; list-style: none; margin: 0; padding: 0; }
 .nem-new-pagination li { margin: 0; }
@@ -89,7 +88,7 @@
     .nem-new-products-grid, .nem-new-products-grid.nem-new-columns-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 10px; }
     .nem-new-products-grid .nem-collection-product h3 { font-size: 11px; min-height: 32px; margin: 10px 0 12px; }
     .nem-new-products-grid .nem-collection-product-price { font-size: 14px; }
-    .nem-new-products-grid .nem-collection-sale { padding: 4px 10px; font-size: 12px; }
+    .nem-new-products-grid .nem-collection-sale { padding: 4px 16px; font-size: 12px; }
     .nem-new-pagination { margin-top: 35px; }
     .nem-new-pagination a, .nem-new-pagination span { min-width: 34px; height: 34px; font-size: 13px; }
 }

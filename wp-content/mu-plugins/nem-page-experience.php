@@ -29,7 +29,8 @@ add_filter('woocommerce_checkout_fields', function ($fields) {
 add_action('wp_enqueue_scripts', function () {
     if (!npe_is_page()) return;
     wp_dequeue_style('nem-style'); wp_dequeue_style('nem-overrides'); wp_dequeue_script('nem-script');
-    wp_dequeue_style('nem-header-footer-style'); wp_dequeue_style('nem-collections');
+    if ( is_product() ) wp_dequeue_style('nem-header-footer-style');
+    wp_dequeue_style('nem-collections');
     $url = content_url('/mu-plugins/nem-page-experience/');
     wp_enqueue_style('npe-pages', $url.'pages.css', [], filemtime(__DIR__.'/nem-page-experience/pages.css'));
     wp_enqueue_script('npe-pages', $url.'pages.js', ['jquery', 'wc-add-to-cart-variation'], filemtime(__DIR__.'/nem-page-experience/pages.js'), true);

@@ -7,6 +7,43 @@ function nem_is_new_products_page() {
 		( function_exists( 'is_shop' ) && is_shop() && isset( $_GET['orderby'] ) && 'date' === $_GET['orderby'] );
 }
 
+/** Use saved swatch colors where available, with named and patterned fallbacks. */
+function nem_catalog_swatch_style( $term ) {
+	$color = sanitize_hex_color( get_term_meta( $term->term_id, 'product_attribute_color', true ) );
+	if ( $color ) {
+		return 'background: ' . $color . ';';
+	}
+	$name = sanitize_title( $term->name );
+	$slug = $term->slug;
+	if ( preg_match( '/stripe|ke-soc|soc/', $slug . ' ' . $name ) ) {
+		return 'background: repeating-linear-gradient(90deg, #c7cbe9 0 3px, #f7f7fb 3px 6px);';
+	}
+	if ( preg_match( '/pattern|hoa-tiet|hoa-xanh/', $slug . ' ' . $name ) ) {
+		return 'background: radial-gradient(ellipse at 25% 30%, #a7b6cf, transparent 45%), radial-gradient(ellipse at 75% 65%, #93a9c7, transparent 40%), #e7edf4;';
+	}
+	$colors = array(
+		'light-blue' => '#a3cfe7', 'xanh-nhat' => '#a3cfe7', 'xanh-duong' => '#a3cfe7', 'xanh' => '#a3cfe7',
+		'red' => '#eb2d30', 'do' => '#eb2d30', 'light-pink' => '#efc8ed', 'hong-nhat' => '#efc8ed',
+		'yellow' => '#f7e27a', 'vang' => '#f7e27a', 'white' => '#fff', 'trang' => '#fff',
+		'black' => '#000', 'den' => '#000', 'olive' => '#897925', 'vang-reu' => '#897925',
+		'gray' => '#999', 'grey' => '#999', 'xam' => '#999', 'ghi' => '#999', 'nau' => '#8d6e63',
+		'mint-green' => '#84e987', 'xanh-la' => '#84e987', 'xanh-mint' => '#84e987',
+		'orange' => '#ff8511', 'cam' => '#ff8511', 'pink' => '#f2acd1', 'hong' => '#f2acd1',
+		'be' => '#e6d7bd', 'kem' => '#f4ecdc', 'tim' => '#c4a5d8', 'trang-trang-kem' => '#f4ecdc',
+	);
+	return 'background: ' . ( $colors[ $slug ] ?? $colors[ $name ] ?? '#ccc' ) . ';';
+}
+
+add_action( 'wp_enqueue_scripts', function () {
+	if ( ! nem_is_new_products_page() && ! nem_is_shop_archive() &&
+		! ( function_exists( 'nem_is_plus_page' ) && nem_is_plus_page() ) &&
+		! ( function_exists( 'nem_is_sale_page' ) && nem_is_sale_page() ) ) {
+		return;
+	}
+	$dependencies = wp_style_is( 'nem-new-products', 'enqueued' ) ? array( 'nem-new-products' ) : array( 'nem-shop' );
+	wp_enqueue_style( 'nem-catalog-controls', get_template_directory_uri() . '/assets/css/nem-catalog-controls.css', $dependencies, filemtime( get_template_directory() . '/assets/css/nem-catalog-controls.css' ) );
+}, 102 );
+
 function nem_new_products_url() {
 	return home_url( '/san-pham-moi/' );
 }

@@ -1,6 +1,8 @@
+body.woocommerce-shop #content>.col-full,
 body.tax-product_cat #content>.col-full,
 body.tax-product_tag #content>.col-full {
     max-width: none;
+    width: 100%;
     margin: 0;
     padding: 0;
 }
@@ -15,6 +17,7 @@ body.tax-product_tag #content>.col-full {
     display: block;
     width: 100%;
     height: auto;
+    border-radius: 0;
 }
 
 body.woocommerce-shop #primary.content-area,
@@ -36,8 +39,8 @@ body.tax-product_tag #main.site-main {
 
 .nem-product-search.content-area {
     float: none;
-    width: calc(100% - 80px);
-    max-width: 1460px;
+    width: calc(100% - 160px);
+    max-width: 1300px;
     margin: 0 auto;
     padding: 0 0 72px;
 }
@@ -109,8 +112,8 @@ body.search.post-type-archive-product .storefront-breadcrumb {
     display: grid;
     grid-template-columns: minmax(170px, 220px) minmax(0, 1fr);
     gap: 48px;
-    width: calc(100% - 80px);
-    max-width: 1460px;
+    width: calc(100% - 160px);
+    max-width: 1300px;
     margin: 0 auto;
     padding: 34px 0 72px;
 }
