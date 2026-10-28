@@ -15,7 +15,9 @@ bin-release/
 
 # Generated media copies; source images are tracked in the theme.
 /wp-content/uploads/nem-new-products/
+wp-content/uploads/wc-logs/
 
 # Project files, i.e. `.project`, `.actionScriptProperties` and `.flexProperties`
 # should NOT be excluded as they contain compiler settings and other important
 # information for Eclipse / Flash Builder.
+
