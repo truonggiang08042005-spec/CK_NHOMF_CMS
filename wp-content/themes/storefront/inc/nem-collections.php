@@ -136,6 +136,8 @@ function nem_collection_newsletter_subscribe() {
 			$return_path = '/san-pham-moi/';
 		} elseif ( 'nem-plus' === $_POST['return_to'] ) {
 			$return_path = '/nem-plus/';
+		} elseif ( 'sale' === $_POST['return_to'] ) {
+			$return_path = '/sale/';
 		}
 	}
 	wp_safe_redirect( add_query_arg( 'newsletter', $status, home_url( $return_path ) ) . '#nem-collection-newsletter' );

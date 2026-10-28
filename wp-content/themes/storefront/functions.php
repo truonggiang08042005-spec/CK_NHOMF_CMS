@@ -81,3 +81,4 @@ require 'inc/nem-account-functions.php';
 require 'inc/nem-collections.php';
 require 'inc/nem-new-products.php';
 require 'inc/nem-plus.php';
+require 'inc/nem-sale.php';

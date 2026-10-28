@@ -37,15 +37,36 @@
    NEM HEADER STYLES
    ========================================================================== */
 .nem-header-sticky-wrapper {
-    position: sticky;
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
+    width: 100%;
     z-index: 1000;
     background: #ffffff;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
     font-family: 'Times New Roman', Times, serif;
-    transition: all 0.3s ease;
+    transition: box-shadow 0.3s ease;
+}
+
+.site-header.nem-site-header,
+#masthead.nem-site-header {
+    height: 75px;
+    min-height: 75px;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+    background: transparent !important;
+}
+
+.admin-bar .nem-header-sticky-wrapper {
+    top: 32px;
+}
+
+@media screen and (max-width: 782px) {
+    .admin-bar .nem-header-sticky-wrapper {
+        top: 46px;
+    }
 }
 
 .nem-header-inner {

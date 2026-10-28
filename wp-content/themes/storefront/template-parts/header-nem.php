@@ -10,6 +10,7 @@ $cart_url    = function_exists( 'wc_get_cart_url' ) ? esc_url( wc_get_cart_url()
 $account_url = function_exists( 'wc_get_page_permalink' ) ? esc_url( wc_get_page_permalink( 'myaccount' ) ) : $home_url . 'my-account/';
 $cart_count  = ( function_exists( 'WC' ) && is_object( WC()->cart ) ) ? WC()->cart->get_cart_contents_count() : 0;
 $nem_plus_url = function_exists( 'nem_plus_products_url' ) ? nem_plus_products_url() : home_url( '/nem-plus/' );
+$nem_sale_url = function_exists( 'nem_sale_products_url' ) ? nem_sale_products_url() : home_url( '/sale/' );
 
 // Determine display name
 $is_logged_in = is_user_logged_in();
@@ -124,14 +125,14 @@ $search_img_url  = $img_dir . 'search.png';
                 </li>
 
                 <!-- SẢN PHẨM SALE -->
-                <li class="nem-nav-item nem-has-dropdown">
-                    <a href="<?php echo $shop_url; ?>?on_sale=1" class="nem-nav-link">
+                <li class="nem-nav-item nem-has-dropdown <?php echo function_exists( 'nem_is_sale_page' ) && nem_is_sale_page() ? 'is-active' : ''; ?>">
+                    <a href="<?php echo esc_url( $nem_sale_url ); ?>" class="nem-nav-link <?php echo function_exists( 'nem_is_sale_page' ) && nem_is_sale_page() ? 'is-active' : ''; ?>">
                         SẢN PHẨM SALE
                     </a>
                     <button type="button" class="nem-menu-toggle" aria-label="Mở menu Sản phẩm sale" aria-expanded="false" aria-controls="nemSaleMenu"><span class="nem-arrow-down" aria-hidden="true">⌵</span></button>
                     <ul class="nem-simple-dropdown" id="nemSaleMenu">
-                        <li><a href="<?php echo $shop_url; ?>?sale=199k">CHỈ TỪ 199K</a></li>
-                        <li><a href="<?php echo $shop_url; ?>?sale=70">SALE UP 70%</a></li>
+                        <li><a href="<?php echo esc_url( add_query_arg( 'sale', '199k', $nem_sale_url ) ); ?>">CHỈ TỪ 199K</a></li>
+                        <li><a href="<?php echo esc_url( add_query_arg( 'sale', '70', $nem_sale_url ) ); ?>">SALE UP 70%</a></li>
                     </ul>
                 </li>
 
@@ -280,11 +281,11 @@ $search_img_url  = $img_dir . 'search.png';
                 <li class="nem-m-item"><a href="<?php echo esc_url( nem_new_products_url() ); ?>">SẢN PHẨM MỚI</a></li>
                 <li class="nem-m-item"><a href="<?php echo esc_url( $nem_plus_url ); ?>">NEM PLUS+</a></li>
                 <li class="nem-m-item nem-m-has-sub">
-                    <a href="<?php echo $shop_url; ?>?on_sale=1">SẢN PHẨM SALE</a>
+                    <a href="<?php echo esc_url( $nem_sale_url ); ?>">SẢN PHẨM SALE</a>
                     <button type="button" class="nem-m-sub-toggle">+</button>
                     <ul class="nem-m-sub-list">
-                        <li><a href="<?php echo $shop_url; ?>?sale=199k">CHỈ TỪ 199K</a></li>
-                        <li><a href="<?php echo $shop_url; ?>?sale=70">SALE UP 70%</a></li>
+                        <li><a href="<?php echo esc_url( add_query_arg( 'sale', '199k', $nem_sale_url ) ); ?>">CHỈ TỪ 199K</a></li>
+                        <li><a href="<?php echo esc_url( add_query_arg( 'sale', '70', $nem_sale_url ) ); ?>">SALE UP 70%</a></li>
                     </ul>
                 </li>
                 <li class="nem-m-item nem-m-has-sub">
