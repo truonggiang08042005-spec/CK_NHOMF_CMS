@@ -111,7 +111,7 @@
 }
 .nem-collection-product h3 a { color: #8c8c8c; text-decoration: none; }
 .nem-collection-product h3 a:hover { color: #111; }
-.nem-collection-product-price { display: flex; align-items: baseline; gap: 10px; color: #111; font-weight: 700; font-size: 16px; line-height: 1.4; }
+.nem-collection-product-price { display: flex; align-items: baseline; justify-content: center; text-align: center; gap: 10px; color: #111; font-weight: 700; font-size: 16px; line-height: 1.4; }
 .nem-collection-product-price .screen-reader-text { display: none; }
 .nem-collection-product-price ins { order: 1; background: none; color: #e51a1a; font-weight: 700; text-decoration: none; }
 .nem-collection-product-price del { order: 2; color: #222; font-size: 13px; font-weight: 400; margin-left: 0; text-decoration: line-through; }
