@@ -68,3 +68,10 @@
     transform: translateY(-3px) !important;
 }
 
+/* Center product price */
+.nem-collection-product-price {
+    justify-content: center !important;
+    text-align: center !important;
+}
+
+
