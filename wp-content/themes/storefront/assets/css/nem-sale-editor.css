@@ -318,7 +318,8 @@ figure.wp-block-image.nem-new-banner {
 }
 
 .nem-sale-toolbar-placeholder,
-.nem-plus-toolbar-placeholder {
+.nem-plus-toolbar-placeholder,
+.nem-new-toolbar-placeholder {
     margin: 0 0 0 auto !important;
     font-size: 13px !important;
     color: #555 !important;
@@ -334,7 +335,8 @@ figure.wp-block-image.nem-new-banner {
 }
 
 .wp-block-columns.nem-sale-products-row,
-.wp-block-columns.nem-plus-products-row {
+.wp-block-columns.nem-plus-products-row,
+.wp-block-columns.nem-new-products-row {
     display: grid !important;
     grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
     gap: 20px 14px !important;
@@ -345,7 +347,8 @@ figure.wp-block-image.nem-new-banner {
 }
 
 .wp-block-columns.nem-sale-products-row>.wp-block-column.nem-collection-product,
-.wp-block-columns.nem-plus-products-row>.wp-block-column.nem-collection-product {
+.wp-block-columns.nem-plus-products-row>.wp-block-column.nem-collection-product,
+.wp-block-columns.nem-new-products-row>.wp-block-column.nem-collection-product {
     width: 100% !important;
     max-width: 100% !important;
     flex: none !important;
@@ -360,12 +363,14 @@ figure.wp-block-image.nem-new-banner {
 }
 
 .wp-block-columns.nem-sale-products-row>.wp-block-column.nem-collection-product:hover,
-.wp-block-columns.nem-plus-products-row>.wp-block-column.nem-collection-product:hover {
+.wp-block-columns.nem-plus-products-row>.wp-block-column.nem-collection-product:hover,
+.wp-block-columns.nem-new-products-row>.wp-block-column.nem-collection-product:hover {
     border-color: #3858e9;
 }
 
 .wp-block-columns.nem-sale-products-row>.wp-block-column.nem-collection-product::before,
-.wp-block-columns.nem-plus-products-row>.wp-block-column.nem-collection-product::before {
+.wp-block-columns.nem-plus-products-row>.wp-block-column.nem-collection-product::before,
+.wp-block-columns.nem-new-products-row>.wp-block-column.nem-collection-product::before {
     content: "⋮⋮ Kéo đổi vị trí sản phẩm";
     position: absolute;
     top: 3px;
@@ -383,7 +388,8 @@ figure.wp-block-image.nem-new-banner {
 }
 
 .wp-block-columns.nem-sale-products-row>.wp-block-column.nem-collection-product:hover::before,
-.wp-block-columns.nem-plus-products-row>.wp-block-column.nem-collection-product:hover::before {
+.wp-block-columns.nem-plus-products-row>.wp-block-column.nem-collection-product:hover::before,
+.wp-block-columns.nem-new-products-row>.wp-block-column.nem-collection-product:hover::before {
     color: #3858e9;
     background: #e7ecfe;
 }
