@@ -116,7 +116,6 @@ body.search.post-type-archive-product .storefront-breadcrumb {
 }
 
 .nem-shop-layout.is-filtering {
-    opacity: .55;
     pointer-events: none;
 }
 
@@ -772,7 +771,7 @@ body.search.post-type-archive-product .storefront-breadcrumb {
     }
 }
 
-.nem-shop-sidebar .nem-shop-category-tree > .nem-shop-all-categories,
+.nem-shop-sidebar .nem-shop-category-tree>.nem-shop-all-categories,
 .nem-shop-sidebar .nem-shop-category-tree .product-categories a {
     display: block;
     margin: 0;
@@ -783,12 +782,12 @@ body.search.post-type-archive-product .storefront-breadcrumb {
     text-decoration: none;
 }
 
-.nem-shop-sidebar .nem-shop-category-tree > .nem-shop-all-categories {
+.nem-shop-sidebar .nem-shop-category-tree>.nem-shop-all-categories {
     margin-bottom: 12px;
     color: #111;
 }
 
-.nem-shop-sidebar .nem-shop-category-tree > .product-categories,
+.nem-shop-sidebar .nem-shop-category-tree>.product-categories,
 .nem-shop-sidebar .nem-shop-category-tree .product-categories ul {
     display: block;
     margin: 0;
@@ -800,7 +799,7 @@ body.search.post-type-archive-product .storefront-breadcrumb {
     margin: 0 0 11px;
 }
 
-.nem-shop-sidebar .nem-shop-category-tree > .product-categories > li > a {
+.nem-shop-sidebar .nem-shop-category-tree>.product-categories>li>a {
     color: #111;
     font-weight: 700;
 }
@@ -822,7 +821,7 @@ body.search.post-type-archive-product .storefront-breadcrumb {
     color: #111;
 }
 
-.nem-shop-sidebar .nem-shop-category-tree > .nem-shop-all-categories::before,
+.nem-shop-sidebar .nem-shop-category-tree>.nem-shop-all-categories::before,
 .nem-shop-sidebar .nem-shop-category-tree .product-categories a::before {
     display: none;
     content: none;
@@ -834,7 +833,7 @@ body.search.post-type-archive-product .storefront-breadcrumb {
         padding-bottom: 48px;
     }
 
-    .nem-shop-sidebar .nem-shop-category-tree > .product-categories {
+    .nem-shop-sidebar .nem-shop-category-tree>.product-categories {
         display: block;
         max-height: none;
         overflow: visible;
@@ -906,7 +905,6 @@ body.search.post-type-archive-product .storefront-breadcrumb {
 }
 
 .nem-shop-main.is-filtering {
-    opacity: .55;
     pointer-events: none;
 }
 

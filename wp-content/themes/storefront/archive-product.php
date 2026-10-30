@@ -109,15 +109,13 @@ $render_categories = function ($parent_id) use (&$render_categories, $category_t
         $has_children = (bool) array_filter($category_terms, function ($child) use ($term_id) {
             return (int) $child->parent === $term_id;
         });
-        $next_categories = $selected
-            ? array_values(array_diff($selected_categories, [$term_id]))
-            : array_merge($selected_categories, [$term_id]);
+        $next_category = $selected ? null : $term_id;
         printf(
             '<li class="%s"><a class="nem-shop-category-option%s%s" href="%s" aria-pressed="%s">%s</a>',
-            trim(($selected ? 'current-cat ' : '').($has_children ? 'nem-shop-category-parent' : '')),
+            trim(($selected ? 'current-cat ' : '') . ($has_children ? 'nem-shop-category-parent' : '')),
             $selected ? ' is-selected' : '',
             $has_children ? ' has-children' : '',
-            esc_url($build_filter_url(['nem_category' => $next_categories ?: null])),
+            esc_url($build_filter_url(['nem_category' => $next_category ?: null])),
             $selected ? 'true' : 'false',
             esc_html($term->name)
         );
@@ -235,11 +233,11 @@ $has_price = $current_min !== null || $current_max !== null;
                                             $swatch_color = $swatch_color ?: ($swatch_fallbacks[$term->slug] ?? null);
                                             $swatch_color = $swatch_color ?: '#cccccc';
                                             ?>
-                                            <a class="nem-shop-color-option<?php echo $is_selected ? ' is-selected' : ''; ?>" href="<?php echo esc_url($filter_url); ?>" aria-label="<?php echo esc_attr($term->name); ?>" aria-pressed="<?php echo $is_selected ? 'true' : 'false'; ?>">
+                                            <a class="nem-shop-color-option<?php echo $is_selected ? ' is-selected' : ''; ?>" href="<?php echo esc_url($filter_url); ?>" data-filter-parameter="<?php echo esc_attr($filter_parameter); ?>" data-term-slug="<?php echo esc_attr($term->slug); ?>" aria-label="<?php echo esc_attr($term->name); ?>" aria-pressed="<?php echo $is_selected ? 'true' : 'false'; ?>">
                                                 <span aria-hidden="true" style="background-color: <?php echo esc_attr($swatch_color); ?>;"></span>
                                             </a>
                                         <?php else : ?>
-                                            <a class="nem-shop-size-option<?php echo $is_selected ? ' is-selected' : ''; ?>" href="<?php echo esc_url($filter_url); ?>" aria-pressed="<?php echo $is_selected ? 'true' : 'false'; ?>">
+                                            <a class="nem-shop-size-option<?php echo $is_selected ? ' is-selected' : ''; ?>" href="<?php echo esc_url($filter_url); ?>" data-filter-parameter="<?php echo esc_attr($filter_parameter); ?>" data-term-slug="<?php echo esc_attr($term->slug); ?>" aria-pressed="<?php echo $is_selected ? 'true' : 'false'; ?>">
                                                 <?php echo esc_html($term->name); ?>
                                             </a>
                                         <?php endif; ?>
