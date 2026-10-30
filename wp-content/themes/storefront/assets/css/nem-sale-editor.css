@@ -840,3 +840,260 @@ section.nem-collection-newsletter {
     font-size: 13.5px !important;
     text-align: left !important;
 }
+
+/* ==========================================================================
+   Gutenberg Editor Styling for NEM Đăng nhập / Đăng ký Page
+   ========================================================================== */
+
+/* Breadcrumb */
+.wp-block.nem-auth-breadcrumb,
+p.nem-auth-breadcrumb {
+    max-width: 1320px !important;
+    margin: 0 auto 20px !important;
+    padding: 14px 20px !important;
+    font-family: 'Times New Roman', Times, serif !important;
+    font-size: 13px !important;
+    color: #222 !important;
+    text-transform: uppercase !important;
+    border-bottom: 1px solid #e5e5e5 !important;
+    letter-spacing: .5px !important;
+}
+
+.nem-auth-breadcrumb a {
+    color: #222 !important;
+    text-decoration: none !important;
+}
+
+/* 2 Cột Đăng nhập / Đăng ký layout */
+.wp-block-columns.nem-auth-layout {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    align-items: flex-start !important;
+    max-width: 1320px !important;
+    width: 100% !important;
+    margin: 0 auto 50px !important;
+    padding: 40px 20px 60px !important;
+    box-sizing: border-box !important;
+    background: #ffffff !important;
+    position: relative !important;
+}
+
+/* Cột Đăng nhập */
+.wp-block-columns.nem-auth-layout > .wp-block-column.nem-auth__col--login {
+    flex: 1 1 50% !important;
+    width: 50% !important;
+    padding: 10px 8% 20px 6% !important;
+    box-sizing: border-box !important;
+    position: relative !important;
+}
+
+/* Cột Đăng ký */
+.wp-block-columns.nem-auth-layout > .wp-block-column.nem-auth__col--register {
+    flex: 1 1 50% !important;
+    width: 50% !important;
+    padding: 10px 4% 20px 12% !important;
+    border-left: 1px solid #e5e5e5 !important;
+    box-sizing: border-box !important;
+    position: relative !important;
+}
+
+/* Khung form */
+.nem-auth__box {
+    max-width: 440px !important;
+    width: 100% !important;
+    margin: 0 auto !important;
+}
+
+/* Tiêu đề cột */
+.nem-auth__box h2.nem-auth__title {
+    font-family: 'Times New Roman', Times, serif !important;
+    font-size: 30px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    color: #000000 !important;
+    line-height: 1.2 !important;
+    margin: 0 0 20px 0 !important;
+    padding: 0 !important;
+    cursor: text !important;
+}
+
+/* Đoạn mô tả */
+.nem-auth__box p.nem-auth__desc {
+    font-family: 'Times New Roman', Times, serif !important;
+    font-size: 14px !important;
+    line-height: 1.6 !important;
+    color: #222222 !important;
+    margin: 0 0 26px 0 !important;
+    cursor: text !important;
+}
+
+/* Mỗi trường nhập liệu (Field) */
+.wp-block-group.nem-auth__field {
+    margin: 0 0 14px 0 !important;
+    padding: 0 !important;
+    position: relative !important;
+    transition: background .2s ease;
+}
+
+/* Nhãn trường (Label) */
+.nem-auth__field p.nem-auth__label {
+    font-family: 'Times New Roman', Times, serif !important;
+    font-size: 14px !important;
+    color: #8c8c8c !important;
+    margin: 0 0 6px 0 !important;
+    padding: 0 0 0 22px !important;
+    cursor: text !important;
+    position: relative !important;
+}
+
+/* Khung ô input giả lập (Input Box) */
+.nem-auth__field p.nem-auth__input-box {
+    display: flex !important;
+    align-items: center !important;
+    width: 100% !important;
+    height: 40px !important;
+    padding: 0 12px !important;
+    font-family: 'Times New Roman', Times, serif !important;
+    font-size: 14px !important;
+    color: #9b9b9b !important;
+    background: #ffffff !important;
+    border: 1px solid #e5e5e5 !important;
+    box-sizing: border-box !important;
+    margin: 0 !important;
+    cursor: text !important;
+}
+
+/* Drag handle ⋮⋮ cho từng trường */
+.wp-block-group.nem-auth__field::before {
+    content: "⋮⋮" !important;
+    position: absolute !important;
+    left: 2px !important;
+    top: 2px !important;
+    color: #bbb !important;
+    font-size: 13px !important;
+    font-weight: bold !important;
+    cursor: grab !important;
+    user-select: none !important;
+    z-index: 2 !important;
+    opacity: .6 !important;
+    transition: opacity .2s ease, color .2s ease;
+}
+
+.wp-block-group.nem-auth__field:hover::before {
+    opacity: 1 !important;
+    color: #2271b1 !important;
+}
+
+/* Quên mật khẩu */
+p.nem-auth__forgot {
+    text-align: right !important;
+    margin: 14px 0 28px 0 !important;
+    font-family: 'Times New Roman', Times, serif !important;
+    font-size: 14px !important;
+}
+
+p.nem-auth__forgot a {
+    color: #2f80ed !important;
+    text-decoration: none !important;
+}
+
+/* Checkbox */
+p.nem-auth__check {
+    font-family: 'Times New Roman', Times, serif !important;
+    font-size: 14px !important;
+    color: #222222 !important;
+    margin: 0 0 12px 0 !important;
+    line-height: 1.5 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    cursor: text !important;
+}
+
+p.nem-auth__check .nem-checkbox-box {
+    font-size: 16px !important;
+    color: #555 !important;
+}
+
+p.nem-auth__check a {
+    color: #2f80ed !important;
+    text-decoration: underline !important;
+}
+
+/* Nút bấm ĐĂNG NHẬP / ĐĂNG KÝ */
+p.nem-auth__btn {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    height: 48px !important;
+    background: #000000 !important;
+    color: #ffffff !important;
+    font-family: 'Times New Roman', Times, serif !important;
+    font-size: 15px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: .5px !important;
+    margin: 24px 0 0 0 !important;
+    cursor: pointer !important;
+    box-sizing: border-box !important;
+    text-align: center !important;
+    transition: background .2s ease;
+}
+
+p.nem-auth__btn:hover {
+    background: #333333 !important;
+}
+
+/* Drag handle bars cho 2 cột Đăng nhập & Đăng ký */
+.wp-block-column.nem-auth__col--login::before {
+    content: "✥ Cột Đăng nhập (Kéo đổi Trái ⇄ Phải)" !important;
+    display: block !important;
+    background: rgba(34, 113, 177, 0.08) !important;
+    color: #2271b1 !important;
+    border: 1px dashed #2271b1 !important;
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    text-align: center !important;
+    padding: 4px 8px !important;
+    margin-bottom: 16px !important;
+    border-radius: 4px !important;
+    cursor: grab !important;
+    user-select: none !important;
+}
+
+.wp-block-column.nem-auth__col--register::before {
+    content: "✥ Cột Đăng ký (Kéo đổi Trái ⇄ Phải)" !important;
+    display: block !important;
+    background: rgba(34, 113, 177, 0.08) !important;
+    color: #2271b1 !important;
+    border: 1px dashed #2271b1 !important;
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    text-align: center !important;
+    padding: 4px 8px !important;
+    margin-bottom: 16px !important;
+    border-radius: 4px !important;
+    cursor: grab !important;
+    user-select: none !important;
+}
+
+.wp-block-columns.nem-auth-layout::before {
+    content: "✥ Cả khối Đăng nhập / Đăng ký (Kéo di chuyển Lên ↕ Xuống)" !important;
+    position: absolute !important;
+    top: 6px !important;
+    left: 20px !important;
+    right: 20px !important;
+    display: block !important;
+    background: rgba(0, 0, 0, 0.03) !important;
+    color: #666 !important;
+    border: 1px dashed #ccc !important;
+    font-size: 11.5px !important;
+    font-weight: 600 !important;
+    text-align: center !important;
+    padding: 3px 8px !important;
+    border-radius: 4px !important;
+    cursor: grab !important;
+    user-select: none !important;
+}

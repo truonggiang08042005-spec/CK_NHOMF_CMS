@@ -19,6 +19,51 @@
 		if ( window.parent && window.parent.wp && window.parent.wp.data ) {
 			return window.parent.wp.data;
 		}
+				// 6. Auth Column (.nem-auth__col--login, .nem-auth__col--register)
+		var authCol = findBlockByClass( targetEl, '.nem-auth__col' );
+		if ( authCol ) {
+			var authRect = authCol.getBoundingClientRect();
+			var isLogin  = authCol.classList.contains( 'nem-auth__col--login' );
+			if ( event.clientY - authRect.top <= 44 || targetEl === authCol ) {
+				return {
+					el: authCol,
+					type: 'auth-column',
+					label: isLogin ? '✥ Đang kéo cột: Đăng nhập (Trái ⇄ Phải)' : '✥ Đang kéo cột: Đăng ký (Trái ⇄ Phải)',
+					immediate: true,
+				};
+			}
+		}
+
+		// 7. Auth Field (.nem-auth__field)
+		var authField = findBlockByClass( targetEl, '.nem-auth__field' );
+		if ( authField ) {
+			var fieldRect = authField.getBoundingClientRect();
+			if ( event.clientX - fieldRect.left <= 28 || event.clientY - fieldRect.top <= 20 ) {
+				var labelEl  = authField.querySelector( '.nem-auth__label' );
+				var labelTxt = labelEl ? labelEl.textContent.trim() : 'trường dữ liệu';
+				return {
+					el: authField,
+					type: 'auth-field',
+					label: '⋮⋮ Đang kéo trường: ' + labelTxt,
+					immediate: true,
+				};
+			}
+		}
+
+		// 8. Auth Layout (.nem-auth-layout)
+		var authLayout = findBlockByClass( targetEl, '.nem-auth-layout' );
+		if ( authLayout ) {
+			var layoutR = authLayout.getBoundingClientRect();
+			if ( event.clientY - layoutR.top <= 34 || targetEl === authLayout ) {
+				return {
+					el: authLayout,
+					type: 'auth-layout',
+					label: '✥ Đang di chuyển: Cả khối Đăng nhập / Đăng ký',
+					immediate: true,
+				};
+			}
+		}
+
 		return null;
 	}
 
@@ -48,6 +93,51 @@
 		if ( idNode ) {
 			return idNode.id.replace( /^block-/, '' );
 		}
+				// 6. Auth Column (.nem-auth__col--login, .nem-auth__col--register)
+		var authCol = findBlockByClass( targetEl, '.nem-auth__col' );
+		if ( authCol ) {
+			var authRect = authCol.getBoundingClientRect();
+			var isLogin  = authCol.classList.contains( 'nem-auth__col--login' );
+			if ( event.clientY - authRect.top <= 44 || targetEl === authCol ) {
+				return {
+					el: authCol,
+					type: 'auth-column',
+					label: isLogin ? '✥ Đang kéo cột: Đăng nhập (Trái ⇄ Phải)' : '✥ Đang kéo cột: Đăng ký (Trái ⇄ Phải)',
+					immediate: true,
+				};
+			}
+		}
+
+		// 7. Auth Field (.nem-auth__field)
+		var authField = findBlockByClass( targetEl, '.nem-auth__field' );
+		if ( authField ) {
+			var fieldRect = authField.getBoundingClientRect();
+			if ( event.clientX - fieldRect.left <= 28 || event.clientY - fieldRect.top <= 20 ) {
+				var labelEl  = authField.querySelector( '.nem-auth__label' );
+				var labelTxt = labelEl ? labelEl.textContent.trim() : 'trường dữ liệu';
+				return {
+					el: authField,
+					type: 'auth-field',
+					label: '⋮⋮ Đang kéo trường: ' + labelTxt,
+					immediate: true,
+				};
+			}
+		}
+
+		// 8. Auth Layout (.nem-auth-layout)
+		var authLayout = findBlockByClass( targetEl, '.nem-auth-layout' );
+		if ( authLayout ) {
+			var layoutR = authLayout.getBoundingClientRect();
+			if ( event.clientY - layoutR.top <= 34 || targetEl === authLayout ) {
+				return {
+					el: authLayout,
+					type: 'auth-layout',
+					label: '✥ Đang di chuyển: Cả khối Đăng nhập / Đăng ký',
+					immediate: true,
+				};
+			}
+		}
+
 		return null;
 	}
 
@@ -147,6 +237,51 @@
 			}
 		}
 
+				// 6. Auth Column (.nem-auth__col--login, .nem-auth__col--register)
+		var authCol = findBlockByClass( targetEl, '.nem-auth__col' );
+		if ( authCol ) {
+			var authRect = authCol.getBoundingClientRect();
+			var isLogin  = authCol.classList.contains( 'nem-auth__col--login' );
+			if ( event.clientY - authRect.top <= 44 || targetEl === authCol ) {
+				return {
+					el: authCol,
+					type: 'auth-column',
+					label: isLogin ? '✥ Đang kéo cột: Đăng nhập (Trái ⇄ Phải)' : '✥ Đang kéo cột: Đăng ký (Trái ⇄ Phải)',
+					immediate: true,
+				};
+			}
+		}
+
+		// 7. Auth Field (.nem-auth__field)
+		var authField = findBlockByClass( targetEl, '.nem-auth__field' );
+		if ( authField ) {
+			var fieldRect = authField.getBoundingClientRect();
+			if ( event.clientX - fieldRect.left <= 28 || event.clientY - fieldRect.top <= 20 ) {
+				var labelEl  = authField.querySelector( '.nem-auth__label' );
+				var labelTxt = labelEl ? labelEl.textContent.trim() : 'trường dữ liệu';
+				return {
+					el: authField,
+					type: 'auth-field',
+					label: '⋮⋮ Đang kéo trường: ' + labelTxt,
+					immediate: true,
+				};
+			}
+		}
+
+		// 8. Auth Layout (.nem-auth-layout)
+		var authLayout = findBlockByClass( targetEl, '.nem-auth-layout' );
+		if ( authLayout ) {
+			var layoutR = authLayout.getBoundingClientRect();
+			if ( event.clientY - layoutR.top <= 34 || targetEl === authLayout ) {
+				return {
+					el: authLayout,
+					type: 'auth-layout',
+					label: '✥ Đang di chuyển: Cả khối Đăng nhập / Đăng ký',
+					immediate: true,
+				};
+			}
+		}
+
 		return null;
 	}
 
@@ -225,6 +360,65 @@
 		return true;
 	}
 
+	function tryLiveSwapAuthHorizontal( doc, clientX, clientY, dragState ) {
+		var wpData = getWPData();
+		if ( ! wpData ) {
+			return false;
+		}
+		var layoutEl = doc.querySelector( '.nem-auth-layout[data-block]' );
+		var loginCol = doc.querySelector( '.nem-auth__col--login[data-block]' );
+		var regCol   = doc.querySelector( '.nem-auth__col--register[data-block]' );
+		if ( ! layoutEl || ! loginCol || ! regCol ) {
+			return false;
+		}
+
+		var layoutRect = layoutEl.getBoundingClientRect();
+		if ( clientY < layoutRect.top - 40 || clientY > layoutRect.bottom + 40 ) {
+			return false;
+		}
+
+		var select   = wpData.select( 'core/block-editor' );
+		var dispatch = wpData.dispatch( 'core/block-editor' );
+		var loginId  = getClientId( loginCol );
+		var regId    = getClientId( regCol );
+		if ( ! loginId || ! regId ) {
+			return false;
+		}
+
+		var rootId   = select.getBlockRootClientId( loginId ) || '';
+		var idxLogin = select.getBlockIndex( loginId );
+		var idxReg   = select.getBlockIndex( regId );
+		if ( idxLogin === -1 || idxReg === -1 ) {
+			return false;
+		}
+
+		var midX = layoutRect.left + layoutRect.width / 2;
+
+		if ( dragState.el === loginCol ) {
+			if ( idxLogin < idxReg && clientX > midX + 30 ) {
+				dispatch.moveBlocksToPosition( [ loginId ], rootId, rootId, idxReg );
+				return true;
+			}
+			if ( idxLogin > idxReg && clientX < midX - 30 ) {
+				dispatch.moveBlocksToPosition( [ loginId ], rootId, rootId, 0 );
+				return true;
+			}
+		}
+
+		if ( dragState.el === regCol ) {
+			if ( idxReg < idxLogin && clientX > midX + 30 ) {
+				dispatch.moveBlocksToPosition( [ regId ], rootId, rootId, idxLogin );
+				return true;
+			}
+			if ( idxReg > idxLogin && clientX < midX - 30 ) {
+				dispatch.moveBlocksToPosition( [ regId ], rootId, rootId, 0 );
+				return true;
+			}
+		}
+
+		return true;
+	}
+
 	function findDropTarget( doc, clientX, clientY, dragState ) {
 		var hoverEl = doc.elementFromPoint( clientX, clientY );
 		if ( ! hoverEl ) {
@@ -233,6 +427,28 @@
 
 		var sourceEl = dragState.el;
 		var type     = dragState.type;
+
+		if ( type === 'auth-column' ) {
+			var handledSwap = tryLiveSwapAuthHorizontal( doc, clientX, clientY, dragState );
+			if ( handledSwap ) {
+				return null;
+			}
+			var targetCol = findBlockByClass( hoverEl, '.nem-auth__col' );
+			if ( targetCol && targetCol !== sourceEl ) {
+				return { el: targetCol, position: 'swap' };
+			}
+			return null;
+		}
+
+		if ( type === 'auth-field' ) {
+			var targetField = findBlockByClass( hoverEl, '.nem-auth__field' );
+			if ( targetField && targetField !== sourceEl ) {
+				var fRect = targetField.getBoundingClientRect();
+				var fPos  = clientY < fRect.top + fRect.height / 2 ? 'top' : 'bottom';
+				return { el: targetField, position: fPos };
+			}
+			return null;
+		}
 
 		if ( type === 'product-card' ) {
 			var targetProd = findBlockByClass( hoverEl, '.nem-collection-product' );
@@ -317,6 +533,51 @@
 				return { el: majorSection, position: mPos };
 			}
 			return null;
+		}
+
+				// 6. Auth Column (.nem-auth__col--login, .nem-auth__col--register)
+		var authCol = findBlockByClass( targetEl, '.nem-auth__col' );
+		if ( authCol ) {
+			var authRect = authCol.getBoundingClientRect();
+			var isLogin  = authCol.classList.contains( 'nem-auth__col--login' );
+			if ( event.clientY - authRect.top <= 44 || targetEl === authCol ) {
+				return {
+					el: authCol,
+					type: 'auth-column',
+					label: isLogin ? '✥ Đang kéo cột: Đăng nhập (Trái ⇄ Phải)' : '✥ Đang kéo cột: Đăng ký (Trái ⇄ Phải)',
+					immediate: true,
+				};
+			}
+		}
+
+		// 7. Auth Field (.nem-auth__field)
+		var authField = findBlockByClass( targetEl, '.nem-auth__field' );
+		if ( authField ) {
+			var fieldRect = authField.getBoundingClientRect();
+			if ( event.clientX - fieldRect.left <= 28 || event.clientY - fieldRect.top <= 20 ) {
+				var labelEl  = authField.querySelector( '.nem-auth__label' );
+				var labelTxt = labelEl ? labelEl.textContent.trim() : 'trường dữ liệu';
+				return {
+					el: authField,
+					type: 'auth-field',
+					label: '⋮⋮ Đang kéo trường: ' + labelTxt,
+					immediate: true,
+				};
+			}
+		}
+
+		// 8. Auth Layout (.nem-auth-layout)
+		var authLayout = findBlockByClass( targetEl, '.nem-auth-layout' );
+		if ( authLayout ) {
+			var layoutR = authLayout.getBoundingClientRect();
+			if ( event.clientY - layoutR.top <= 34 || targetEl === authLayout ) {
+				return {
+					el: authLayout,
+					type: 'auth-layout',
+					label: '✥ Đang di chuyển: Cả khối Đăng nhập / Đăng ký',
+					immediate: true,
+				};
+			}
 		}
 
 		return null;
