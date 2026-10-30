@@ -2,9 +2,8 @@
 /**
  * Template Name: NEM - SALE
  *
- * Synchronized with the NEM PLUS / New products layout:
- * Breadcrumb, full-width hero banner, category sidebar, toolbar with attribute & price filters,
- * 2/3 columns toggle, product card badges, centered price, pagination, and newsletter.
+ * Renders the editable Gutenberg block content of the SALE page (if populated in All Pages),
+ * enhanced with live WooCommerce category/attribute/price filters, column switcher, and pagination.
  */
 defined( 'ABSPATH' ) || exit;
 
@@ -63,7 +62,7 @@ get_header();
 				</div>
 			</div>
 
-			<?php if ( $state['danh_muc'] || $state['gia'] || ! empty( $state['kich_co'] ) || ! empty( $state['mau_sac'] ) || $state['sale'] ) : ?>
+			<?php if ( nem_sale_has_active_filters( $state ) ) : ?>
 				<div class="nem-new-filter-status" role="status">
 					<span><?php echo esc_html( $catalog->found_posts . ' sản phẩm phù hợp' ); ?></span>
 					<a href="<?php echo esc_url( nem_sale_products_url() ); ?>">Xóa bộ lọc</a>

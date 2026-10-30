@@ -1,0 +1,830 @@
+/* Gutenberg Block Editor styling for NEM SALE page (iframe & non-iframe compatible) */
+.wp-block,
+html :where(.wp-block) {
+    max-width: 1460px !important;
+}
+
+.wp-block.nem-new-banner,
+figure.wp-block-image.nem-new-banner,
+.wp-block.nem-collection-newsletter,
+.wp-block.nem-footer-wrapper {
+    max-width: 100% !important;
+    width: 100% !important;
+}
+
+.wp-block.nem-new-banner,
+figure.wp-block-image.nem-new-banner {
+    margin: 0 auto 20px !important;
+}
+
+.wp-block.nem-new-banner img {
+    width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 1920 / 500;
+    object-fit: cover !important;
+    display: block !important;
+}
+
+.nem-new-breadcrumb {
+    max-width: 1460px !important;
+    padding: 14px 20px !important;
+    margin: 0 auto !important;
+    font-size: 12px !important;
+    color: #555 !important;
+}
+
+/* Main 2-column layout: Sidebar (left) + Catalog (right) */
+.wp-block-columns.nem-new-layout {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    align-items: flex-start !important;
+    gap: 48px !important;
+    max-width: 1460px !important;
+    width: 100% !important;
+    padding: 30px 20px !important;
+    margin: 0 auto !important;
+    box-sizing: border-box !important;
+}
+
+.wp-block-columns.nem-new-layout>.wp-block-column.nem-new-sidebar {
+    flex: 0 0 240px !important;
+    width: 240px !important;
+    max-width: 240px !important;
+    margin: 0 !important;
+}
+
+.wp-block-columns.nem-new-layout>.wp-block-column.nem-new-sidebar:not(:has(.nem-categories-box)) {
+    flex: 0 0 0px !important;
+    width: 0 !important;
+    max-width: 0 !important;
+    overflow: hidden !important;
+    padding: 0 !important;
+    border: none !important;
+}
+
+.wp-block-columns.nem-new-layout>.wp-block-column.nem-new-catalog {
+    flex: 1 1 0% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+}
+
+/* Sidebar Category Items: normal text cursor on text, drag handle (⋮⋮) on the left */
+.nem-new-sidebar p,
+.nem-categories-box p,
+.nem-new-category-group p {
+    margin: 0 0 2px 0 !important;
+    font-size: 14px !important;
+    line-height: 1.75 !important;
+    padding: 2px 6px 2px 24px !important;
+    border-radius: 3px;
+    position: relative !important;
+    cursor: text !important;
+    user-select: text !important;
+    color: #888;
+}
+
+.nem-new-sidebar p.nem-new-category-parent,
+.nem-categories-box p.nem-new-category-parent,
+.nem-new-category-group p.nem-new-category-parent {
+    color: #222 !important;
+    font-weight: 600 !important;
+}
+
+.nem-new-sidebar p.nem-new-category-all,
+.nem-categories-box p.nem-new-category-all {
+    color: #222 !important;
+    font-weight: 600 !important;
+    margin-bottom: 10px !important;
+}
+
+.nem-new-sidebar p::before,
+.nem-categories-box p::before,
+.nem-new-category-group p::before {
+    content: "⋮⋮";
+    position: absolute;
+    left: 2px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+    font-size: 11px;
+    font-weight: 700;
+    color: #a0a5aa;
+    background: #f0f0f1;
+    border-radius: 3px;
+    cursor: grab !important;
+    user-select: none !important;
+}
+
+.nem-new-sidebar p:hover::before,
+.nem-categories-box p:hover::before,
+.nem-new-category-group p:hover::before {
+    color: #2271b1;
+    background: #e1effe;
+}
+
+.nem-new-sidebar p:hover,
+.nem-categories-box p:hover,
+.nem-new-category-group p:hover {
+    background: #f6f7f7;
+}
+
+.nem-new-sidebar .nem-new-categories-title,
+.nem-categories-box .nem-new-categories-title {
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    color: #333 !important;
+    margin: 0 0 8px !important;
+    padding: 4px 6px 4px 24px !important;
+    position: relative !important;
+    cursor: grab !important;
+    user-select: text !important;
+}
+
+.nem-new-sidebar .nem-new-categories-title::before,
+.nem-categories-box .nem-new-categories-title::before {
+    content: "✥";
+    position: absolute;
+    left: 2px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+    font-size: 12px;
+    color: #2271b1;
+    background: #e7f2fd;
+    border-radius: 3px;
+    cursor: grab !important;
+}
+
+/* Container for ALL categories ("Tất cả danh mục") */
+.wp-block-group.nem-categories-box {
+    border: 2px solid #2271b1 !important;
+    background: #fafcff !important;
+    padding: 42px 10px 32px !important;
+    border-radius: 8px !important;
+    position: relative !important;
+    box-shadow: 0 2px 8px rgba(34, 113, 177, 0.08) !important;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.wp-block-group.nem-categories-box:hover {
+    border-color: #135e96 !important;
+    box-shadow: 0 4px 14px rgba(34, 113, 177, 0.16) !important;
+}
+
+.wp-block-group.nem-categories-box::before {
+    content: "Giữ để di chuyển";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    color: #ffffff;
+    background: #2271b1;
+    padding: 0 8px;
+    border-radius: 5px 5px 0 0;
+    cursor: grab !important;
+    user-select: none !important;
+    letter-spacing: 0.2px;
+}
+
+.wp-block-group.nem-categories-box::after {
+    content: "✥ Nắm thanh dưới này cũng kéo được cả khối Danh mục";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 600;
+    color: #2271b1;
+    background: #e7f2fd;
+    border-top: 1px dashed #b5c9e0;
+    border-radius: 0 0 6px 6px;
+    cursor: grab !important;
+    user-select: none !important;
+}
+
+/* Floating Drag Ghost Badge */
+.nem-floating-drag-ghost {
+    position: fixed !important;
+    z-index: 9999999 !important;
+    pointer-events: none !important;
+    background: #1e1e1e !important;
+    color: #ffffff !important;
+    padding: 10px 16px !important;
+    border-radius: 6px !important;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35) !important;
+    border: 2px solid #3858e9 !important;
+    white-space: nowrap !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+}
+
+/* Each individual category group ("Đầm", "Áo", "Quần"...) */
+.wp-block-group.nem-new-category-group {
+    margin-bottom: 12px !important;
+    padding: 24px 8px 8px !important;
+    border: 1px dashed #dcdcde !important;
+    background: #ffffff !important;
+    border-radius: 4px !important;
+    position: relative !important;
+    transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.wp-block-group.nem-new-category-group:hover {
+    border-color: #3858e9 !important;
+    background: #fcfdff !important;
+}
+
+.wp-block-group.nem-new-category-group::before {
+    content: "⋮⋮ Nắm thanh này kéo nhóm";
+    position: absolute;
+    top: 3px;
+    left: 6px;
+    right: 6px;
+    font-size: 10px;
+    font-weight: 600;
+    color: #50575e;
+    background: #f0f0f1;
+    padding: 2px 6px;
+    border-radius: 3px;
+    cursor: grab !important;
+    line-height: 1.4;
+    user-select: none !important;
+}
+
+.wp-block-group.nem-new-category-group:hover::before {
+    color: #3858e9;
+    background: #e7ecfe;
+}
+
+/* Visual feedback during direct canvas drag-and-drop */
+.nem-dragging {
+    opacity: 0.92 !important;
+    outline: 2px solid #3858e9 !important;
+    background-color: #ffffff !important;
+}
+
+.nem-drag-over-top {
+    box-shadow: 0 -4px 0 0 #3858e9 !important;
+}
+
+.nem-drag-over-bottom {
+    box-shadow: 0 4px 0 0 #3858e9 !important;
+}
+
+.nem-drag-over-swap {
+    outline: 3px dashed #3858e9 !important;
+    background-color: #f0f6fc !important;
+}
+
+/* Toolbar */
+.nem-new-toolbar,
+.wp-block-group.nem-new-toolbar,
+.nem-new-toolbar.is-layout-flex,
+.nem-new-toolbar.is-layout-flow {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 20px !important;
+    margin-bottom: 28px !important;
+}
+
+.nem-new-toolbar h1.nem-new-title {
+    font-size: 20px !important;
+    font-weight: 600 !important;
+    margin: 0 !important;
+}
+
+.nem-sale-toolbar-placeholder {
+    margin: 0 0 0 auto !important;
+    font-size: 13px !important;
+    color: #555 !important;
+    background: #f8f8f8 !important;
+    border: 1px dashed #ccc !important;
+    padding: 6px 14px !important;
+}
+
+/* 3 Products Per Row in Block Editor */
+.nem-new-products-grid {
+    display: block !important;
+    width: 100% !important;
+}
+
+.wp-block-columns.nem-sale-products-row {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 20px 14px !important;
+    width: 100% !important;
+    margin: 0 0 36px 0 !important;
+    padding: 0 !important;
+    align-items: start !important;
+}
+
+.wp-block-columns.nem-sale-products-row>.wp-block-column.nem-collection-product {
+    width: 100% !important;
+    max-width: 100% !important;
+    flex: none !important;
+    margin: 0 !important;
+    position: relative !important;
+    text-align: center !important;
+    background: #fff;
+    padding: 24px 4px 6px !important;
+    border: 1px dashed #e0e0e0;
+    border-radius: 4px;
+    transition: border-color 0.2s ease;
+}
+
+.wp-block-columns.nem-sale-products-row>.wp-block-column.nem-collection-product:hover {
+    border-color: #3858e9;
+}
+
+.wp-block-columns.nem-sale-products-row>.wp-block-column.nem-collection-product::before {
+    content: "⋮⋮ Kéo đổi vị trí sản phẩm";
+    position: absolute;
+    top: 3px;
+    left: 4px;
+    right: 4px;
+    font-size: 10px;
+    font-weight: 600;
+    color: #50575e;
+    background: #f0f0f1;
+    padding: 2px 6px;
+    border-radius: 3px;
+    cursor: grab;
+    line-height: 1.3;
+    user-select: none;
+}
+
+.wp-block-columns.nem-sale-products-row>.wp-block-column.nem-collection-product:hover::before {
+    color: #3858e9;
+    background: #e7ecfe;
+}
+
+.nem-collection-product .wp-block-image.nem-collection-product-image {
+    margin: 0 !important;
+    aspect-ratio: 2 / 3;
+    width: 100% !important;
+    cursor: grab;
+}
+
+.nem-collection-product .wp-block-image.nem-collection-product-image img {
+    width: 100% !important;
+    height: 100% !important;
+    aspect-ratio: 2 / 3;
+    object-fit: cover !important;
+    display: block !important;
+}
+
+.nem-badge-online-only {
+    display: inline-block !important;
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    margin: 6px 4px 0 0 !important;
+    background: #e94141 !important;
+    color: #fff !important;
+    padding: 4px 8px !important;
+    font-size: 10px !important;
+    font-weight: 700 !important;
+    line-height: 1.2 !important;
+}
+
+.nem-collection-sale {
+    display: inline-block !important;
+    position: relative !important;
+    top: auto !important;
+    right: auto !important;
+    margin: 6px 0 0 4px !important;
+    color: #ff473c !important;
+    background: #fff5f5 !important;
+    border: 1px solid #ffd6d6 !important;
+    padding: 3px 10px !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    line-height: 1.2 !important;
+}
+
+.nem-collection-product h3 {
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    margin: 10px 4px 8px !important;
+    text-align: center !important;
+    line-height: 1.4 !important;
+}
+
+.nem-collection-product h3 a {
+    color: #444 !important;
+    text-decoration: none !important;
+}
+
+.nem-collection-product-price {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: baseline !important;
+    gap: 8px !important;
+    font-size: 15px !important;
+    margin: 0 !important;
+}
+
+.nem-collection-product-price strong {
+    color: #e51a1a !important;
+    font-weight: 700 !important;
+}
+
+.nem-collection-product-price s {
+    color: #777 !important;
+    font-size: 12px !important;
+    font-weight: 400 !important;
+}
+
+/* Horizontal Pagination (1 2 3 ... 85 ») */
+nav.nem-new-pagination,
+.wp-block-group.nem-new-pagination,
+.nem-new-pagination.is-layout-flex,
+.nem-new-pagination.is-layout-flow,
+.nem-new-pagination>.block-editor-inner-blocks>.block-editor-block-list__layout {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 10px !important;
+    margin: 35px auto 10px !important;
+    width: 100% !important;
+}
+
+.wp-block-group.nem-new-pagination>.nem-page-item,
+.nem-new-pagination p.nem-page-item {
+    margin: 0 !important;
+    width: 42px !important;
+    min-width: 42px !important;
+    height: 42px !important;
+    flex: 0 0 42px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: #f5f5f5 !important;
+    color: #111 !important;
+    font-size: 15px !important;
+    text-align: center !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+}
+
+.wp-block-group.nem-new-pagination>.nem-page-item a,
+.nem-new-pagination p.nem-page-item a {
+    color: inherit !important;
+    text-decoration: none !important;
+    background: transparent !important;
+}
+
+.wp-block-group.nem-new-pagination>.nem-page-item.is-current,
+.nem-new-pagination p.nem-page-item.is-current {
+    background: #111 !important;
+    color: #fff !important;
+    font-weight: 600 !important;
+}
+
+.wp-block-group.nem-new-pagination>.nem-page-item.is-dots,
+.nem-new-pagination p.nem-page-item.is-dots {
+    background: transparent !important;
+    color: #777 !important;
+}
+
+/* Newsletter Block (synchronized with collection-newsletter.php on /sale/) */
+.wp-block-group.nem-collection-newsletter,
+section.nem-collection-newsletter {
+    background: #efeff3 !important;
+    padding: 65px 24px 48px !important;
+    margin: 40px 0 0 0 !important;
+    text-align: center !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    font-family: Arial, sans-serif !important;
+}
+
+.nem-collection-newsletter h2,
+.wp-block-group.nem-collection-newsletter h2.wp-block-heading {
+    font-family: Arial, sans-serif !important;
+    font-size: 28px !important;
+    font-weight: 700 !important;
+    color: #111111 !important;
+    margin: 0 0 12px 0 !important;
+    text-align: center !important;
+    line-height: 1.3 !important;
+}
+
+.nem-collection-newsletter>p,
+.wp-block-group.nem-collection-newsletter>p {
+    font-family: Arial, sans-serif !important;
+    font-size: 14px !important;
+    color: #111111 !important;
+    margin: 0 auto 26px auto !important;
+    text-align: center !important;
+    line-height: 1.5 !important;
+}
+
+.wp-block-columns.nem-newsletter-input-row {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    justify-content: center !important;
+    align-items: stretch !important;
+    width: 100% !important;
+    max-width: 670px !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+    gap: 0 !important;
+}
+
+.wp-block-columns.nem-newsletter-input-row>.wp-block-column.nem-newsletter-input-col {
+    flex: 1 1 auto !important;
+    width: auto !important;
+    margin: 0 !important;
+    background: #ffffff !important;
+    border: 1px solid #d6d6d6 !important;
+    border-right: none !important;
+    padding: 14px 20px !important;
+    display: flex !important;
+    align-items: center !important;
+    box-sizing: border-box !important;
+}
+
+.nem-newsletter-input-col p.nem-newsletter-input-box {
+    margin: 0 !important;
+    padding: 0 !important;
+    text-align: left !important;
+    color: #757575 !important;
+    font-size: 14px !important;
+    font-family: Arial, sans-serif !important;
+    width: 100% !important;
+}
+
+.wp-block-columns.nem-newsletter-input-row>.wp-block-column.nem-newsletter-btn-col {
+    flex: 0 0 148px !important;
+    width: 148px !important;
+    max-width: 148px !important;
+    margin: 0 !important;
+    background: #000000 !important;
+    border: 1px solid #000000 !important;
+    padding: 12px 20px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-sizing: border-box !important;
+}
+
+.nem-newsletter-btn-col p.nem-newsletter-submit-btn {
+    margin: 0 !important;
+    padding: 0 !important;
+    color: #ffffff !important;
+    font-size: 14px !important;
+    font-weight: 400 !important;
+    text-align: center !important;
+    font-family: Arial, sans-serif !important;
+    width: 100% !important;
+}
+
+.wp-block-columns.nem-newsletter-socials-row {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 14px !important;
+    margin: 35px auto 0 auto !important;
+    padding: 0 !important;
+    width: auto !important;
+    max-width: 160px !important;
+}
+
+.wp-block-columns.nem-newsletter-socials-row>.wp-block-column.nem-social-col {
+    flex: 0 0 34px !important;
+    width: 34px !important;
+    max-width: 34px !important;
+    height: 34px !important;
+    border-radius: 50% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    position: relative !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    overflow: hidden !important;
+}
+
+.wp-block-columns.nem-newsletter-socials-row>.wp-block-column.nem-social-col p {
+    opacity: 0 !important;
+    margin: 0 !important;
+    width: 34px !important;
+    height: 34px !important;
+}
+
+.wp-block-column.nem-social-col.is-fb {
+    background-color: #1877f2 !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ffffff'%3E%3Cpath d='M14 21v-8h3l.5-3H14V8c0-.9.3-1.5 1.7-1.5H18V3.2c-.4-.1-1.8-.2-3.1-.2C11.9 3 10 4.8 10 8v2H7v3h3v8z'/%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    background-size: 23px 23px !important;
+}
+
+.wp-block-column.nem-social-col.is-ig {
+    background: linear-gradient(45deg, #ffb34b, #e4315c, #a82495) !important;
+}
+
+.wp-block-column.nem-social-col.is-ig::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='4' y='4' width='16' height='16' rx='5' fill='none' stroke='%23ffffff' stroke-width='2'/%3E%3Ccircle cx='12' cy='12' r='4' fill='none' stroke='%23ffffff' stroke-width='2'/%3E%3Ccircle cx='17' cy='7' r='1.2' fill='%23ffffff'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 23px 23px;
+    pointer-events: none;
+}
+
+.wp-block-column.nem-social-col.is-yt {
+    background-color: #ff0000 !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='2' y='5' width='20' height='14' rx='4' fill='%23ffffff'/%3E%3Cpath d='m10 8 6 4-6 4z' fill='%23ff0000'/%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    background-size: 23px 23px !important;
+}
+
+/* NEM Black Footer Block inside Editor (synchronized with footer-nem.php on /sale/) */
+.wp-block-group.nem-footer-wrapper {
+    background-color: #000000 !important;
+    color: #ffffff !important;
+    font-family: 'Times New Roman', Times, serif !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+}
+
+.wp-block-group.nem-footer-body {
+    padding: 38px 24px 28px !important;
+    margin: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    background-color: #000000 !important;
+    box-sizing: border-box !important;
+}
+
+.wp-block-columns.nem-footer-container {
+    display: grid !important;
+    grid-template-columns: 2.2fr 1.2fr 1.6fr 1.3fr !important;
+    gap: 36px !important;
+    max-width: 1320px !important;
+    width: 100% !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+    align-items: start !important;
+    box-sizing: border-box !important;
+}
+
+.wp-block-columns.nem-footer-container>.wp-block-column {
+    margin: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    flex: none !important;
+}
+
+.nem-footer-wrapper .nem-footer-body h4,
+.nem-footer-wrapper .nem-footer-body h4.nem-footer-heading {
+    color: #ffffff !important;
+    font-family: 'Times New Roman', Times, serif !important;
+    font-size: 15px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    margin: 0 0 10px 0 !important;
+    line-height: 1.3 !important;
+}
+
+.nem-footer-wrapper .nem-footer-body h5,
+.nem-footer-wrapper .nem-footer-body h5.nem-payment-heading {
+    color: #ffffff !important;
+    font-family: 'Times New Roman', Times, serif !important;
+    font-size: 14.5px !important;
+    font-weight: 700 !important;
+    margin: 0 0 10px 0 !important;
+    line-height: 1.3 !important;
+}
+
+.nem-footer-wrapper .nem-footer-body p,
+.nem-footer-wrapper .nem-footer-body li,
+.nem-footer-wrapper .nem-footer-body a,
+.nem-footer-wrapper .nem-footer-body strong {
+    color: #ffffff !important;
+    font-family: 'Times New Roman', Times, serif !important;
+    font-size: 13.5px !important;
+    line-height: 1.45 !important;
+    margin: 0 0 3px 0 !important;
+    text-decoration: none !important;
+}
+
+.nem-footer-wrapper .nem-col-links {
+    padding-top: 29px !important;
+}
+
+/* 4 horizontal payment badges in Column 4 */
+.wp-block-columns.nem-payment-icons-row {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 8px !important;
+    margin: 0 0 14px 0 !important;
+    padding: 0 !important;
+    width: auto !important;
+}
+
+.wp-block-columns.nem-payment-icons-row>.wp-block-column.nem-payment-badge-col {
+    flex: 0 0 auto !important;
+    width: auto !important;
+    max-width: none !important;
+    background: #ffffff !important;
+    border-radius: 2px !important;
+    padding: 4px 6px !important;
+    height: 28px !important;
+    margin: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-sizing: border-box !important;
+}
+
+.wp-block-column.nem-payment-badge-col figure.wp-block-image {
+    margin: 0 !important;
+    padding: 0 !important;
+    height: 18px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.wp-block-column.nem-payment-badge-col figure.wp-block-image img {
+    height: 18px !important;
+    width: auto !important;
+    max-width: 46px !important;
+    object-fit: contain !important;
+    display: block !important;
+}
+
+.nem-footer-wrapper .nem-bct-wrapper,
+.nem-footer-wrapper .nem-bct-wrapper figure.wp-block-image {
+    margin: 4px 0 0 0 !important;
+    text-align: left !important;
+}
+
+.nem-footer-wrapper .nem-bct-wrapper img {
+    width: 130px !important;
+    height: auto !important;
+    display: block !important;
+    margin: 0 !important;
+}
+
+.wp-block-group.nem-footer-copyright {
+    background-color: #ededed !important;
+    border-top: 1px solid #e0e0e0 !important;
+    padding: 12px 24px !important;
+    margin: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+.wp-block-group.nem-footer-copyright p.nem-copyright-text {
+    max-width: 1320px !important;
+    margin: 0 auto !important;
+    color: #000000 !important;
+    font-family: 'Times New Roman', Times, serif !important;
+    font-weight: 700 !important;
+    font-size: 13.5px !important;
+    text-align: left !important;
+}

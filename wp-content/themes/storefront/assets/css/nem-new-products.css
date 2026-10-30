@@ -1,4 +1,4 @@
-/* New arrivals: full-width campaign banner, category rail, three-column catalog. */
+/* New arrivals & SALE: full-width campaign banner, category rail, three-column catalog. */
 .nem-new-products-page #content > .col-full { max-width: none; width: 100%; padding: 0; margin: 0; }
 .nem-new-products-page .site-main { margin: 0; }
 .nem-new-products-page .nem-footer-wrapper { margin-top: 0; }
@@ -7,15 +7,15 @@
 .nem-new-breadcrumb { display: flex; align-items: center; gap: 7px; padding: 19px 0; font-size: 12px; line-height: 1.4; }
 .nem-new-breadcrumb a { color: #555; text-decoration: none; }
 .nem-new-banner img { display: block; width: 100%; height: auto; aspect-ratio: 1920 / 500; object-fit: cover; border-radius: 0; }
-.nem-new-layout { display: grid; grid-template-columns: 230px minmax(0, 1fr); gap: 100px; padding-top: 60px; padding-bottom: 65px; }
+.nem-new-layout { display: grid; grid-template-columns: 230px minmax(0, 1fr); gap: 100px; padding-top: 60px; padding-bottom: 65px; align-items: start; }
 .nem-new-sidebar { font-size: 14px; line-height: 1.8; }
-.nem-new-categories summary { color: #333; font-weight: 600; cursor: pointer; list-style: none; }
+.nem-new-categories summary { color: #333; font-size: 14px; font-weight: 600; cursor: pointer; list-style: none; }
 .nem-new-categories summary::-webkit-details-marker { display: none; }
-.nem-new-sidebar a { display: block; color: #999; text-decoration: none; }
-.nem-new-sidebar .nem-new-category-all { color: #333; margin-bottom: 14px; }
+.nem-new-categories a { display: block; color: #999; text-decoration: none; }
+.nem-new-category-all { color: #333 !important; margin-bottom: 14px; }
 .nem-new-category-group { margin-bottom: 13px; }
-.nem-new-sidebar .nem-new-category-parent { color: #444; font-weight: 600; }
-.nem-new-sidebar a:hover, .nem-new-sidebar a:focus-visible, .nem-new-sidebar a.is-active { color: #111; font-weight: 600; }
+.nem-new-category-parent { color: #444 !important; font-weight: 600; }
+.nem-new-categories a:hover, .nem-new-categories a:focus-visible, .nem-new-categories a.is-active { color: #111 !important; font-weight: 600; }
 .nem-new-catalog { min-width: 0; }
 .nem-new-toolbar { display: flex; align-items: center; gap: 34px; min-height: 30px; margin-bottom: 60px; }
 .nem-new-toolbar h1 { flex-shrink: 0; font-size: 20px; font-weight: 600; line-height: 1.4; margin: 0 auto 0 0; letter-spacing: 0; }
@@ -45,7 +45,6 @@
 .nem-new-products-grid .nem-collection-sale { position: absolute; top: 0; right: 0; color: #ff473c; background: #ffffff; padding: 6px 22px; font-size: 14px; font-weight: 700; z-index: 3; line-height: 1.2; border-radius: 0; letter-spacing: 0.2px; }
 .nem-new-pagination { margin-top: 55px; }
 .nem-new-pagination ul { display: flex; justify-content: center; align-items: center; gap: 10px; list-style: none; margin: 0; padding: 0; }
-.nem-new-pagination li { margin: 0; }
 .nem-new-pagination a, .nem-new-pagination span { display: grid; place-items: center; min-width: 43px; height: 43px; padding: 5px 10px; background: #f5f5f5; color: #111; text-decoration: none; font-size: 16px; }
 .nem-new-pagination .current { background: #111; color: #fff; }
 .nem-new-pagination .dots { background: none; color: #888; }
