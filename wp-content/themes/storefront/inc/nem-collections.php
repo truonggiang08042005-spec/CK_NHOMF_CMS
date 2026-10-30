@@ -101,6 +101,24 @@ add_action( 'woocommerce_before_shop_loop_item_title', function () {
 	echo '<span class="nem-collection-product-overlay"><span class="nem-collection-view-more">XEM THÊM</span></span></span>';
 }, 11 );
 
+add_action( 'woocommerce_before_shop_loop_item_title', function () {
+	global $product;
+	if ( ! nem_collection_catalog_effects() || ! ( $product instanceof WC_Product ) ) {
+		return;
+	}
+
+	if ( 'yes' === $product->get_meta( '_nem_online_only' ) ) {
+		echo '<span class="nem-badge-online-only">ONLINE ONLY</span>';
+	}
+
+	$regular_price = (float) $product->get_regular_price();
+	$price = (float) $product->get_price();
+	if ( $product->is_on_sale() && $regular_price > 0 && $price < $regular_price ) {
+		$discount = round( ( 1 - $price / $regular_price ) * 100 );
+		printf( '<span class="nem-collection-sale">-%s%%</span>', esc_html( $discount ) );
+	}
+}, 10 );
+
 add_filter( 'woocommerce_page_title', function ( $title ) {
 	$names = array( 'thoi-nha' => 'Áo dài THỜI NHÃ', 'nhe-buoc-moi-ngay' => 'NHẸ BƯỚC MỖI NGÀY', 'giao-thoi' => 'GIAO THỜI', 'nhip-thanh-pho' => 'Nhịp Thành phố' );
 	$slug = isset( $_GET['collection'] ) && is_string( $_GET['collection'] ) ? sanitize_title( wp_unslash( $_GET['collection'] ) ) : '';

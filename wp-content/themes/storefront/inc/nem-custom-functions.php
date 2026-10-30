@@ -69,7 +69,7 @@ function nem_shop_selected_category_filters() {
 			}
 		}
 
-		return array_values( array_unique( $selected ) );
+		return array_slice( array_values( array_unique( $selected ) ), 0, 1 );
 	}
 
 	$queried = get_queried_object();
@@ -340,4 +340,3 @@ add_filter( 'woocommerce_format_sale_price', function ( $price, $regular_price, 
     $formatted_sale = is_numeric( $sale_price ) ? wc_price( $sale_price ) : $sale_price;
     return '<ins>' . $formatted_sale . '</ins> <del aria-hidden="true">' . $formatted_reg . '</del>';
 }, 10, 3 );
-

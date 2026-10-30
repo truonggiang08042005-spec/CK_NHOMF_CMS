@@ -3,6 +3,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!main) return;
 
     let activeRequest = null;
+    let filterTimeout = null;
+    let pendingFilterUrl = null;
+    let pendingFilterKey = null;
     let columns = main.dataset.columns || '3';
     let categoriesOpen = window.matchMedia('(min-width: 761px)').matches;
     const getMain = () => document.querySelector('.nem-shop-main');
@@ -102,6 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (currentSidebar && nextSidebar) currentSidebar.replaceWith(nextSidebar);
             currentTitle.textContent = nextTitle.textContent;
             setColumns(shopMain, columns);
+            if (options.scrollToTop) window.scrollTo({ top: 0, behavior: 'smooth' });
             shopMain.classList.remove('is-filtering');
             shopMain.removeAttribute('aria-busy');
             const categoryDetails = nextSidebar?.querySelector('.nem-shop-categories');
@@ -111,6 +115,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const productCount = shopMain.querySelectorAll('.nem-shop-results .products li.product').length;
             announce(shopMain, `${productCount} sản phẩm`);
+            if (pendingFilterUrl === requestUrl.href) {
+                pendingFilterUrl = null;
+                pendingFilterKey = null;
+            }
         }).catch(error => {
             if (error.name === 'AbortError' || activeRequest !== request) return;
             shopMain.classList.remove('is-filtering');
@@ -157,14 +165,84 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        const attributeLink = event.target.closest('.nem-shop-size-option, .nem-shop-color-option');
+        if (attributeLink && !event.defaultPrevented && event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey) {
+            const parameter = attributeLink.dataset.filterParameter;
+            const slug = attributeLink.dataset.termSlug;
+            const filter = attributeLink.closest('[data-filter-key]');
+            if (!parameter || !slug || !filter) return;
+
+            event.preventDefault();
+            const url = new URL(pendingFilterUrl || window.location.href, window.location.href);
+            const selectedTerms = (url.searchParams.get(parameter) || '').split(',').filter(Boolean);
+            const isSelected = selectedTerms.includes(slug);
+            const nextTerms = isSelected
+                ? selectedTerms.filter(term => term !== slug)
+                : [...selectedTerms, slug];
+
+            if (nextTerms.length) {
+                url.searchParams.set(parameter, nextTerms.join(','));
+            } else {
+                url.searchParams.delete(parameter);
+            }
+            if (parameter.startsWith('filter_')) {
+                const queryTypeParameter = `query_type_${parameter.slice('filter_'.length)}`;
+                if (nextTerms.length) {
+                    url.searchParams.set(queryTypeParameter, 'or');
+                } else {
+                    url.searchParams.delete(queryTypeParameter);
+                }
+            }
+
+            attributeLink.classList.toggle('is-selected', !isSelected);
+            attributeLink.setAttribute('aria-pressed', String(!isSelected));
+            const hasSelection = filter.querySelector('.nem-shop-size-option.is-selected, .nem-shop-color-option.is-selected');
+            filter.querySelector('.nem-shop-filter-toggle')?.classList.toggle('is-selected', Boolean(hasSelection));
+
+            pendingFilterUrl = url.href;
+            pendingFilterKey = filter.getAttribute('data-filter-key');
+            window.clearTimeout(filterTimeout);
+            if (activeRequest) {
+                activeRequest.abort();
+                activeRequest = null;
+                shopMain.classList.remove('is-filtering');
+                shopMain.removeAttribute('aria-busy');
+            }
+            announce(shopMain, 'Đã chọn bộ lọc. Kết quả sẽ cập nhật sau nửa giây.');
+            filterTimeout = window.setTimeout(() => {
+                if (pendingFilterUrl) {
+                    updateResults(pendingFilterUrl, {
+                        filterKey: pendingFilterKey,
+                        pushState: true
+                    });
+                }
+            }, 500);
+            return;
+        }
+
         const link = event.target.closest('.nem-shop-size-option, .nem-shop-color-option, .nem-shop-price-option, .nem-shop-category-option, .nem-shop-all-categories, .nem-shop-results .woocommerce-pagination a');
         if (link && !event.defaultPrevented && event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey) {
+            const currentUrl = new URL(window.location.href);
             const url = new URL(link.href, window.location.href);
+            if (pendingFilterUrl) {
+                const pendingUrl = new URL(pendingFilterUrl, window.location.href);
+                const queryKeys = new Set([...currentUrl.searchParams.keys(), ...url.searchParams.keys()]);
+                queryKeys.forEach(key => {
+                    if (url.searchParams.get(key) === currentUrl.searchParams.get(key)) return;
+                    const values = url.searchParams.getAll(key);
+                    pendingUrl.searchParams.delete(key);
+                    values.forEach(value => pendingUrl.searchParams.append(key, value));
+                });
+                url.search = pendingUrl.search;
+                window.clearTimeout(filterTimeout);
+                pendingFilterUrl = url.href;
+            }
             if (url.origin !== window.location.origin) return;
             event.preventDefault();
             const filter = link.closest('[data-filter-key]');
             updateResults(url.href, {
                 filterKey: filter?.getAttribute('data-filter-key'),
+                scrollToTop: link.matches('.nem-shop-results .woocommerce-pagination a'),
                 pushState: true
             });
             return;
