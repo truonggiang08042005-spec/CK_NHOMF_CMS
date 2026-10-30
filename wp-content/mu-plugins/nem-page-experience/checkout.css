@@ -93,10 +93,65 @@ body.nem-checkout-body {
 }
 
 .nem-checkout-left,
-.nem-checkout-right {
+.nem-checkout-right,
+.nem-checkout-main,
+.nem-checkout-sidebar,
+.nem-checkout-full {
   display: flex;
   flex-direction: column;
   gap: 18px;
+}
+
+.nem-checkout-full { grid-column: 1 / -1; }
+.nem-checkout-full:empty { display: none; }
+.nem-checkout-main { grid-column: 1; min-width: 0; }
+.nem-checkout-sidebar { grid-column: 2; min-width: 0; }
+.nem-checkout-sidebar { position: sticky; top: 24px; }
+.nem-checkout-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.nem-checkout-back { color: #555; font-size: 13px; }
+.nem-checkout-heading { font-size: 24px; font-weight: 600; margin: 0 0 22px; }
+.nem-checkout-body label { color: inherit; }
+.nem-checkout-body .form-row { width: 100%; padding: 0; float: none; margin: 0 0 15px; }
+.nem-checkout-body .form-row label { display: block; font-size: 13px; margin-bottom: 6px; }
+.nem-checkout-body .nem-payment-options { list-style: none; padding: 0; margin: 0; }
+.nem-checkout-body .nem-payment-options li { padding: 0; margin: 0; list-style: none; }
+.nem-checkout-body .nem-payment-item { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+.nem-checkout-body .nem-payment-radio { margin: 0; }
+.nem-checkout-body .payment_box { padding: 10px 14px; background: #fafafa; font-size: 12px; color: #555; }
+.nem-checkout-body .payment_box p { margin: 0; }
+.nem-payment-status { display: block; color: #888; font-size: 11px; line-height: 1.5; }
+.nem-payment-options .is-unavailable .nem-payment-item { cursor: not-allowed; color: #777; }
+.nem-payment-options .is-unavailable .nem-payment-icon { opacity: .65; }
+.nem-payment-badges > span:first-child { border: 1px solid #bbb; font-size: 8px; padding: 0 2px; color: #777; }
+.nem-payment-badges > b { color: #15469a; font-size: 11px; font-style: italic; }
+.nem-payment-badges > b:nth-of-type(2) { color: #15914b; }
+.nem-payment-badges .nem-mastercard { color: #e79320; font-size: 13px; letter-spacing: -5px; margin: 0 5px 0 0; text-shadow: -4px 0 #e6252d; }
+.nem-shipping-rate { display: flex; align-items: center; gap: 8px; margin: 10px 0; font-size: 13px; }
+.nem-cart-items { margin-bottom: 18px; }
+.nem-cart-variant { font-size: 11px; color: #777; }
+.nem-cart-variant dl { margin: 4px 0 8px; }
+.nem-cart-variant dt,.nem-cart-variant dd,.nem-cart-variant p { display: inline; margin: 0 5px 0 0; }
+.nem-checkout-legal { margin: 16px 0; font-size: 11px; color: #777; }
+.nem-checkout-legal a { color: #333; text-decoration: underline; }
+.nem-checkout-body .nem-checkout-submit-btn:disabled { opacity: .6; cursor: wait; }
+.nem-checkout-body #order_review { float: none; width: 100%; margin: 0; clear: none; }
+.nem-checkout-body #payment { background: transparent; border-radius: 0; }
+.nem-checkout-body #payment .payment_methods { padding: 0; border-bottom: 0; }
+.nem-checkout-body #payment .payment_methods li.wc_payment_method { background: transparent; border: 0; }
+.nem-checkout-body #payment .payment_methods li.wc_payment_method > label { display: flex; align-items: center; gap: 10px; padding: 10px; margin: 0; font-weight: 400; background: white; }
+.nem-checkout-body #payment .payment_methods li.wc_payment_method > label::before { display: none; content: none; }
+.nem-checkout-body #payment .nem-payment-radio { display: grid !important; position: static; opacity: 1; width: 17px; height: 17px; margin: 0; }
+.nem-checkout-body #payment .payment_box { margin: 0; padding: 12px; background: #fafafa; color: #555; }
+.nem-checkout-body .nem-coupon-input,.nem-checkout-body .nem-input { box-shadow: none; background: #fff; }
+.nem-thankyou-box { max-width: 740px; margin: 20px auto; padding: 32px; }
+.nem-thankyou-box h1 { font-size: 24px; font-weight: 600; }
+.nem-order-details-table { width: 100%; border-collapse: collapse; margin: 24px 0; }
+.nem-order-details-table th,.nem-order-details-table td { padding: 12px 8px; border-bottom: 1px solid #eee; text-align: left; font-size: 14px; }
+.nem-thankyou-box .wc-bacs-bank-details { list-style: none; margin: 0 0 24px; padding: 16px; background: #f8f8f8; }
+.nem-thankyou-box .wc-bacs-bank-details li { padding: 5px 0; }
+@media(max-width:860px) {
+  .nem-checkout-main,.nem-checkout-sidebar,.nem-checkout-full { grid-column: 1; }
+  .nem-checkout-sidebar { position: static; }
 }
 
 /* Cards */

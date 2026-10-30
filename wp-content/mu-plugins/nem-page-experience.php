@@ -5,6 +5,10 @@
  * Version: 1.0.0
  */
 defined('ABSPATH') || exit;
+require_once __DIR__.'/nem-page-experience/admin.php';
+require_once __DIR__.'/nem-page-experience/navigation.php';
+require_once __DIR__.'/nem-page-experience/checkout-functions.php';
+require_once __DIR__.'/nem-page-experience/payments.php';
 function npe_is_page() { return did_action('wp') && function_exists('is_product') && (is_front_page() || is_product()); }
 function npe_is_checkout() { return did_action('wp') && function_exists('is_checkout') && is_checkout() && !is_order_received_page(); }
 function npe_is_thankyou() { return did_action('wp') && function_exists('is_order_received_page') && is_order_received_page(); }
@@ -192,63 +196,6 @@ add_filter('woocommerce_format_sale_price', 'nem_accessible_price_labels', 100);
 add_action('wp_head', function () {
     echo '<style id="nem-price-accessibility">.price .screen-reader-text,.npe-card-price .screen-reader-text,.npe-price .screen-reader-text,.nem-price .screen-reader-text,.woocommerce-Price-amount~.screen-reader-text{position:absolute!important;clip-path:inset(50%)!important;width:1px!important;height:1px!important;overflow:hidden!important;white-space:nowrap!important;padding:0!important;border:0!important}</style>';
 }, 100);
-
-// Payment Gateways for MoMo and Payoo
-add_action('plugins_loaded', function () {
-    if (!class_exists('WC_Payment_Gateway')) return;
-
-    class NPE_Gateway_Momo extends WC_Payment_Gateway {
-        public function __construct() {
-            $this->id = 'momo';
-            $this->method_title = 'Ví MoMo';
-            $this->method_description = 'Thanh toán online qua ví MoMo';
-            $this->title = 'Thanh toán online qua ví MoMo';
-            $this->has_fields = false;
-            $this->enabled = 'yes';
-            $this->init_form_fields();
-            $this->init_settings();
-        }
-        public function process_payment($order_id) {
-            $order = wc_get_order($order_id);
-            $order->update_status('on-hold', __('Chờ thanh toán qua ví MoMo.', 'woocommerce'));
-            wc_reduce_stock_levels($order_id);
-            WC()->cart->empty_cart();
-            return [
-                'result' => 'success',
-                'redirect' => $this->get_return_url($order),
-            ];
-        }
-    }
-
-    class NPE_Gateway_Payoo extends WC_Payment_Gateway {
-        public function __construct() {
-            $this->id = 'payoo';
-            $this->method_title = 'Payoo';
-            $this->method_description = 'Thẻ ATM/ Visa/ Master/ JCB/ QR Pay/ Ví điện tử khác qua Payoo';
-            $this->title = 'Thẻ ATM/ Visa/ Master/ JCB/ QR Pay/ Ví điện tử khác qua Payoo';
-            $this->has_fields = false;
-            $this->enabled = 'yes';
-            $this->init_form_fields();
-            $this->init_settings();
-        }
-        public function process_payment($order_id) {
-            $order = wc_get_order($order_id);
-            $order->update_status('on-hold', __('Chờ thanh toán qua cổng Payoo.', 'woocommerce'));
-            wc_reduce_stock_levels($order_id);
-            WC()->cart->empty_cart();
-            return [
-                'result' => 'success',
-                'redirect' => $this->get_return_url($order),
-            ];
-        }
-    }
-
-    add_filter('woocommerce_payment_gateways', function ($gateways) {
-        $gateways[] = 'NPE_Gateway_Momo';
-        $gateways[] = 'NPE_Gateway_Payoo';
-        return $gateways;
-    });
-}, 0);
 
 // Checkout AJAX Endpoints
 add_action('wp_ajax_npe_checkout_update_qty', 'npe_ajax_checkout_update_qty');
