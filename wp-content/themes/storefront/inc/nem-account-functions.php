@@ -16,7 +16,13 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Trang đăng nhập / đăng ký (trang Tài khoản khi chưa đăng nhập).
  */
 function nem_is_auth_page() {
-	return function_exists( 'is_account_page' ) && is_account_page() && ! is_user_logged_in();
+	if ( is_page_template( 'page-dang-nhap.php' ) || is_page( array( 'dang-nhap', 'dang-nhap-dang-ky', 'tai-khoan' ) ) ) {
+		return true;
+	}
+	if ( is_user_logged_in() ) {
+		return false;
+	}
+	return ( function_exists( 'is_account_page' ) && is_account_page() );
 }
 
 /** Customer name shared by the account page and header. */
@@ -105,6 +111,12 @@ add_filter( 'body_class', function ( $classes ) {
 /**
  * Breadcrumb full-width ngay dưới header.
  */
+add_action( 'wp', function () {
+	if ( nem_is_auth_page() ) {
+		remove_action( 'storefront_before_content', 'woocommerce_breadcrumb', 10 );
+	}
+} );
+
 add_action( 'storefront_before_content', function () {
 	if ( ! nem_is_auth_page() ) {
 		return;
@@ -114,7 +126,7 @@ add_action( 'storefront_before_content', function () {
 		<div class="nem-auth-breadcrumb__inner">
 			<a href="<?php echo esc_url( home_url( '/' ) ); ?>">Trang chủ</a>
 			<span class="nem-auth-breadcrumb__sep">/</span>
-			<span aria-current="page">Tài khoản</span>
+			<?php $is_dn = is_page( array( 'dang-nhap', 'dang-nhap-dang-ky' ) ) || is_page_template( 'page-dang-nhap.php' ); ?><span aria-current="page"><?php echo $is_dn ? 'Đăng nhập / Đăng ký' : 'Tài khoản'; ?></span>
 		</div>
 	</nav>
 	<?php

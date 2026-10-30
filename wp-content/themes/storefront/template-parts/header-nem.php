@@ -8,6 +8,7 @@ $home_url    = esc_url( home_url( '/' ) );
 $shop_url    = function_exists( 'wc_get_page_permalink' ) ? esc_url( wc_get_page_permalink( 'shop' ) ) : $home_url;
 $cart_url    = function_exists( 'wc_get_cart_url' ) ? esc_url( wc_get_cart_url() ) : $home_url . 'cart/';
 $account_url = function_exists( 'wc_get_page_permalink' ) ? esc_url( wc_get_page_permalink( 'myaccount' ) ) : $home_url . 'my-account/';
+$auth_url    = esc_url( home_url( '/dang-nhap/' ) );
 $cart_count  = ( function_exists( 'WC' ) && is_object( WC()->cart ) ) ? WC()->cart->get_cart_contents_count() : 0;
 $nem_plus_url = function_exists( 'nem_plus_products_url' ) ? nem_plus_products_url() : home_url( '/nem-plus/' );
 $nem_sale_url = function_exists( 'nem_sale_products_url' ) ? nem_sale_products_url() : home_url( '/sale/' );
@@ -167,7 +168,7 @@ $search_img_url  = $img_dir . 'search.png';
 
             <!-- User Account -->
             <div class="nem-user-wrapper nem-has-dropdown">
-                <a href="<?php echo $account_url; ?>" class="nem-user-link">
+                <a href="<?php echo is_user_logged_in() ? $account_url : $auth_url; ?>" class="nem-user-link">
                     <svg class="nem-header-icon-svg nem-account-icon-svg" viewBox="0 0 24 24" width="22" height="22" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <circle cx="12" cy="12" r="10" stroke="#000000" stroke-width="1.8" />
                         <circle cx="12" cy="8.7" r="3.2" fill="#000000" />
@@ -191,8 +192,8 @@ $search_img_url  = $img_dir . 'search.png';
                         </ul>
                     <?php else : ?>
                         <ul class="nem-user-links nem-guest-links">
-                            <li><a href="<?php echo $account_url; ?>">Đăng nhập</a></li>
-                            <li><a href="<?php echo $account_url; ?>">Đăng ký</a></li>
+                            <li><a href="<?php echo $auth_url; ?>">Đăng nhập</a></li>
+                            <li><a href="<?php echo $auth_url; ?>">Đăng ký</a></li>
                         </ul>
                     <?php endif; ?>
                 </div>
@@ -301,7 +302,7 @@ $search_img_url  = $img_dir . 'search.png';
             </ul>
 
             <div class="nem-drawer-footer">
-                <a href="<?php echo $account_url; ?>" class="nem-drawer-account-link">
+                <a href="<?php echo is_user_logged_in() ? $account_url : $auth_url; ?>" class="nem-drawer-account-link">
                     <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
                         <circle cx="12" cy="7" r="4"></circle>
                         <path d="M5.5 21a8.5 8.5 0 0 1 13 0"></path>

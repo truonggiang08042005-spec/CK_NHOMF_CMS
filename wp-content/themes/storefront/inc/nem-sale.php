@@ -644,6 +644,7 @@ add_action( 'after_setup_theme', function () {
 			'assets/css/nem-collections.css',
 			'assets/css/nem-new-products.css',
 			'assets/css/nem-sale-editor.css',
+			'assets/css/nem-account.css',
 		)
 	);
 }, 20 );
@@ -657,6 +658,9 @@ function nem_enqueue_sale_editor_assets() {
 	wp_enqueue_style( 'nem-editor-header-footer', $uri . '/assets/css/nem-header-footer.css', array(), filemtime( $dir . '/assets/css/nem-header-footer.css' ) );
 	wp_enqueue_style( 'nem-editor-collections', $uri . '/assets/css/nem-collections.css', array( 'nem-editor-header-footer' ), filemtime( $dir . '/assets/css/nem-collections.css' ) );
 	wp_enqueue_style( 'nem-editor-new-products', $uri . '/assets/css/nem-new-products.css', array( 'nem-editor-collections' ), filemtime( $dir . '/assets/css/nem-new-products.css' ) );
+	if ( file_exists( $dir . '/assets/css/nem-account.css' ) ) {
+		wp_enqueue_style( 'nem-editor-account', $uri . '/assets/css/nem-account.css', array( 'nem-editor-header-footer' ), filemtime( $dir . '/assets/css/nem-account.css' ) );
+	}
 	if ( file_exists( $dir . '/assets/css/nem-sale-editor.css' ) ) {
 		wp_enqueue_style( 'nem-editor-sale', $uri . '/assets/css/nem-sale-editor.css', array( 'nem-editor-new-products' ), filemtime( $dir . '/assets/css/nem-sale-editor.css' ) );
 	}
