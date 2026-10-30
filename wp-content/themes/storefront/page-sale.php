@@ -52,108 +52,12 @@ get_header();
 		<section class="nem-new-catalog" aria-labelledby="nem-new-title">
 			<div class="nem-new-toolbar">
 				<h1 id="nem-new-title">SALE</h1>
-				<form class="nem-new-filters" method="get" action="<?php echo esc_url( nem_sale_products_url() ); ?>">
-					<input type="hidden" name="cot" value="<?php echo esc_attr( $state['cot'] ); ?>" />
-					<?php if ( $state['danh_muc'] ) : ?>
-						<input type="hidden" name="danh_muc" value="<?php echo esc_attr( $state['danh_muc'] ); ?>" />
-					<?php endif; ?>
-					<?php if ( $state['sale'] ) : ?>
-						<input type="hidden" name="sale" value="<?php echo esc_attr( $state['sale'] ); ?>" />
-					<?php endif; ?>
-
-					<?php
-					$filter_taxonomies = array(
-						'kich_co' => array(
-							'label'    => 'Kích cỡ',
-							'taxonomy' => 'pa_kich-co',
-						),
-						'mau_sac' => array(
-							'label'    => 'Màu sắc',
-							'taxonomy' => 'pa_mau-sac',
-						),
-					);
-					foreach ( $filter_taxonomies as $key => $filter ) :
-						$terms = get_terms(
-							array(
-								'taxonomy'   => $filter['taxonomy'],
-								'hide_empty' => true,
-								'orderby'    => 'name',
-								'order'      => 'ASC',
-							)
-						);
-						if ( ! is_wp_error( $terms ) && ! empty( $terms ) ) {
-							usort(
-								$terms,
-								function ( $a, $b ) {
-									return strnatcasecmp( $a->name, $b->name );
-								}
-							);
-						}
-						?>
-						<details class="nem-new-filter <?php echo ! empty( $state[ $key ] ) ? 'has-selection' : ''; ?>">
-							<summary>
-								<?php echo esc_html( $filter['label'] ); ?>
-								<?php
-								if ( ! empty( $state[ $key ] ) ) {
-									echo ' (' . count( $state[ $key ] ) . ')';
-								}
-								?>
-								<span aria-hidden="true">⌄</span>
-							</summary>
-							<div class="nem-new-filter-panel">
-								<fieldset>
-									<legend class="screen-reader-text"><?php echo esc_html( $filter['label'] ); ?></legend>
-									<?php if ( ! is_wp_error( $terms ) && ! empty( $terms ) ) : ?>
-										<?php foreach ( $terms as $term ) : ?>
-											<label>
-												<input type="checkbox" name="<?php echo esc_attr( $key ); ?>[]" value="<?php echo esc_attr( $term->slug ); ?>" <?php checked( in_array( $term->slug, $state[ $key ], true ) ); ?> />
-												<span><?php echo esc_html( $term->name ); ?></span>
-											</label>
-										<?php endforeach; ?>
-									<?php else : ?>
-										<p>Chưa có lựa chọn.</p>
-									<?php endif; ?>
-								</fieldset>
-								<button type="submit">Áp dụng</button>
-							</div>
-						</details>
-					<?php endforeach; ?>
-
-					<details class="nem-new-filter <?php echo '' !== $state['gia'] ? 'has-selection' : ''; ?>">
-						<summary>Giá<span aria-hidden="true">⌄</span></summary>
-						<div class="nem-new-filter-panel">
-							<fieldset>
-								<legend class="screen-reader-text">Khoảng giá</legend>
-								<label>
-									<input type="radio" name="gia" value="" <?php checked( '', $state['gia'] ); ?> />
-									<span>Tất cả</span>
-								</label>
-								<?php foreach ( nem_new_price_ranges() as $key => $range ) : ?>
-									<label>
-										<input type="radio" name="gia" value="<?php echo esc_attr( $key ); ?>" <?php checked( $key, $state['gia'] ); ?> />
-										<span><?php echo esc_html( $range['label'] ); ?></span>
-									</label>
-								<?php endforeach; ?>
-							</fieldset>
-							<button type="submit">Áp dụng</button>
-						</div>
-					</details>
-				</form>
+				<?php get_template_part( 'template-parts/catalog-filters', null, array( 'state' => $state, 'url' => nem_sale_products_url() ) ); ?>
 
 				<div class="nem-new-grid-choices" aria-label="Số cột sản phẩm">
 					<?php foreach ( array( 3, 2 ) as $columns ) : ?>
 						<a class="<?php echo $state['cot'] === $columns ? 'is-active' : ''; ?>" href="<?php echo esc_url( nem_sale_filter_url( $state, array( 'cot' => $columns ) ) ); ?>" aria-label="<?php echo esc_attr( 'Hiển thị ' . $columns . ' cột' ); ?>" <?php echo $state['cot'] === $columns ? 'aria-current="true"' : ''; ?>>
-							<svg viewBox="0 0 18 18" width="18" height="18" aria-hidden="true">
-								<?php
-								for ( $row = 0; $row < 3; ++$row ) :
-									for ( $column = 0; $column < $columns; ++$column ) :
-										?>
-										<rect x="<?php echo esc_attr( 1 + $column * ( 16 / $columns ) ); ?>" y="<?php echo esc_attr( 1 + $row * 5.5 ); ?>" width="<?php echo esc_attr( 14 / $columns ); ?>" height="4.5" />
-										<?php
-									endfor;
-								endfor;
-								?>
-							</svg>
+							<?php get_template_part( 'template-parts/catalog-grid-icon', null, array( 'columns' => $columns ) ); ?>
 						</a>
 					<?php endforeach; ?>
 				</div>

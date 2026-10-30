@@ -10,12 +10,16 @@ $guide = ''; foreach (($config['footer_groups'] ?? []) as $group) foreach ($grou
 ?><!doctype html><html <?php language_attributes(); ?>><head><meta charset="<?php bloginfo('charset'); ?>"><meta name="viewport" content="width=device-width,initial-scale=1"><?php wp_head(); ?></head>
 <body <?php body_class(); ?>><?php wp_body_open(); ?>
 <a class="npe-skip" href="#npe-main">Đến nội dung chính</a>
+<?php if ( ! $detail ) : ?>
+<header id="masthead" class="site-header nem-site-header" role="banner"><?php get_template_part( 'template-parts/header', 'nem' ); ?></header>
+<?php else : ?>
 <header class="npe-header"><div class="npe-wrap npe-header-inner">
 <button class="npe-menu-toggle" aria-label="Mở menu" aria-expanded="false" aria-controls="npe-navigation">☰</button>
 <a class="npe-logo" href="<?php echo esc_url(home_url('/')); ?>" aria-label="NEM — Trang chủ"><?php if(!empty($images['logo'])) npe_image($images['logo'],'',true); else echo '<span>NEM</span>'; ?></a>
 <?php npe_render_navigation(); ?>
 <div class="npe-actions"><button class="npe-search-toggle" aria-label="Tìm kiếm" aria-expanded="false" aria-controls="npe-search"><?php echo npe_icon('search'); ?></button><a class="npe-account-link" href="<?php echo esc_url(wc_get_page_permalink('myaccount')); ?>"><?php echo npe_icon('user'); ?><span><?php echo is_user_logged_in()?esc_html(wp_get_current_user()->display_name):'Tài khoản'; ?></span></a><div class="npe-bag"><a href="<?php echo esc_url(wc_get_cart_url()); ?>" aria-label="Giỏ hàng"><span class="npe-bag-icon"><?php echo npe_icon('bag'); ?><b class="npe-cart-count"><?php echo WC()->cart ? (int)WC()->cart->get_cart_contents_count() : 0; ?></b></span><span class="npe-cart-label">Giỏ hàng</span></a><div class="npe-mini-cart"><?php woocommerce_mini_cart(); ?></div></div></div>
 </div><form id="npe-search" class="npe-wrap npe-search" action="<?php echo esc_url(home_url('/')); ?>" method="get" hidden><label class="screen-reader-text" for="npe-query">Tìm sản phẩm</label><input id="npe-query" name="s" type="search" placeholder="Tìm kiếm sản phẩm…" required><input type="hidden" name="post_type" value="product"><button type="submit">TÌM KIẾM →</button></form></header>
+<?php endif; ?>
 <main id="npe-main">
 <?php if (!$detail): ob_start(); ?>
 <section class="npe-hero" aria-label="Bộ sưu tập nổi bật" aria-roledescription="carousel" tabindex="0"><?php $slides=array_values(array_filter(array_map(fn($key)=>$images[$key]??0,['hero','hero3','hero4']))); foreach($slides as $index=>$image): ?><a class="npe-slide<?php echo $index===0?' is-active':''; ?>" href="<?php echo esc_url($config['hero_url']??$shop); ?>" <?php echo $index?'inert aria-hidden="true"':''; ?>><?php npe_image($image,'',$index===0); ?></a><?php endforeach; ?><?php if(count($slides)>1): ?><button class="npe-hero-prev" aria-label="Banner trước">←</button><button class="npe-hero-next" aria-label="Banner tiếp theo">→</button><div class="npe-dots"><?php foreach($slides as $index=>$image): ?><button aria-label="Đến banner <?php echo $index+1; ?>" aria-pressed="<?php echo $index?'false':'true'; ?>"></button><?php endforeach; ?></div><button class="npe-pause" aria-label="Tạm dừng tự chuyển banner">Ⅱ</button><?php endif; ?></section>

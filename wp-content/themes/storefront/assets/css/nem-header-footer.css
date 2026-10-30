@@ -93,7 +93,7 @@
 }
 
 .nem-logo-img {
-    height: 34px;
+    height: 28px;
     width: auto;
     display: block;
     object-fit: contain;
@@ -174,7 +174,7 @@
 .nem-nav-item.is-open > .nem-menu-toggle,
 .nem-nav-item.is-active > .nem-menu-toggle { color: #000; background: transparent; }
 .nem-menu-toggle:focus-visible { outline: 1px solid #111; outline-offset: 2px; }
-.nem-home .nem-logo-img { width: auto; height: 34px; }
+.nem-home .nem-logo-img { width: auto; height: 28px; }
 
 .nem-arrow-down {
     font-size: 9px;
@@ -1317,8 +1317,9 @@
     .nem-header-inner {
         padding: 0 16px;
     }
-    .nem-logo-img {
-        height: 28px;
+    .nem-logo-img,
+    .nem-home .nem-logo-img {
+        height: 24px;
     }
     .nem-footer-body {
         padding: 40px 0 30px;

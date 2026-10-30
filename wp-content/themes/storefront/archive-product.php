@@ -209,32 +209,10 @@ $has_price = $current_min !== null || $current_max !== null;
                                         ?>
                                         <?php if ($filter_key === 'color') : ?>
                                             <?php
-                                            $swatch_color = sanitize_hex_color(get_term_meta($term->term_id, 'product_attribute_color', true));
-                                            $swatch_fallbacks = [
-                                                'light-blue' => '#5ba9d6',
-                                                'red' => '#e53935',
-                                                'do' => '#e53935',
-                                                'light-pink' => '#edc5e5',
-                                                'yellow' => '#f1dc78',
-                                                'vang' => '#f1dc78',
-                                                'white' => '#ffffff',
-                                                'black' => '#111111',
-                                                'den' => '#111111',
-                                                'olive' => '#8d792d',
-                                                'gray' => '#999999',
-                                                'xam' => '#999999',
-                                                'nau' => '#8d6e63',
-                                                'mint-green' => '#78d98a',
-                                                'orange' => '#f28c28',
-                                                'pink' => '#ed91c5',
-                                                'blue-stripe' => '#5ba9d6',
-                                                'blue-pattern' => '#5ba9d6',
-                                            ];
-                                            $swatch_color = $swatch_color ?: ($swatch_fallbacks[$term->slug] ?? null);
-                                            $swatch_color = $swatch_color ?: '#cccccc';
+                                            $swatch_style = nem_catalog_swatch_style( $term );
                                             ?>
                                             <a class="nem-shop-color-option<?php echo $is_selected ? ' is-selected' : ''; ?>" href="<?php echo esc_url($filter_url); ?>" data-filter-parameter="<?php echo esc_attr($filter_parameter); ?>" data-term-slug="<?php echo esc_attr($term->slug); ?>" aria-label="<?php echo esc_attr($term->name); ?>" aria-pressed="<?php echo $is_selected ? 'true' : 'false'; ?>">
-                                                <span aria-hidden="true" style="background-color: <?php echo esc_attr($swatch_color); ?>;"></span>
+                                                <span aria-hidden="true" style="<?php echo esc_attr($swatch_style); ?>"></span>
                                             </a>
                                         <?php else : ?>
                                             <a class="nem-shop-size-option<?php echo $is_selected ? ' is-selected' : ''; ?>" href="<?php echo esc_url($filter_url); ?>" data-filter-parameter="<?php echo esc_attr($filter_parameter); ?>" data-term-slug="<?php echo esc_attr($term->slug); ?>" aria-pressed="<?php echo $is_selected ? 'true' : 'false'; ?>">
@@ -270,14 +248,10 @@ $has_price = $current_min !== null || $current_max !== null;
 
                 <div class="nem-shop-view-switcher" role="group" aria-label="<?php esc_attr_e('Cách hiển thị sản phẩm', 'storefront'); ?>">
                     <button class="nem-shop-view-button is-active" type="button" data-columns="3" aria-label="<?php esc_attr_e('Hiển thị 3 sản phẩm mỗi hàng', 'storefront'); ?>" aria-pressed="true">
-                        <svg class="nem-shop-view-icon nem-shop-view-icon--three" viewBox="0 0 16 16" aria-hidden="true">
-                            <path d="M1 1h4v4H1zm5 0h4v4H6zm5 0h4v4h-4zM1 6h4v4H1zm5 0h4v4H6zm5 0h4v4h-4zM1 11h4v4H1zm5 0h4v4H6zm5 0h4v4h-4z" />
-                        </svg>
+                        <?php get_template_part( 'template-parts/catalog-grid-icon', null, array( 'columns' => 3 ) ); ?>
                     </button>
                     <button class="nem-shop-view-button" type="button" data-columns="2" aria-label="<?php esc_attr_e('Hiển thị 2 sản phẩm mỗi hàng', 'storefront'); ?>" aria-pressed="false">
-                        <svg class="nem-shop-view-icon nem-shop-view-icon--two" viewBox="0 0 16 16" aria-hidden="true">
-                            <path d="M1 1h6.5v6.5H1zm7.5 0H15v6.5H8.5zM1 8.5h6.5V15H1zm7.5 0H15V15H8.5z" />
-                        </svg>
+                        <?php get_template_part( 'template-parts/catalog-grid-icon', null, array( 'columns' => 2 ) ); ?>
                     </button>
                 </div>
             </div>
