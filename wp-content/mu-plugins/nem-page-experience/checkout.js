@@ -13,7 +13,10 @@
     const updateCheckout = () => $(document.body).trigger('update_checkout');
     const syncPayments = () => {
       form.querySelectorAll('.nem-payment-item').forEach((row) => {
-        row.classList.toggle('is-selected', !!row.querySelector('input[name="payment_method"]:checked'));
+        const isChecked = !!row.querySelector('input[name="payment_method"]:checked');
+        row.classList.toggle('is-selected', isChecked);
+        const box = row.parentElement.querySelector('.payment_box');
+        if (box) box.style.display = isChecked ? 'block' : 'none';
       });
     };
     const restoreSubmit = () => {

@@ -26,7 +26,7 @@ function npe_payments_start_demo($order, $gateway_id) {
 function npe_payments_valid_demo_request($order, array $request) {
     if (!$order || !npe_payments_is_local_site() || $order->is_paid()) return false;
     $attempt = $order->get_meta('_npe_payment_demo', true);
-    if (!is_array($attempt) || !in_array($attempt['gateway'] ?? '', ['momo', 'payoo'], true) || empty($attempt['attempt']) || empty($attempt['created']) || $attempt['created'] < time() - 3600
+    if (!is_array($attempt) || !in_array($attempt['gateway'] ?? '', ['momo', 'momo_atm', 'momo_card', 'payoo'], true) || empty($attempt['attempt']) || empty($attempt['created']) || $attempt['created'] < time() - 3600
         || $order->get_payment_method() !== $attempt['gateway'] || !isset($request['key'], $request['signature']) || !is_string($request['key']) || !is_string($request['signature'])) return false;
     return hash_equals((string) $order->get_order_key(), $request['key']) && hash_equals(npe_payments_demo_signature($order, $attempt), $request['signature']);
 }
@@ -93,7 +93,12 @@ add_action('woocommerce_api_npe_payment_demo', function () {
     }
     nocache_headers();
     header('X-Robots-Tag: noindex, nofollow', true);
-    $name = $attempt['gateway'] === 'momo' ? 'MoMo' : 'Payoo';
+    if (in_array($attempt['gateway'], ['momo', 'momo_atm', 'momo_card'], true)) {
+        // Realistic gateway screens: MoMo QR, ATM/NAPAS card + OTP, Visa/Master/JCB + 3-D Secure.
+        include __DIR__ . '/payment-sim-page.php';
+        exit;
+    }
+    $name = ['momo'=>'Ví MoMo','momo_atm'=>'Thẻ ATM nội địa','momo_card'=>'Thẻ quốc tế','payoo'=>'Payoo'][$attempt['gateway']] ?? 'Thanh toán';
     ?>
     <!doctype html><html lang="vi"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Mô phỏng <?php echo esc_html($name); ?> — NEM</title>
     <style>body{margin:0;background:#f5f5f6;font:15px/1.6 Arial,sans-serif;color:#1d1d1f}.demo{max-width:560px;margin:8vh auto;padding:32px;background:#fff;border:1px solid #e1e1e3;border-radius:12px;box-shadow:0 12px 40px #00000008}.logo{font-size:32px;letter-spacing:6px;margin:0}.badge{display:inline-block;padding:6px 12px;background:#fff1c9;border-radius:5px;font-weight:bold;margin:12px 0}h1{font-size:24px;margin:10px 0}dl{display:grid;grid-template-columns:1fr 1fr;border-block:1px solid #eee;padding:18px 0}dd{text-align:right;margin:0}form{display:grid;gap:10px}button,a.back{padding:13px;border:1px solid #ccc;border-radius:5px;font:inherit;cursor:pointer;background:white;text-align:center;color:#111}button:first-of-type{background:#111;color:white;border-color:#111}.back{display:block;margin-top:15px;text-decoration:none}.hint{color:#666;font-size:13px}@media(max-width:640px){.demo{margin:24px 16px;padding:24px}}</style></head><body><main class="demo"><p class="logo">NEM</p><span class="badge">MÔ PHỎNG LOCAL — KHÔNG TRỪ TIỀN</span><h1>Thử thanh toán <?php echo esc_html($name); ?></h1><p>Chọn kết quả để kiểm tra luồng đặt hàng. Trang này không kết nối cổng <?php echo esc_html($name); ?> và không ghi nhận tiền thật.</p><dl><dt>Đơn hàng</dt><dd>#<?php echo esc_html($order->get_order_number()); ?></dd><dt>Tổng tiền mô phỏng</dt><dd><?php echo wp_kses_post($order->get_formatted_order_total()); ?></dd></dl><form method="post"><?php wp_nonce_field('npe_demo_' . $attempt['attempt'], 'demo_nonce'); ?><button type="submit" name="demo_result" value="success">Mô phỏng thành công</button><button type="submit" name="demo_result" value="failure">Mô phỏng thất bại</button><button type="submit" name="demo_result" value="cancel">Mô phỏng hủy thanh toán</button></form><p class="hint">Kết quả thành công mô phỏng sẽ để đơn ở trạng thái chờ kiểm tra, không chuyển sang đã nhận tiền hoặc hoàn tất.</p><a class="back" href="<?php echo esc_url(wc_get_checkout_url()); ?>">Quay về cửa hàng</a></main></body></html>

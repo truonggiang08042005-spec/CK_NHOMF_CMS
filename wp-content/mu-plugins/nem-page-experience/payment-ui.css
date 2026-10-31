@@ -1,0 +1,16 @@
+.npe-bank-instructions{margin-top:24px;padding:22px;background:#f7f9fc;border:1px solid #dce4ed;border-radius:10px;text-align:left}.npe-bank-instructions h2{font-size:19px;margin:0 0 16px}.npe-bank-instructions p{margin:10px 0}.npe-bank-qr{display:block;max-width:260px;width:100%;height:auto;margin:0 auto}.npe-copy-status{display:block;font-size:13px;color:#286644;margin-top:8px;min-height:1em}
+.npe-bank-grid{display:grid;grid-template-columns:270px 1fr;gap:24px;align-items:start}
+.npe-bank-qr-col{text-align:center}
+.npe-vietqr{display:inline-block;padding:14px;background:#fff;border:2px solid #0a5fb4;border-radius:14px}
+.npe-vietqr canvas{display:block;width:240px;height:240px}
+.npe-vietqr-brand{font-size:14px;font-weight:700;color:#d6202f;letter-spacing:.5px}.npe-vietqr-brand b{color:#0a5fb4}.npe-vietqr-brand span{color:#0a5fb4;font-weight:600}
+.npe-bank-hint{font-size:13px;color:#5a6676}
+.npe-bank-row{display:grid;grid-template-columns:110px 1fr auto;gap:10px;align-items:center;padding:10px 0;border-bottom:1px dashed #d5dde8}
+.npe-bank-row span{color:#5a6676;font-size:13px}.npe-bank-row strong{word-break:break-all}.npe-bank-row code{background:#fff3cd;padding:2px 6px;border-radius:4px;font-size:15px}
+.npe-copy-payment{padding:6px 10px;border:1px solid #c8d2df;border-radius:6px;background:#fff;font-size:12px;cursor:pointer;white-space:nowrap}.npe-copy-payment:hover{border-color:#0a5fb4;color:#0a5fb4}
+.npe-bank-warn{font-size:13px;color:#8a5a00;background:#fff8e5;border-radius:6px;padding:8px 10px}
+.npe-bank-confirm{width:100%;padding:13px;border:0;border-radius:8px;background:#111;color:#fff;font-weight:600;cursor:pointer}.npe-bank-confirm:hover{background:#333}
+.npe-bank-done{color:#1d6b3a;background:#e8f6ee;border-radius:6px;padding:10px 12px;font-weight:600}
+.nem-payment-badges{display:flex;gap:5px;flex-wrap:wrap;margin-top:6px}.nem-payment-badges>*{font-size:10px;line-height:1;padding:4px 6px;border:1px solid #dde2ea;border-radius:4px;background:#fff;font-style:normal}.nem-payment-badges .b-visa{color:#1a1f71;font-weight:800;font-style:italic}.nem-payment-badges .b-master{color:#eb001b;font-weight:700}.nem-payment-badges .b-jcb{color:#0b7a3e;font-weight:700}.nem-payment-badges .b-napas{color:#0a5fb4;font-weight:700}.nem-payment-badges .b-qr{color:#d6202f;font-weight:700}
+.nem-payment-status{display:block;font-size:11px;color:#68788a;margin-top:4px}
+@media(max-width:700px){.npe-bank-grid{grid-template-columns:1fr}.npe-bank-row{grid-template-columns:90px 1fr auto}}

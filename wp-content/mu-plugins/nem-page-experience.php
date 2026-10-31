@@ -6,11 +6,14 @@
  */
 defined('ABSPATH') || exit;
 require_once __DIR__.'/nem-page-experience/admin.php';
+require_once __DIR__.'/nem-page-experience/visual-editor.php';
 require_once __DIR__.'/nem-page-experience/navigation.php';
 require_once __DIR__.'/nem-page-experience/checkout-functions.php';
+require_once __DIR__.'/nem-page-experience/payment-banks.php';
 require_once __DIR__.'/nem-page-experience/payments.php';
+require_once __DIR__.'/nem-page-experience/payment-setup.php';
 function npe_is_page() { return did_action('wp') && function_exists('is_product') && (is_front_page() || is_product()); }
-function npe_is_checkout() { return did_action('wp') && function_exists('is_checkout') && is_checkout() && !is_order_received_page(); }
+function npe_is_checkout() { return did_action('wp') && function_exists('is_checkout') && is_checkout() && !is_order_received_page() && !is_wc_endpoint_url('order-pay'); }
 function npe_is_thankyou() { return did_action('wp') && function_exists('is_order_received_page') && is_order_received_page(); }
 
 add_filter('template_include', function ($template) {

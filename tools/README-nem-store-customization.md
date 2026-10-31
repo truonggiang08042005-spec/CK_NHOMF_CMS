@@ -1,5 +1,7 @@
 # Quản trị giao diện NEM
 
+**Chỉnh trực quan:** vào **Pages → All Pages** rồi bấm **Edit Page · Sửa trực quan** ở Trang chủ NEM, Chi tiết sản phẩm hoặc Thanh toán. Cũng có thể bấm **Edit Page** khi đang xem từng trang ngoài website. Bấm chữ để sửa và đổi cỡ chữ; kéo các khối để sắp xếp. Xem [hướng dẫn trình sửa trực quan](README-nem-visual-editor.md).
+
 Mở **Giao diện NEM → Bố cục & nội dung** (`/wp-admin/admin.php?page=npe-builder`).
 
 - **Trang chủ**: đổi logo, banner, ảnh khối nổi bật/bộ sưu tập, tiêu đề, liên kết, danh sách ID sản phẩm và bài viết; kéo đổi thứ tự từng khối hoặc dùng nút lên/xuống, bật/tắt khối.

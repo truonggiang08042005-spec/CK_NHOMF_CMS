@@ -26,6 +26,7 @@ function wc_add_notice($message, $type) { }
 function wc_get_order($id) { global $orders; return $orders[$id] ?? false; }
 function get_woocommerce_currency() { return 'VND'; }
 function sanitize_text_field($value) { return strip_tags($value); }
+function is_email($value) { return filter_var($value,FILTER_VALIDATE_EMAIL) !== false; }
 function add_query_arg($args, $url) { return $url . (str_contains($url, '?') ? '&' : '?') . http_build_query($args); }
 function wp_date($format, $time, $zone) { return (new DateTimeImmutable('@' . $time))->setTimezone($zone)->format($format); }
 function WC() { static $wc; if (!$wc) $wc = new class { public $cart; public function __construct() { $this->cart = new class { public $emptied = 0; public function empty_cart() { $this->emptied++; } }; } public function api_request_url($name) { return 'https://shop.example/?wc-api=' . $name; } }; return $wc; }
@@ -45,6 +46,8 @@ class PaymentTestOrder {
     public function get_total() { return $this->total; }
     public function get_currency() { return $this->currency; }
     public function get_payment_method() { return $this->method; }
+    public $billing_email = 'customer@example.test';
+    public function get_billing_email() { return $this->billing_email; }
     public function get_meta($key, $single = true) { return $this->meta[$key] ?? ''; }
     public function update_meta_data($key, $value) { $this->meta[$key] = $value; }
     public function save() { }
@@ -106,6 +109,7 @@ $orders[43] = new PaymentTestOrder(43); $gateway->process_payment(43);
 $duplicate = $data; $duplicate['orderId'] = $orders[43]->get_meta('_npe_momo_attempt')['order_id']; $duplicate['requestId'] = $orders[43]->get_meta('_npe_momo_attempt')['request_id']; $duplicate['orderInfo'] = 'Thanh toan don hang NEM 43'; $duplicate['signature'] = npe_payments_momo_signature($duplicate, 'TEST_ACCESS', 'TEST_SECRET', true);
 check($gateway->accept_notification($duplicate) === 409 && $orders[43]->completed === 0, 'a transaction ID cannot pay another order');
 $gateway_settings['momo']['testmode'] = 'no';
+$local_site_url = 'https://shop.example/';
 $production = new NPE_Gateway_Momo();
 $http_mock = function ($url, $args) {
     check($url === 'https://payment.momo.vn/v2/gateway/api/create', 'production requires explicit environment selection');
@@ -141,6 +145,7 @@ check($payoo->process_payment(50)['result'] === 'failure' && $http_count === $be
 $xml = $payoo->build_order_xml($orders[50], 'NEM_50_TEST');
 check(str_contains($xml, 'Test &amp; Shop') && str_contains($xml, '<order_cash_amount>100000</order_cash_amount>'), 'Payoo XML escapes merchant data and sends whole VND');
 $gateway_settings['payoo']['local_demo'] = 'yes';
+$local_site_url = 'http://wordpress.local/CK_NHOMF_CMS/';
 $payoo_demo = new NPE_Gateway_Payoo();
 check($payoo_demo->is_available() && $payoo_demo->is_demo(), 'explicit local simulator is available without merchant credentials');
 $orders[60] = new PaymentTestOrder(60, 'payoo');
@@ -167,4 +172,66 @@ $lock = npe_payments_lock('test-contention');
 check($lock && npe_payments_lock('test-contention') === false, 'parallel callbacks are serialized');
 npe_payments_unlock($lock);
 check((bool) npe_payments_lock('test-contention'), 'lock released after processing');
+$channel_credentials = ['enabled'=>'yes','testmode'=>'yes','channel_approved'=>'yes','partner_code'=>'TEST_PARTNER','access_key'=>'TEST_ACCESS','secret_key'=>'TEST_SECRET'];
+$gateway_settings['momo_card'] = $channel_credentials;
+$gateway_settings['momo_atm'] = $channel_credentials;
+$credit = new NPE_Gateway_Momo_Card();
+$atm = new NPE_Gateway_Momo_Atm();
+check($credit->is_available() && $atm->is_available(),'configured and merchant-approved card channels are available');
+$gateway_settings['momo_card']['channel_approved'] = 'no';
+check(!(new NPE_Gateway_Momo_Card())->is_available(),'card channel requires explicit provider entitlement');
+$gateway_settings['momo_card']['channel_approved'] = 'yes';
+$channel_payload = null;
+$http_mock = function ($url,$args) use (&$channel_payload) {
+    $channel_payload = json_decode($args['body'],true);
+    check(in_array($channel_payload['requestType'],['payWithATM','payWithCC'],true),'card channels send their own documented request type');
+    check(str_contains($channel_payload['ipnUrl'],'npe_'.($channel_payload['requestType']==='payWithCC'?'momo_card':'momo_atm').'_ipn'),'each channel has its own notification route');
+    check(!isset($channel_payload['cardNumber'],$channel_payload['cvv']),'card data is never collected or forwarded by the store');
+    $host = str_contains($url,'test-payment') ? 'test-payment.momo.vn' : 'payment.momo.vn';
+    return ['code'=>200,'body'=>json_encode(['partnerCode'=>'TEST_PARTNER','orderId'=>$channel_payload['orderId'],'requestId'=>$channel_payload['requestId'],'amount'=>$channel_payload['amount'],'resultCode'=>0,'payUrl'=>'https://'.$host.'/v2/gateway/pay?t=fixture'])];
+};
+$orders[80] = new PaymentTestOrder(80,'momo_card');
+check($credit->process_payment(80)['result']==='success' && $channel_payload['userInfo']['email']==='customer@example.test','international card redirects to provider with required email');
+$attempt = $orders[80]->get_meta('_npe_momo_attempt');
+$credit_data = ['partnerCode'=>'TEST_PARTNER','orderId'=>$attempt['order_id'],'requestId'=>$attempt['request_id'],'amount'=>100000,'orderInfo'=>'Thanh toan don hang NEM 80','orderType'=>'momo_wallet','transId'=>88880001,'resultCode'=>0,'message'=>'Successful.','payType'=>'credit','responseTime'=>1793318400000,'extraData'=>'','callbackToken'=>'','partnerClientId'=>''];
+$credit_raw = 'accessKey=TEST_ACCESS&amount=100000&callbackToken=&extraData=&message=Successful.&orderId='.$attempt['order_id'].'&orderInfo=Thanh toan don hang NEM 80&orderType=momo_wallet&partnerClientId=&partnerCode=TEST_PARTNER&payType=credit&requestId='.$attempt['request_id'].'&responseTime=1793318400000&resultCode=0&transId=88880001';
+$credit_data['signature'] = hash_hmac('sha256',$credit_raw,'TEST_SECRET');
+check(npe_payments_verify_momo($credit_data,'TEST_ACCESS','TEST_SECRET','payWithCC'),'credit IPN verifies against an independent canonical signature');
+$tampered_credit = $credit_data; $tampered_credit['callbackToken']='tampered';
+check($credit->accept_notification($tampered_credit)===400,'credit token fields are covered by the signature');
+check($credit->accept_notification($credit_data)===204 && $orders[80]->completed===0 && $orders[80]->status==='on-hold','signed sandbox card result never records money received');
+check($atm->accept_notification($credit_data)===400,'card notification cannot be delivered to ATM channel');
+$ack = npe_payments_momo_card_ack($credit_data,'TEST_ACCESS','TEST_SECRET');
+$ack_raw = 'accessKey=TEST_ACCESS&extraData=&message=Success&orderId='.$attempt['order_id'].'&partnerCode=TEST_PARTNER&requestId='.$attempt['request_id'].'&responseTime='.$ack['responseTime'].'&resultCode=0';
+check(hash_equals(hash_hmac('sha256',$ack_raw,'TEST_SECRET'),$ack['signature']),'credit notification acknowledgement has the documented signature');
+$orders[81] = new PaymentTestOrder(81,'momo_atm'); $orders[81]->total='9999'; $calls=$http_count;
+check($atm->process_payment(81)['result']==='failure' && $http_count===$calls,'ATM rejects amounts below 10000 before provider call');
+$orders[81]->total='10000';
+check($atm->process_payment(81)['result']==='success' && $channel_payload['requestType']==='payWithATM','ATM starts using the correct channel');
+$atm_attempt=$orders[81]->get_meta('_npe_momo_attempt');
+$atm_data=$data; $atm_data['orderId']=$atm_attempt['order_id']; $atm_data['requestId']=$atm_attempt['request_id']; $atm_data['orderInfo']='Thanh toan don hang NEM 81'; $atm_data['amount']=10000; $atm_data['payType']='napas'; $atm_data['transId']=88880002;
+$atm_data['signature']=npe_payments_momo_signature($atm_data,'TEST_ACCESS','TEST_SECRET',true);
+check($atm->accept_notification($atm_data)===204 && $orders[81]->completed===0,'ATM sandbox callback verifies and remains unpaid');
+$orders[82]=new PaymentTestOrder(82,'momo_card'); $orders[82]->billing_email=''; $calls=$http_count;
+check($credit->process_payment(82)['result']==='failure' && $http_count===$calls,'credit email is validated before calling provider');
+$orders[82]->billing_email='customer@example.test'; $orders[82]->total='10000001';
+check($credit->process_payment(82)['result']==='failure' && $http_count===$calls,'credit enforces documented maximum amount');
+$gateway_settings['momo_card']['testmode']='no'; $live_credit=new NPE_Gateway_Momo_Card();
+$local_site_url='https://shop.example/';
+$orders[83]=new PaymentTestOrder(83,'momo_card'); $live_credit->process_payment(83);
+$live_attempt=$orders[83]->get_meta('_npe_momo_attempt');
+$live_data=$credit_data; $live_data['orderId']=$live_attempt['order_id']; $live_data['requestId']=$live_attempt['request_id']; $live_data['orderInfo']='Thanh toan don hang NEM 83'; $live_data['transId']=88880003;
+$live_data['signature']=npe_payments_momo_signature($live_data,'TEST_ACCESS','TEST_SECRET',true,'payWithCC');
+check($live_credit->accept_notification($live_data)===204 && $orders[83]->completed===1,'only authenticated production card IPN completes payment');
+check($live_credit->accept_notification($live_data)===204 && $orders[83]->completed===1,'production card callback is idempotent');
+$local_site_url='http://wordpress.local/CK_NHOMF_CMS/';
+check(!$live_credit->is_available(),'production is unavailable on localhost');
+$gateway_settings['momo_atm']['local_demo']='yes'; $demo_atm=new NPE_Gateway_Momo_Atm(); $orders[84]=new PaymentTestOrder(84,'momo_atm'); $calls=$http_count;
+$demo=$demo_atm->process_payment(84); parse_str(parse_url($demo['redirect'],PHP_URL_QUERY),$demo_request);
+check(npe_payments_valid_demo_request($orders[84],$demo_request) && $http_count===$calls,'new ATM channel supports explicit offline simulation');
+$options['woocommerce_momo_settings']=array_merge($channel_credentials,['testmode'=>'yes']);
+$gateway_settings['momo_card']=['enabled'=>'yes','testmode'=>'yes','channel_approved'=>'yes'];
+check((new NPE_Gateway_Momo_Card())->is_configured(),'card channel can share wallet credentials in the same environment');
+$gateway_settings['momo_card']['testmode']='no';
+check(!(new NPE_Gateway_Momo_Card())->is_configured(),'sandbox wallet credentials cannot be inherited in production');
 echo "PASS: {$checks} payment protocol checks; HTTP mocked; no database or payment provider contacted.\n";

@@ -21,13 +21,32 @@ function npe_payment_icon($method) {
     if ($method === 'momo') return '<svg viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="6" fill="#A50064"/><g text-anchor="middle" fill="white" font-family="Arial,sans-serif" font-size="13" font-weight="700"><text x="14" y="12">mo</text><text x="14" y="23">mo</text></g></svg>';
     if ($method === 'payoo') return '<svg class="nem-payoo-logo" viewBox="0 0 28 28" aria-hidden="true"><text x="14" y="17" text-anchor="middle" fill="#268ac2" font-family="Arial,sans-serif" font-size="7" font-style="italic">Payoo</text></svg>';
     if ($method === 'bacs') return '<svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M3 21h18M3 10h18M5 6l7-3 7 3M4 10v11M20 10v11M8 14v4M12 14v4M16 14v4"/></svg>';
+    if (in_array($method,['momo_atm','momo_card'],true)) return '<svg viewBox="0 0 28 28" fill="none" stroke="#2563eb" stroke-width="1.6" aria-hidden="true"><rect x="2" y="5" width="24" height="18" rx="3"/><path d="M2 11h24M6 18h5M16 18h5"/></svg>';
     return '<svg viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="m12 2 9 5v10l-9 5-9-5V7l9-5Zm-9 5 9 5 9-5M12 12v10"/></svg>';
+}
+
+function npe_checkout_payment_labels() {
+    return ['momo'=>'Ví MoMo','momo_atm'=>'Thẻ ATM nội địa / NAPAS qua MoMo','momo_card'=>'Thẻ quốc tế qua MoMo','bacs'=>'Chuyển khoản qua ngân hàng','cod'=>'Thanh toán khi nhận hàng (COD)'];
+}
+
+function npe_payment_badges($id) {
+    $badges = [
+        'bacs' => ['b-qr' => 'VietQR', 'b-napas' => 'Napas 247'],
+        'momo' => ['b-qr' => 'Quét QR', '' => 'Ứng dụng MoMo'],
+        'momo_atm' => ['b-napas' => 'NAPAS', '' => 'Vietcombank · BIDV · Techcombank · MB · 40+ ngân hàng'],
+        'momo_card' => ['b-visa' => 'VISA', 'b-master' => 'Mastercard', 'b-jcb' => 'JCB', 'b-amex' => 'AMEX'],
+        'payoo' => ['b-napas' => 'ATM', 'b-visa' => 'VISA', 'b-master' => 'Mastercard', 'b-jcb' => 'JCB', 'b-qr' => 'QR Pay'],
+    ][$id] ?? [];
+    if (!$badges) return '';
+    $html = '<span class="nem-payment-badges" aria-label="'.esc_attr(implode(', ', $badges)).'">';
+    foreach ($badges as $class => $label) $html .= '<i class="'.esc_attr($class).'">'.esc_html($label).'</i>';
+    return $html.'</span>';
 }
 
 function npe_checkout_payments() {
     $available = WC()->payment_gateways()->get_available_payment_gateways();
     $all = WC()->payment_gateways()->payment_gateways();
-    $titles = ['momo'=>'Thanh toán online qua ví MoMo', 'payoo'=>'Thẻ ATM/ Visa/ Master/ JCB/ QR Pay/ Ví điện tử khác qua Payoo', 'bacs'=>'Chuyển khoản qua ngân hàng', 'cod'=>'Thanh toán khi giao hàng (COD)'];
+    $titles = npe_checkout_payment_labels();
     $chosen = WC()->session ? WC()->session->get('chosen_payment_method') : '';
     if (!isset($available[$chosen])) $chosen = isset($available['bacs']) ? 'bacs' : (string) array_key_first($available);
     ob_start(); ?>
@@ -47,8 +66,8 @@ function npe_checkout_payments() {
                 <input id="payment_method_<?php echo esc_attr($id); ?>" type="radio" class="nem-payment-radio input-radio" name="<?php echo $enabled ? 'payment_method' : 'npe_unavailable_payment'; ?>" value="<?php echo esc_attr($id); ?>" <?php checked($selected); ?> <?php disabled(!$enabled); ?> data-order_button_text="<?php echo esc_attr(npe_checkout_text('place_order_text', 'Đặt hàng')); ?>">
                 <span class="nem-payment-icon"><?php echo npe_payment_icon($id); ?></span>
                 <span class="nem-payment-text"><?php echo esc_html($title); ?>
-                <?php if ($id === 'payoo'): ?><span class="nem-payment-badges" aria-label="ATM, Visa, Mastercard, JCB, QR Pay"><span>ATM</span><b>VISA</b><b>JCB</b><span class="nem-mastercard">●●</span><span>QR</span></span><?php endif; ?>
-                <?php if (!$enabled): ?><small class="nem-payment-status"><?php echo $id === 'bacs' && !npe_checkout_has_bank_account() ? 'Chưa có thông tin tài khoản nhận tiền' : (in_array($id, ['momo','payoo'], true) ? 'Chưa được kích hoạt' : 'Tạm chưa khả dụng'); ?></small><?php elseif ($gateway && method_exists($gateway, 'is_demo') && $gateway->is_demo()): ?><small class="nem-payment-status">Mô phỏng — không trừ tiền</small><?php elseif ($gateway && $gateway->get_option('testmode') === 'yes'): ?><small class="nem-payment-status">Môi trường thử nghiệm</small><?php endif; ?>
+                <?php echo npe_payment_badges($id); ?>
+                <?php if (!$enabled): ?><small class="nem-payment-status"><?php echo $id === 'bacs' && !npe_checkout_has_bank_account() ? 'Chưa có thông tin tài khoản nhận tiền' : (in_array($id, ['momo','momo_atm','momo_card','payoo'], true) ? 'Chưa kết nối tài khoản thanh toán' : 'Tạm chưa khả dụng'); ?></small><?php elseif ($gateway && method_exists($gateway, 'is_demo') && $gateway->is_demo()): ?><small class="nem-payment-status">Mô phỏng — không trừ tiền</small><?php elseif ($gateway && $gateway->get_option('testmode') === 'yes'): ?><small class="nem-payment-status">Môi trường thử nghiệm</small><?php endif; ?>
                 </span>
             </label>
             <?php if ($enabled && $gateway && ($gateway->has_fields() || $gateway->get_description())): ?>

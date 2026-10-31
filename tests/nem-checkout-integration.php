@@ -4,6 +4,7 @@ if (PHP_SAPI !== 'cli') exit;
 define('DOING_AJAX', true);
 define('WP_DISABLE_FATAL_ERROR_HANDLER', true);
 require dirname(__DIR__).'/wp-includes/plugin.php';
+add_filter('option_active_plugins',function () { return ['woocommerce/woocommerce.php']; });
 add_filter('pre_http_request', function () { return new WP_Error('npe_test_offline', 'External HTTP is disabled during this test.'); }, 1);
 add_filter('pre_wp_mail', '__return_true', 1);
 require dirname(__DIR__).'/wp-load.php';
@@ -43,16 +44,20 @@ try {
     $gateways['bacs']->enabled = 'yes';
     $gateways['bacs']->account_details = $bank_fixture();
     $gateways['cod']->enabled = 'yes';
+    foreach (['momo','momo_atm','momo_card','payoo'] as $id) { $gateways[$id]->enabled='yes'; $gateways[$id]->settings['local_demo']='yes'; $gateways[$id]->settings['testmode']='yes'; }
     $available = WC()->payment_gateways()->get_available_payment_gateways();
     npe_integration_assert(isset($available['bacs']), 'configured bank account enables bank transfer');
     $html = npe_checkout_payments();
-    foreach (['momo','payoo','bacs','cod'] as $id) npe_integration_assert(str_contains($html, 'id="payment_method_'.$id.'"'), 'payment option rendered: '.$id);
+    foreach (['momo','momo_atm','momo_card','payoo','bacs','cod'] as $id) npe_integration_assert(str_contains($html, 'id="payment_method_'.$id.'"'), 'payment option rendered: '.$id);
     npe_integration_assert(str_contains(npe_checkout_totals(), '100,000'), 'summary uses WooCommerce cart totals');
     $_POST['post_data'] = 'npe_checkout=1';
     $fragments = apply_filters('woocommerce_update_order_review_fragments', []);
     npe_integration_assert(isset($fragments['.woocommerce-checkout-payment'], $fragments['#npe-order-totals'], $fragments['#npe-shipping-methods']), 'checkout AJAX updates all custom payment/shipping/total fragments');
     unset($_POST['post_data']);
-    foreach (['bacs','cod','momo','payoo'] as $id) {
+    $validation = new WP_Error();
+    do_action('woocommerce_after_checkout_validation',['payment_method'=>'momo_card','billing_email'=>''],$validation);
+    npe_integration_assert(in_array('npe_card_email',$validation->get_error_codes(),true),'international card checkout requires email');
+    foreach (['bacs','cod','momo','momo_atm','momo_card','payoo'] as $id) {
         $order = wc_create_order(['created_via'=>'npe-disposable-test', 'status'=>'pending']);
         $orders[] = $order;
         $order->set_currency('VND');
@@ -61,7 +66,7 @@ try {
         $order->add_product($test_product, 1);
         $order->calculate_totals();
         $order->save();
-        if (in_array($id, ['momo','payoo'], true)) {
+        if (in_array($id, ['momo','momo_atm','momo_card','payoo'], true)) {
             $gateways[$id]->enabled = 'yes';
             $gateways[$id]->settings['local_demo'] = 'yes';
             $gateways[$id]->settings['testmode'] = 'yes';
@@ -86,6 +91,10 @@ try {
                 npe_integration_assert($order->has_status('on-hold'), 'bank order waits for manual reconciliation');
                 ob_start(); $gateways[$id]->thankyou_page($order->get_id()); $instructions = ob_get_clean();
                 npe_integration_assert(str_contains($instructions, 'TEST-ONLY-0000'), 'bank instructions include configured receiving account');
+                do_action('woocommerce_checkout_order_created',$order);
+                $order=wc_get_order($order->get_id());
+                ob_start(); npe_bank_order_instructions($order->get_id()); $bank_summary=ob_get_clean();
+                npe_integration_assert(str_contains($bank_summary,'Sao chép nội dung') && str_contains($bank_summary,(string)$order->get_order_number()),'bank receipt includes per-order transfer reference and copy control');
             }
         }
     }

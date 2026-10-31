@@ -53,6 +53,13 @@ function npe_builder_schema($page) {
             'summary_title' => ['label' => 'Tiêu đề đơn hàng', 'default' => 'Đơn hàng của bạn'],
             'place_order_text' => ['label' => 'Nhãn nút đặt hàng', 'default' => 'ĐẶT HÀNG'],
             'order_notes_title' => ['label' => 'Nhãn ghi chú', 'default' => 'Ghi chú đơn hàng'],
+            'coupon_title' => ['label' => 'Tiêu đề mã khuyến mãi', 'default' => 'Mã khuyến mãi'],
+            'name_label' => ['label' => 'Nhãn họ và tên', 'default' => 'Họ và tên'],
+            'phone_label' => ['label' => 'Nhãn số điện thoại', 'default' => 'Số điện thoại'],
+            'email_label' => ['label' => 'Nhãn email', 'default' => 'Email'],
+            'street_label' => ['label' => 'Nhãn số nhà, tên đường', 'default' => 'Số nhà, tên đường'],
+            'district_label' => ['label' => 'Nhãn phường, quận', 'default' => 'Phường/Xã, Quận/Huyện'],
+            'city_label' => ['label' => 'Nhãn tỉnh, thành phố', 'default' => 'Tỉnh/Thành phố'],
             'banner_image' => ['label' => 'Ảnh thông báo / ưu đãi', 'type' => 'image', 'default' => 0],
             'banner_url' => ['label' => 'Liên kết ảnh thông báo', 'type' => 'url', 'default' => ''],
             'banner_text' => ['label' => 'Nội dung thông báo / ưu đãi', 'type' => 'textarea', 'default' => ''],
@@ -87,6 +94,7 @@ function npe_page_settings($page) {
         'order' => isset($settings['order']) && is_array($settings['order']) ? $settings['order'] : [],
         'hidden' => isset($settings['hidden']) && is_array($settings['hidden']) ? $settings['hidden'] : [],
         'columns' => isset($settings['columns']) && is_array($settings['columns']) ? $settings['columns'] : [],
+        'feature_order' => isset($settings['feature_order']) && is_array($settings['feature_order']) ? $settings['feature_order'] : [],
     ];
 }
 
@@ -129,11 +137,11 @@ function npe_render_promo($page) {
     $image = absint(npe_setting($page, 'banner_image', 0));
     $text = npe_setting($page, 'banner_text', '');
     $url = npe_setting($page, 'banner_url', '');
-    if (!$image && !$text) return;
+    if (!$image && !$text && !(function_exists('npe_visual_preview_type') && npe_visual_preview_type())) return;
     echo '<section class="npe-wrap npe-promo" aria-label="Thông báo cửa hàng">';
     if ($url) echo '<a href="' . esc_url($url) . '">';
     if ($image) echo wp_get_attachment_image($image, 'large', false, ['loading' => 'lazy']);
-    if ($text) echo '<p>' . nl2br(esc_html($text)) . '</p>';
+    if ($text || (function_exists('npe_visual_preview_type') && npe_visual_preview_type())) echo '<p>' . nl2br(esc_html($text)) . '</p>';
     if ($url) echo '</a>';
     echo '</section>';
 }
@@ -249,7 +257,7 @@ function npe_render_builder_admin() {
         <?php if ($page === 'checkout'): ?>
         <section class="npe-builder-panel npe-payment-setup">
             <h2>Thiết lập thanh toán</h2>
-            <p class="npe-setup-links"><?php foreach (['bacs' => 'Tài khoản ngân hàng', 'momo' => 'MoMo', 'payoo' => 'Payoo · ATM / thẻ / QR / ví điện tử', 'cod' => 'Thanh toán khi nhận hàng'] as $method => $label): ?><a class="button" href="<?php echo esc_url(add_query_arg(['page' => 'wc-settings', 'tab' => 'checkout', 'section' => $method], admin_url('admin.php'))); ?>"><?php echo esc_html($label); ?></a><?php endforeach; ?></p>
+            <p class="npe-setup-links"><?php foreach (['bacs' => 'Tài khoản ngân hàng', 'momo' => 'Ví MoMo', 'momo_atm' => 'Thẻ ATM / NAPAS', 'momo_card' => 'Thẻ quốc tế', 'payoo' => 'Payoo · ATM / thẻ / QR / ví điện tử', 'cod' => 'Thanh toán khi nhận hàng'] as $method => $label): ?><a class="button" href="<?php echo esc_url(add_query_arg(['page' => 'wc-settings', 'tab' => 'checkout', 'section' => $method], admin_url('admin.php'))); ?>"><?php echo esc_html($label); ?></a><?php endforeach; ?></p>
             <p><strong>Chưa có tài khoản merchant:</strong> mở thiết lập MoMo hoặc Payoo, bật phương thức và chọn <strong>Mô phỏng local</strong>. Bạn có thể thử kết quả thành công, thất bại hoặc hủy; không trừ tiền và đơn luôn được ghi rõ là mô phỏng.</p>
             <p><strong>Khi đã có tài khoản thử nghiệm:</strong> nhập thông tin do đối tác cấp trong thiết lập tương ứng, tắt mô phỏng local và giữ chế độ Sandbox. Đối tác cần truy cập được URL HTTPS nhận kết quả thanh toán. Chỉ chuyển sang môi trường thật sau khi hoàn tất kiểm tra tích hợp với đối tác.</p>
             <p>Với chuyển khoản, thêm tên ngân hàng, chủ tài khoản và số tài khoản tại <strong>Tài khoản ngân hàng</strong>. Cửa hàng xác nhận đơn sau khi đối soát tiền nhận được.</p>

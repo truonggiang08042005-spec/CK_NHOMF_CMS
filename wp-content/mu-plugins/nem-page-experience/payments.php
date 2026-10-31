@@ -6,26 +6,40 @@
 defined('ABSPATH') || exit;
 require_once __DIR__ . '/payments-demo.php';
 
+function npe_payments_live_site_ready() {
+    return !npe_payments_is_local_site() && wp_parse_url(home_url('/'),PHP_URL_SCHEME) === 'https';
+}
+
 function npe_payments_string(array $data, $key) {
     return isset($data[$key]) && is_scalar($data[$key]) ? (string) $data[$key] : '';
 }
 
-function npe_payments_momo_signature(array $data, $access_key, $secret_key, $notification = false) {
+function npe_payments_momo_signature(array $data, $access_key, $secret_key, $notification = false, $request_type = 'captureWallet') {
     $keys = $notification
         ? ['amount', 'extraData', 'message', 'orderId', 'orderInfo', 'orderType', 'partnerCode', 'payType', 'requestId', 'responseTime', 'resultCode', 'transId']
         : ['amount', 'extraData', 'ipnUrl', 'orderId', 'orderInfo', 'partnerCode', 'redirectUrl', 'requestId', 'requestType'];
+    if ($notification && $request_type === 'payWithCC') $keys = ['amount','callbackToken','extraData','message','orderId','orderInfo','orderType','partnerClientId','partnerCode','payType','requestId','responseTime','resultCode','transId'];
     $parts = ['accessKey=' . $access_key];
     foreach ($keys as $key) $parts[] = $key . '=' . npe_payments_string($data, $key);
     return hash_hmac('sha256', implode('&', $parts), $secret_key);
 }
 
-function npe_payments_verify_momo(array $data, $access_key, $secret_key) {
+function npe_payments_verify_momo(array $data, $access_key, $secret_key, $request_type = 'captureWallet') {
     foreach (['partnerCode', 'orderId', 'requestId', 'amount', 'orderInfo', 'orderType', 'transId', 'resultCode', 'message', 'payType', 'responseTime', 'extraData', 'signature'] as $key) {
         if (!array_key_exists($key, $data) || !is_scalar($data[$key])) return false;
     }
+    if ($request_type === 'payWithCC') foreach (['callbackToken','partnerClientId'] as $key) if (isset($data[$key]) && !is_scalar($data[$key])) return false;
     $signature = (string) $data['signature'];
     return $access_key !== '' && $secret_key !== '' && preg_match('/^[a-fA-F0-9]{64}$/D', $signature)
-        && hash_equals(npe_payments_momo_signature($data, $access_key, $secret_key, true), strtolower($signature));
+        && hash_equals(npe_payments_momo_signature($data, $access_key, $secret_key, true, $request_type), strtolower($signature));
+}
+
+function npe_payments_momo_card_ack(array $data, $access_key, $secret_key) {
+    $ack = ['partnerCode'=>npe_payments_string($data,'partnerCode'),'requestId'=>npe_payments_string($data,'requestId'),'orderId'=>npe_payments_string($data,'orderId'),'resultCode'=>0,'message'=>'Success','responseTime'=>wp_date('Y-m-d H:i:s', time(), new DateTimeZone('Asia/Ho_Chi_Minh')),'extraData'=>''];
+    $parts = ['accessKey='.$access_key];
+    foreach (['extraData','message','orderId','partnerCode','requestId','responseTime','resultCode'] as $key) $parts[] = $key.'='.$ack[$key];
+    $ack['signature'] = hash_hmac('sha256', implode('&',$parts), $secret_key);
+    return $ack;
 }
 
 function npe_payments_amount($value) {
@@ -168,7 +182,7 @@ add_action('plugins_loaded', function () {
         }
 
         public function is_available() {
-            return ($this->is_demo() || $this->is_configured()) && get_woocommerce_currency() === 'VND' && parent::is_available();
+            return ($this->is_demo() || ($this->is_configured() && ($this->testmode || npe_payments_live_site_ready()))) && get_woocommerce_currency() === 'VND' && parent::is_available();
         }
 
         public function is_demo() {
@@ -197,6 +211,7 @@ add_action('plugins_loaded', function () {
             }
             if ($order->has_status(['cancelled', 'refunded'])) throw new RuntimeException('Đơn đã hủy hoặc hoàn tiền không thể thanh toán lại. Vui lòng tạo đơn hàng mới.');
             if ((!$this->is_demo() && !$this->is_configured()) || $this->enabled !== 'yes') throw new RuntimeException('Phương thức thanh toán chưa được cấu hình. Vui lòng chọn chuyển khoản ngân hàng hoặc COD.');
+            if (!$this->is_demo() && !$this->testmode && !npe_payments_live_site_ready()) throw new RuntimeException('Thanh toán Production cần website HTTPS công khai. Hãy dùng Sandbox hoặc mô phỏng local khi kiểm thử.');
             if (!$this->is_demo() && $order->get_meta('_npe_payment_demo', true)) throw new RuntimeException('Đơn mô phỏng không nhận thanh toán thật. Vui lòng tạo đơn hàng mới.');
             return $order;
         }
@@ -214,21 +229,35 @@ add_action('plugins_loaded', function () {
     }
 
     class NPE_Gateway_Momo extends NPE_Hosted_Gateway {
+        protected $momo_gateway_id = 'momo';
+        protected $momo_request_type = 'captureWallet';
+        protected $momo_title = 'Thanh toán online qua ví MoMo';
         public function __construct() {
-            $this->setup_gateway('momo', 'Thanh toán online qua ví MoMo', 'Bạn sẽ được chuyển đến MoMo để thanh toán. Đơn hàng được xác nhận khi MoMo gửi kết quả thanh toán hợp lệ.');
-            add_action('woocommerce_api_npe_momo_ipn', [$this, 'handle_ipn']);
-            add_action('woocommerce_api_npe_momo_return', [$this, 'handle_return']);
+            $this->setup_gateway($this->momo_gateway_id, $this->momo_title, 'Bạn sẽ được chuyển đến trang thanh toán bảo mật của MoMo. Đơn hàng được xác nhận sau khi nhận kết quả hợp lệ.');
+            add_action('woocommerce_api_npe_'.$this->id.'_ipn', [$this, 'handle_ipn']);
+            add_action('woocommerce_api_npe_'.$this->id.'_return', [$this, 'handle_return']);
         }
 
         public function init_form_fields() {
-            $this->form_fields = $this->common_fields('Thanh toán online qua ví MoMo', 'Bạn sẽ được chuyển đến MoMo để thanh toán.');
+            $this->form_fields = $this->common_fields($this->momo_title, 'Bạn sẽ được chuyển đến trang bảo mật của MoMo để thanh toán.');
+            if ($this->momo_gateway_id !== 'momo') $this->form_fields['channel_approved'] = ['title'=>'Quyền nhận thanh toán thẻ','type'=>'checkbox','label'=>'MoMo đã cấp quyền sử dụng phương thức thẻ này cho tài khoản merchant','default'=>'no','description'=>'Chỉ bật sau khi MoMo xác nhận dịch vụ. Mô phỏng local không cần quyền này.'];
             foreach (['partner_code' => 'Partner Code', 'access_key' => 'Access Key', 'secret_key' => 'Secret Key'] as $key => $label) {
-                $this->form_fields[$key] = ['title' => $label, 'type' => $key === 'partner_code' ? 'text' : 'password', 'default' => '', 'custom_attributes' => ['autocomplete' => 'new-password']];
+                $this->form_fields[$key] = ['title' => $label, 'type' => $key === 'partner_code' ? 'text' : 'password', 'default' => '', 'description'=>$this->momo_gateway_id !== 'momo' ? 'Để trống để dùng bộ khóa trong cấu hình Ví MoMo (cùng môi trường).' : '', 'custom_attributes' => ['autocomplete' => 'new-password']];
             }
         }
 
+        public function credential($key) {
+            $value = $this->get_option($key, '');
+            if ($this->id !== 'momo' && trim((string)$value) === '') {
+                $shared = get_option('woocommerce_momo_settings', []);
+                if (!is_array($shared) || (($shared['testmode'] ?? 'yes') === 'yes') !== $this->testmode) return '';
+                $value = $shared[$key] ?? '';
+            }
+            return is_string($value) ? trim($value) : '';
+        }
+
         public function is_configured() {
-            return trim($this->get_option('partner_code', '')) !== '' && trim($this->get_option('access_key', '')) !== '' && trim($this->get_option('secret_key', '')) !== '';
+            return ($this->id === 'momo' || $this->get_option('channel_approved','no') === 'yes') && $this->credential('partner_code') !== '' && $this->credential('access_key') !== '' && $this->credential('secret_key') !== '';
         }
 
         public function process_payment($order_id) {
@@ -238,10 +267,13 @@ add_action('plugins_loaded', function () {
                 $order = $this->order_for_payment($order_id);
                 if ($order->is_paid()) return ['result' => 'success', 'redirect' => $this->get_return_url($order)];
                 if ($this->is_demo()) return npe_payments_start_demo($order, $this->id);
-                if ((float) $order->get_total() < 1000 || (float) $order->get_total() > 50000000) throw new RuntimeException('MoMo hỗ trợ số tiền từ 1.000 đến 50.000.000 đồng.');
+                $minimum = $this->momo_request_type === 'payWithATM' ? 10000 : 1000;
+                $maximum = $this->momo_request_type === 'payWithCC' ? 10000000 : 50000000;
+                if ((float)$order->get_total() < $minimum || (float)$order->get_total() > $maximum) throw new RuntimeException('Phương thức này hỗ trợ số tiền từ '.number_format($minimum).' đến '.number_format($maximum).' đồng.');
+                if ($this->momo_request_type === 'payWithCC' && !is_email($order->get_billing_email())) throw new RuntimeException('Vui lòng nhập email hợp lệ để thanh toán bằng thẻ quốc tế.');
                 $mode = $this->testmode ? 'sandbox' : 'production';
                 $attempt = $order->get_meta('_npe_momo_attempt', true);
-                if (!is_array($attempt) || ($attempt['mode'] ?? '') !== $mode || ($attempt['amount'] ?? '') !== npe_payments_amount($order->get_total()) || ($attempt['created'] ?? 0) < time() - 900) {
+                if (!is_array($attempt) || ($attempt['mode'] ?? '') !== $mode || ($attempt['request_type'] ?? 'captureWallet') !== $this->momo_request_type || ($attempt['gateway'] ?? 'momo') !== $this->id || ($attempt['amount'] ?? '') !== npe_payments_amount($order->get_total()) || ($attempt['created'] ?? 0) < time() - 900) {
                     if (is_array($attempt) && !empty($attempt['order_id'])) {
                         $previous = $order->get_meta('_npe_momo_attempts', true);
                         $previous = is_array($previous) ? $previous : [];
@@ -249,12 +281,13 @@ add_action('plugins_loaded', function () {
                         $order->update_meta_data('_npe_momo_attempts', $previous);
                     }
                     $unique = str_replace('-', '', wp_generate_uuid4());
-                    $attempt = ['order_id' => 'NEM_' . $order_id . '_' . substr($unique, 0, 16), 'request_id' => 'NEM_' . substr($unique, 0, 28), 'amount' => npe_payments_amount($order->get_total()), 'mode' => $mode, 'created' => time()];
+                    $attempt = ['order_id' => 'NEM_' . $order_id . '_' . substr($unique, 0, 16), 'request_id' => 'NEM_' . substr($unique, 0, 28), 'amount' => npe_payments_amount($order->get_total()), 'mode' => $mode, 'created' => time(), 'request_type'=>$this->momo_request_type, 'gateway'=>$this->id];
                     $order->update_meta_data('_npe_momo_attempt', $attempt);
                     $order->save();
                 }
-                $payload = ['partnerCode' => trim($this->get_option('partner_code')), 'requestType' => 'captureWallet', 'ipnUrl' => WC()->api_request_url('npe_momo_ipn'), 'redirectUrl' => WC()->api_request_url('npe_momo_return'), 'orderId' => $attempt['order_id'], 'amount' => (int) $attempt['amount'], 'orderInfo' => 'Thanh toan don hang NEM ' . $order->get_id(), 'requestId' => $attempt['request_id'], 'extraData' => '', 'autoCapture' => true, 'lang' => 'vi'];
-                $payload['signature'] = npe_payments_momo_signature($payload, $this->get_option('access_key'), $this->get_option('secret_key'));
+                $payload = ['partnerCode' => trim($this->credential('partner_code')), 'requestType' => $this->momo_request_type, 'ipnUrl' => WC()->api_request_url('npe_'.$this->id.'_ipn'), 'redirectUrl' => WC()->api_request_url('npe_'.$this->id.'_return'), 'orderId' => $attempt['order_id'], 'amount' => (int) $attempt['amount'], 'orderInfo' => 'Thanh toan don hang NEM ' . $order->get_id(), 'requestId' => $attempt['request_id'], 'extraData' => '', 'autoCapture' => true, 'lang' => 'vi'];
+                if ($this->momo_request_type === 'payWithCC') $payload['userInfo'] = ['email'=>$order->get_billing_email()];
+                $payload['signature'] = npe_payments_momo_signature($payload, $this->credential('access_key'), $this->credential('secret_key'));
                 $endpoint = $this->testmode ? 'https://test-payment.momo.vn/v2/gateway/api/create' : 'https://payment.momo.vn/v2/gateway/api/create';
                 $response = json_decode($this->request_json($endpoint, $payload), true);
                 if (!is_array($response) || !isset($response['resultCode']) || (string) $response['resultCode'] !== '0'
@@ -275,16 +308,17 @@ add_action('plugins_loaded', function () {
 
         /** Returns a status code, and mutates orders only after all signed fields match. */
         public function accept_notification(array $data) {
-            if (!$this->is_configured() || !npe_payments_verify_momo($data, $this->get_option('access_key'), $this->get_option('secret_key'))
-                || npe_payments_string($data, 'partnerCode') !== trim($this->get_option('partner_code'))
+            if (!$this->is_configured() || !npe_payments_verify_momo($data, $this->credential('access_key'), $this->credential('secret_key'), $this->momo_request_type)
+                || npe_payments_string($data, 'partnerCode') !== trim($this->credential('partner_code'))
                 || !preg_match('/^NEM_([1-9][0-9]*)_[a-f0-9]{16}$/D', npe_payments_string($data, 'orderId'), $match)) return 400;
             $lock = npe_payments_lock('momo-ipn-' . $match[1]);
             if (!$lock) return 503;
             try {
                 $order = wc_get_order((int) $match[1]);
-                if (!$order || $order->get_payment_method() !== 'momo' || $order->get_currency() !== 'VND' || $order->get_meta('_npe_payment_demo', true)) return 400;
+                if (!$order || $order->get_payment_method() !== $this->id || $order->get_currency() !== 'VND' || $order->get_meta('_npe_payment_demo', true)) return 400;
                 $attempt = npe_payments_momo_attempt($order, $data['orderId']);
                 if (!is_array($attempt) || ($attempt['order_id'] ?? '') !== $data['orderId'] || ($attempt['request_id'] ?? '') !== $data['requestId']
+                    || ($attempt['gateway'] ?? 'momo') !== $this->id || ($attempt['request_type'] ?? 'captureWallet') !== $this->momo_request_type
                     || ($attempt['mode'] ?? '') !== ($this->testmode ? 'sandbox' : 'production')
                     || ($attempt['amount'] ?? '') !== npe_payments_amount($data['amount']) || npe_payments_amount($order->get_total()) !== npe_payments_amount($data['amount'])
                     || $data['orderInfo'] !== 'Thanh toan don hang NEM ' . $order->get_id() || $data['extraData'] !== '' || $data['orderType'] !== 'momo_wallet') return 400;
@@ -298,6 +332,7 @@ add_action('plugins_loaded', function () {
                     return 204;
                 }
                 $transaction = npe_payments_string($data, 'transId');
+                if (($this->momo_request_type === 'payWithATM' && $data['payType'] !== 'napas') || ($this->momo_request_type === 'payWithCC' && $data['payType'] !== 'credit')) return 400;
                 if (!preg_match('/^[1-9][0-9]*$/D', $transaction)) return 400;
                 if ($order->is_paid()) return (string) $order->get_transaction_id() === $transaction ? 204 : 409;
                 if ($order->has_status(['cancelled', 'refunded'])) return 409;
@@ -324,24 +359,41 @@ add_action('plugins_loaded', function () {
             $raw = file_get_contents('php://input', false, null, 0, 131073);
             if (strlen($raw) > 131072) { status_header(413); exit; }
             $data = json_decode($raw, true);
-            status_header(is_array($data) ? $this->accept_notification($data) : 400);
+            $status = is_array($data) ? $this->accept_notification($data) : 400;
+            if ($status === 204 && $this->momo_request_type === 'payWithCC') {
+                status_header(200);
+                header('Content-Type: application/json; charset=UTF-8');
+                echo wp_json_encode(npe_payments_momo_card_ack($data, $this->credential('access_key'), $this->credential('secret_key')));
+            } else status_header($status);
             exit;
         }
 
         public function handle_return() {
             $data = wp_unslash($_GET);
             // The browser return is used only for navigation, never payment_complete().
-            if (!is_array($data) || !npe_payments_verify_momo($data, $this->get_option('access_key'), $this->get_option('secret_key'))
+            if (!is_array($data) || !npe_payments_verify_momo($data, $this->credential('access_key'), $this->credential('secret_key'), $this->momo_request_type)
                 || !preg_match('/^NEM_([1-9][0-9]*)_[a-f0-9]{16}$/D', npe_payments_string($data, 'orderId'), $match)) {
                 wp_safe_redirect(wc_get_checkout_url()); exit;
             }
             $order = wc_get_order((int) $match[1]);
             $attempt = $order ? npe_payments_momo_attempt($order, $data['orderId']) : [];
-            if (!$order || $order->get_payment_method() !== 'momo' || !is_array($attempt) || ($attempt['order_id'] ?? '') !== $data['orderId'] || ($attempt['request_id'] ?? '') !== $data['requestId'] || ($attempt['amount'] ?? '') !== npe_payments_amount($data['amount'])) {
+            if (!$order || $order->get_payment_method() !== $this->id || !is_array($attempt) || ($attempt['order_id'] ?? '') !== $data['orderId'] || ($attempt['request_id'] ?? '') !== $data['requestId'] || ($attempt['amount'] ?? '') !== npe_payments_amount($data['amount'])) {
                 wp_safe_redirect(wc_get_checkout_url()); exit;
             }
             wp_safe_redirect($this->get_return_url($order)); exit;
         }
+    }
+
+    class NPE_Gateway_Momo_Atm extends NPE_Gateway_Momo {
+        protected $momo_gateway_id = 'momo_atm';
+        protected $momo_request_type = 'payWithATM';
+        protected $momo_title = 'Thẻ ATM nội địa / NAPAS qua MoMo';
+    }
+
+    class NPE_Gateway_Momo_Card extends NPE_Gateway_Momo {
+        protected $momo_gateway_id = 'momo_card';
+        protected $momo_request_type = 'payWithCC';
+        protected $momo_title = 'Thẻ quốc tế qua MoMo';
     }
 
     class NPE_Gateway_Payoo extends NPE_Hosted_Gateway {
@@ -425,6 +477,8 @@ add_action('plugins_loaded', function () {
 
     add_filter('woocommerce_payment_gateways', function ($gateways) {
         $gateways[] = 'NPE_Gateway_Momo';
+        $gateways[] = 'NPE_Gateway_Momo_Atm';
+        $gateways[] = 'NPE_Gateway_Momo_Card';
         $gateways[] = 'NPE_Gateway_Payoo';
         return $gateways;
     });
