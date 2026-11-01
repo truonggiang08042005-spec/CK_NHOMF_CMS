@@ -40,7 +40,10 @@ function nem_collection_url( $slug ) {
 }
 
 function nem_collection_catalog_effects() {
-	return function_exists( 'is_shop' ) && ( is_shop() || is_product_taxonomy() || is_product() );
+	return function_exists( 'is_shop' ) && (
+		is_search() && function_exists( 'nem_is_product_search' ) && nem_is_product_search() ||
+		! is_search() && ( is_shop() || is_product_taxonomy() || is_product() )
+	);
 }
 
 function nem_is_collection_page() {
@@ -98,6 +101,24 @@ add_action( 'woocommerce_before_shop_loop_item_title', function () {
 	echo '<span class="nem-collection-product-overlay"><span class="nem-collection-view-more">XEM THÊM</span></span></span>';
 }, 11 );
 
+add_action( 'woocommerce_before_shop_loop_item_title', function () {
+	global $product;
+	if ( ! nem_collection_catalog_effects() || ! ( $product instanceof WC_Product ) ) {
+		return;
+	}
+
+	if ( 'yes' === $product->get_meta( '_nem_online_only' ) ) {
+		echo '<span class="nem-badge-online-only">ONLINE ONLY</span>';
+	}
+
+	$regular_price = (float) $product->get_regular_price();
+	$price = (float) $product->get_price();
+	if ( $product->is_on_sale() && $regular_price > 0 && $price < $regular_price ) {
+		$discount = round( ( 1 - $price / $regular_price ) * 100 );
+		printf( '<span class="nem-collection-sale">-%s%%</span>', esc_html( $discount ) );
+	}
+}, 10 );
+
 add_filter( 'woocommerce_page_title', function ( $title ) {
 	$names = array( 'thoi-nha' => 'Áo dài THỜI NHÃ', 'nhe-buoc-moi-ngay' => 'NHẸ BƯỚC MỖI NGÀY', 'giao-thoi' => 'GIAO THỜI', 'nhip-thanh-pho' => 'Nhịp Thành phố' );
 	$slug = isset( $_GET['collection'] ) && is_string( $_GET['collection'] ) ? sanitize_title( wp_unslash( $_GET['collection'] ) ) : '';
@@ -127,7 +148,17 @@ function nem_collection_newsletter_subscribe() {
 			}
 		}
 	}
-	wp_safe_redirect( add_query_arg( 'newsletter', $status, home_url( '/bo-suu-tap/' ) ) . '#nem-collection-newsletter' );
+	$return_path = '/bo-suu-tap/';
+	if ( isset( $_POST['return_to'] ) ) {
+		if ( 'san-pham-moi' === $_POST['return_to'] ) {
+			$return_path = '/san-pham-moi/';
+		} elseif ( 'nem-plus' === $_POST['return_to'] ) {
+			$return_path = '/nem-plus/';
+		} elseif ( 'sale' === $_POST['return_to'] ) {
+			$return_path = '/sale/';
+		}
+	}
+	wp_safe_redirect( add_query_arg( 'newsletter', $status, home_url( $return_path ) ) . '#nem-collection-newsletter' );
 	exit;
 }
 add_action( 'admin_post_nem_collection_newsletter', 'nem_collection_newsletter_subscribe' );

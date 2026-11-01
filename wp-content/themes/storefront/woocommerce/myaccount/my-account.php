@@ -9,8 +9,38 @@
 defined( 'ABSPATH' ) || exit;
 
 $current_user = wp_get_current_user();
-$display_name = ! empty( $current_user->display_name ) ? $current_user->display_name : 'NGUYỄN GIANG';
-$user_email   = ! empty( $current_user->user_email ) ? $current_user->user_email : 'truonggiang08042005@gmail.com';
+$user_id      = $current_user->ID;
+
+$fullname = nem_customer_display_name();
+$addr_name  = $fullname;
+
+$user_email = $current_user->user_email;
+
+// Country
+$billing_country = get_user_meta( $user_id, 'billing_country', true );
+if ( empty( $billing_country ) || 'VN' === $billing_country ) {
+    $country_name = 'Vietnam';
+} else {
+    $country_name = function_exists( 'WC' ) && isset( WC()->countries->countries[ $billing_country ] ) 
+        ? WC()->countries->countries[ $billing_country ] 
+        : $billing_country;
+}
+
+// Phone
+$phone = get_user_meta( $user_id, 'billing_phone', true );
+
+// Address
+$address_line = get_user_meta( $user_id, 'billing_address_1', true );
+$has_address = '' !== $address_line || '' !== $phone;
+
+// Determine active tab
+$current_endpoint = function_exists( 'WC' ) && isset( WC()->query ) ? WC()->query->get_current_endpoint() : '';
+$active_tab = 'account';
+if ( in_array( $current_endpoint, array( 'orders', 'view-order' ), true ) ) {
+    $active_tab = 'orders';
+} elseif ( in_array( $current_endpoint, array( 'edit-address' ), true ) ) {
+    $active_tab = 'address';
+}
 ?>
 
 <div class="nem-profile-wrapper">
@@ -18,40 +48,129 @@ $user_email   = ! empty( $current_user->user_email ) ? $current_user->user_email
     <div class="nem-profile-breadcrumb">
         <a href="<?php echo esc_url( home_url( '/' ) ); ?>">TRANG CHỦ</a>
         <span class="nem-bc-separator">/</span>
-        <span class="nem-bc-active">TÀI KHOẢN</span>
+        <span class="nem-bc-active" id="nemBcActive"><?php echo ( 'address' === $active_tab ) ? 'ĐỊA CHỈ' : 'TÀI KHOẢN'; ?></span>
     </div>
 
     <!-- Profile Header Greeting -->
     <div class="nem-profile-greeting-wrap">
         <span class="nem-greeting-sub">Xin chào,</span>
-        <h1 class="nem-greeting-name"><?php echo esc_html( mb_strtoupper( $display_name, 'UTF-8' ) ); ?></h1>
+        <h1 class="nem-greeting-name" id="nemGreetingName"><?php echo esc_html( mb_strtoupper( $fullname, 'UTF-8' ) ); ?></h1>
     </div>
 
     <!-- Main Grid: Sidebar Menu + Account Content -->
     <div class="nem-profile-grid">
         <!-- Sidebar Navigation -->
         <div class="nem-profile-sidebar-col">
-            <?php
-            /**
-             * My Account navigation.
-             *
-             * @since 2.6.0
-             */
-            do_action( 'woocommerce_account_navigation' );
-            ?>
+            <nav class="nem-account-nav">
+                <ul class="nem-account-nav-list">
+                    <li class="nem-account-nav-item <?php echo ( 'account' === $active_tab ) ? 'is-active' : ''; ?>" data-target="account">
+                        <a href="#account" data-tab="account" class="nem-account-nav-link">Thông tin tài khoản</a>
+                    </li>
+                    <li class="nem-account-nav-item <?php echo ( 'orders' === $active_tab ) ? 'is-active' : ''; ?>" data-target="orders">
+                        <a href="#orders" data-tab="orders" class="nem-account-nav-link">Quản lý đơn hàng</a>
+                    </li>
+                    <li class="nem-account-nav-item <?php echo ( 'address' === $active_tab ) ? 'is-active' : ''; ?>" data-target="address">
+                        <a href="#address" data-tab="address" class="nem-account-nav-link">Thông tin giao hàng</a>
+                    </li>
+                </ul>
+            </nav>
         </div>
 
-        <!-- Main Account Content -->
+        <!-- Main Account Content Panels -->
         <div class="nem-profile-content-col">
-            <?php
-            /**
-             * My Account content.
-             *
-             * @since 2.6.0
-             */
-            do_action( 'woocommerce_account_content' );
-            ?>
+            <!-- TAB 1: Thông tin tài khoản (Image 1) -->
+            <div class="nem-tab-panel <?php echo ( 'account' === $active_tab ) ? 'is-active' : ''; ?>" id="nemPanelAccount">
+                <div class="nem-profile-dashboard">
+                    <div class="nem-profile-field-group">
+                        <label class="nem-field-label" for="nemFieldFullname">Họ tên</label>
+                        <div class="nem-field-box">
+                            <input type="text" class="nem-field-input" id="nemFieldFullname" value="<?php echo esc_attr( $fullname ); ?>" readonly />
+                        </div>
+                    </div>
+
+                    <div class="nem-profile-field-group">
+                        <label class="nem-field-label" for="nemFieldCountry">Quốc gia:</label>
+                        <div class="nem-field-box">
+                            <input type="text" class="nem-field-input" id="nemFieldCountry" value="<?php echo esc_attr( $country_name ); ?>" readonly />
+                        </div>
+                    </div>
+
+                    <div class="nem-profile-field-group">
+                        <label class="nem-field-label" for="nemFieldPhone">Số điện thoại:</label>
+                        <div class="nem-field-box">
+                            <input type="text" class="nem-field-input" id="nemFieldPhone" value="<?php echo esc_attr( $phone ); ?>" readonly />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: Quản lý đơn hàng (Image 2) -->
+            <div class="nem-tab-panel <?php echo ( 'orders' === $active_tab ) ? 'is-active' : ''; ?>" id="nemPanelOrders">
+                <div class="nem-orders-wrap">
+                    <div class="nem-orders-empty">customer.orders.none</div>
+                </div>
+            </div>
+
+            <!-- TAB 3: Thông tin giao hàng (Image 3) -->
+            <div class="nem-tab-panel <?php echo ( 'address' === $active_tab ) ? 'is-active' : ''; ?>" id="nemPanelAddress">
+                <div class="nem-address-card-wrap">
+                    <div id="nemAddressDetails"<?php echo $has_address ? '' : ' hidden'; ?>>
+                    <div class="nem-address-card-header">
+                        <div class="nem-address-name-wrap">
+                            <strong class="nem-address-name" id="nemAddrDisplayName"><?php echo esc_html( mb_strtoupper( $addr_name, 'UTF-8' ) ); ?></strong>
+                            <span class="nem-address-default-badge">(Địa chỉ mặc định)</span>
+                        </div>
+                        <div class="nem-address-actions">
+                            <a href="javascript:void(0)" class="nem-addr-action-btn" id="nemBtnEditAddr">Sửa</a>
+                            <span class="nem-addr-sep">|</span>
+                            <a href="javascript:void(0)" class="nem-addr-action-btn" id="nemBtnDeleteAddr">Xóa</a>
+                        </div>
+                    </div>
+                    <div class="nem-address-row" id="nemAddrRowAddress">
+                        Địa chỉ: <span id="nemAddrValAddress"><?php echo esc_html( $address_line ); ?></span>
+                    </div>
+                    <div class="nem-address-row" id="nemAddrRowPhone">
+                        Điện thoại: <span id="nemAddrValPhone"><?php echo esc_html( $phone ); ?></span>
+                    </div>
+                    </div>
+                    <p id="nemAddressEmpty"<?php echo $has_address ? ' hidden' : ''; ?>>Bạn chưa có thông tin giao hàng.</p>
+                    <p id="nemAddressStatus" role="status" aria-live="polite"></p>
+                    <div class="nem-address-divider"></div>
+                    <button type="button" class="nem-btn-add-address" id="nemBtnAddNewAddr">THÊM MỚI</button>
+                </div>
+            </div>
         </div>
+    </div>
+</div>
+
+<!-- Modal Sửa / Thêm Địa Chỉ -->
+<div class="nem-modal-overlay" id="nemAddressModal" aria-hidden="true">
+    <div class="nem-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="nemModalTitle">
+        <button type="button" class="nem-modal-close-btn" id="nemModalCloseBtn" aria-label="Đóng">&times;</button>
+        <h3 class="nem-modal-title" id="nemModalTitle">CHỈNH SỬA ĐỊA CHỈ</h3>
+        <form id="nemAddressForm">
+            <p id="nemAddressFormStatus" role="alert"></p>
+            <div class="nem-modal-form-group">
+                <label class="nem-modal-label" for="nemModalInputName">Họ và tên</label>
+                <input type="text" class="nem-modal-input" maxlength="250" id="nemModalInputName" value="<?php echo esc_attr( $fullname ); ?>" required />
+            </div>
+            <div class="nem-modal-form-group">
+                <label class="nem-modal-label" for="nemModalInputPhone">Số điện thoại</label>
+                <input type="tel" class="nem-modal-input" maxlength="10" inputmode="numeric" pattern="[0-9]{1,10}" title="Chỉ nhập chữ số, tối đa 10 ký tự" id="nemModalInputPhone" value="<?php echo esc_attr( $phone ); ?>" required />
+            </div>
+            <div class="nem-modal-form-group">
+                <label class="nem-modal-label" for="nemModalInputCountry">Quốc gia</label>
+                <input type="text" class="nem-modal-input" maxlength="250" id="nemModalInputCountry" value="<?php echo esc_attr( $country_name ); ?>" required />
+            </div>
+            <div class="nem-modal-form-group">
+                <label class="nem-modal-label" for="nemModalInputAddress">Địa chỉ chi tiết</label>
+                <input type="text" class="nem-modal-input" maxlength="250" id="nemModalInputAddress" value="<?php echo esc_attr( $address_line ); ?>" required />
+            </div>
+            <div class="nem-modal-actions">
+                <button type="submit" class="nem-modal-btn-submit" id="nemModalBtnSubmit">LƯU THAY ĐỔI</button>
+                <button type="button" class="nem-modal-btn-cancel" id="nemModalBtnCancel">HỦY</button>
+            </div>
+        </form>
     </div>
 </div>
 
@@ -62,7 +181,7 @@ $user_email   = ! empty( $current_user->user_email ) ? $current_user->user_email
         <p class="nem-newsletter-desc">Đăng ký nhận bản tin NEM để được cập nhật những mẫu thiết kế mới nhất</p>
 
         <form class="nem-newsletter-form" action="#" method="post" onsubmit="event.preventDefault(); alert('Cảm ơn bạn đã đăng ký nhận bản tin NEM!');">
-            <input type="email" class="nem-newsletter-input" name="email" value="<?php echo esc_attr( $user_email ); ?>" placeholder="Vui lòng nhập email..." required />
+            <input type="email" maxlength="250" class="nem-newsletter-input" name="email" value="<?php echo esc_attr( $user_email ); ?>" placeholder="Vui lòng nhập email..." required />
             <button type="submit" class="nem-newsletter-submit">ĐĂNG KÝ</button>
         </form>
 

@@ -1,0 +1,17 @@
+/* Editing affordances are loaded inside the preview only. */
+.nve-piece:not(.ui-sortable-helper){position:relative!important}
+.nve-piece{padding-top:42px!important;min-width:0;box-sizing:border-box}
+.nve-piece-handle{position:absolute;top:6px;left:6px;z-index:70;max-width:calc(100% - 12px);padding:5px 8px;background:#edf5ff;color:#135e96;border:1px solid #88b9e5;border-radius:4px;font:12px/1.4 Arial,sans-serif;cursor:grab;user-select:none;touch-action:none;box-sizing:border-box}
+.nve-piece-handle:hover,.nve-piece-handle:focus{background:#d9ebff;outline:2px solid #2271b1}
+.nve-product-columns>.npe-gallery,.nve-product-columns>.npe-summary{order:0!important;top:auto!important}
+.ui-sortable-helper{opacity:.7;box-shadow:0 8px 28px #135e9655;pointer-events:none;cursor:grabbing!important}
+.nve-piece-placeholder{visibility:visible!important;min-width:100px;min-height:80px;max-width:100%;border:3px dashed #2271b1;background:#dceeff99;box-sizing:border-box}
+.nve-piece-placeholder:before{content:"Thả tại đây";display:block;padding:18px;color:#135e96;font:600 14px/1.4 Arial,sans-serif;text-align:center}
+[data-nve-column]{min-height:100px;border:1px dashed #b8cce0;padding:8px;box-sizing:border-box}
+.nve-column-caption{margin:0 0 12px!important;padding:8px!important;background:#edf5ff;color:#135e96;font:12px/1.4 Arial,sans-serif}
+.nve-dragging-pieces [data-nve-column]{min-height:180px;background:#f4f9ff}
+.nve-dragging-pieces .npe-home-track{min-height:160px;outline:1px dashed #88b9e5}
+/* Grid/flex ignore floats; this lets jQuery UI detect these horizontal rows. */
+.npe-features>.nve-piece,.npe-home-track>.nve-piece{float:left}
+@media(min-width:761px){.nve-product-columns>.nve-piece{float:left}}
+.nem-checkout-sidebar[data-nve-column]{position:static}

@@ -15,6 +15,10 @@ bin-release/
 
 # Generated Media Library copies; source collection images live in the theme.
 /wp-content/uploads/nem-collections/
+/wp-content/uploads/nem-new-products/
+/wp-content/uploads/nem-sale/
+/wp-content/uploads/nem-plus/
+wp-content/uploads/wc-logs/
 
 # Project files, i.e. `.project`, `.actionScriptProperties` and `.flexProperties`
 # should NOT be excluded as they contain compiler settings and other important
