@@ -2,6 +2,17 @@
 /** Template Name: NEM - Sản phẩm mới */
 defined( 'ABSPATH' ) || exit;
 if ( ! function_exists( 'WC' ) ) { get_header(); echo '<p>Danh mục sản phẩm đang được cập nhật.</p>'; get_footer(); return; }
+if ( nem_new_uses_editor() ) {
+	get_header();
+	echo '<main id="main" class="site-main nem-new-main nem-new-blocks">';
+	while ( have_posts() ) {
+		the_post();
+		the_content();
+	}
+	echo '</main>';
+	get_footer();
+	return;
+}
 $state = nem_new_filter_state();
 $catalog = new WP_Query( nem_new_query_args( $state ) );
 get_header();

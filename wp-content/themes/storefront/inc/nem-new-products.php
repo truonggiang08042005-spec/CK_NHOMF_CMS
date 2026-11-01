@@ -1,6 +1,7 @@
 <?php
 /** New arrivals catalog with persistent, server-rendered filters. */
 defined( 'ABSPATH' ) || exit;
+require_once __DIR__ . '/nem-new-products-editor.php';
 
 function nem_is_new_products_page() {
 	return is_page( 'san-pham-moi' ) || is_page_template( 'page-san-pham-moi.php' ) ||
@@ -78,6 +79,11 @@ function nem_new_filter_state( $input = null ) {
 	$state = array( 'danh_muc' => $scalar( 'danh_muc' ), 'gia' => $scalar( 'gia' ), 'cot' => '2' === $scalar( 'cot' ) ? 2 : 3, 'trang' => max( 1, min( 1000, absint( $scalar( 'trang' ) ) ) ) );
 	$categories = array();
 	foreach ( nem_new_product_categories() as $slug => $group ) { $categories[] = $slug; $categories = array_merge( $categories, array_keys( $group['children'] ) ); }
+	if ( nem_new_uses_editor() ) {
+		$state['danh_muc'] = nem_new_editor_category_slug( $state['danh_muc'] );
+		preg_match_all( '/\bnem-cat-slug-([a-z0-9-]+)/', get_queried_object()->post_content, $saved_categories );
+		$categories = array_merge( $categories, array_map( 'nem_new_editor_category_slug', $saved_categories[1] ) );
+	}
 	if ( ! in_array( $state['danh_muc'], $categories, true ) ) { $state['danh_muc'] = ''; }
 	if ( ! isset( nem_new_price_ranges()[ $state['gia'] ] ) ) { $state['gia'] = ''; }
 	foreach ( array( 'kich_co', 'mau_sac' ) as $key ) {
@@ -139,5 +145,5 @@ add_action( 'wp', function () {
 } );
 
 add_action( 'storefront_before_footer', function () {
-	if ( nem_is_new_products_page() ) { get_template_part( 'template-parts/collection-newsletter', null, array( 'return_to' => 'san-pham-moi' ) ); }
+	if ( nem_is_new_products_page() && ! nem_new_uses_editor() ) { get_template_part( 'template-parts/collection-newsletter', null, array( 'return_to' => 'san-pham-moi' ) ); }
 } );
