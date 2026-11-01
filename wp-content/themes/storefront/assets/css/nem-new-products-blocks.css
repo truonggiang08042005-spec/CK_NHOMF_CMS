@@ -1,0 +1,219 @@
+/* Shared presentation for the saved new-arrivals blocks and their editor canvas. */
+:is(.nem-new-blocks, .editor-styles-wrapper) { font-family: Arial, sans-serif; color: #222; }
+.editor-styles-wrapper .wp-block { max-width: 100%; }
+:is(.nem-new-blocks, .editor-styles-wrapper) .nem-new-breadcrumb {
+    display: block; width: 100%; max-width: 1460px; padding: 14px 20px; margin: 0 auto; font-size: 12px; box-sizing: border-box;
+}
+:is(.nem-new-blocks, .editor-styles-wrapper) .nem-new-banner {
+    width: 100%; max-width: 100%; margin: 0 auto 20px;
+}
+:is(.nem-new-blocks, .editor-styles-wrapper) .nem-new-banner img {
+    display: block; width: 100%; height: auto; border-radius: 0;
+}
+:is(.nem-new-blocks, .editor-styles-wrapper) .wp-block-columns.nem-new-layout {
+    display: flex; flex-wrap: nowrap; align-items: flex-start; gap: 48px;
+    width: 100%; max-width: 1460px; padding: 30px 20px; margin: 0 auto; box-sizing: border-box;
+}
+:is(.nem-new-blocks, .editor-styles-wrapper) .nem-new-layout > .nem-new-sidebar {
+    flex-grow: 0; flex-shrink: 0; margin: 0; min-width: 0;
+}
+:is(.nem-new-blocks, .editor-styles-wrapper) .nem-new-layout > .nem-new-sidebar:not(:has(*)) {
+    display: none;
+}
+:is(.nem-new-blocks, .editor-styles-wrapper) .nem-new-layout > .nem-new-catalog {
+    flex: 1 1 0; min-width: 0; margin: 0;
+}
+:is(.nem-new-blocks, .editor-styles-wrapper) .nem-categories-box { padding: 0; margin: 0; }
+:is(.nem-new-blocks, .editor-styles-wrapper) .nem-new-categories-title {
+    font-size: 15px; font-weight: 600; margin: 0 0 8px; color: #333;
+}
+:is(.nem-new-blocks, .editor-styles-wrapper) .nem-categories-box p {
+    margin: 0 0 2px; padding: 2px 6px; font-size: 14px; line-height: 1.75; color: #888;
+}
+:is(.nem-new-blocks, .editor-styles-wrapper) .nem-categories-box a { color: inherit; text-decoration: none; }
+:is(.nem-new-blocks, .editor-styles-wrapper) .nem-categories-box .nem-new-category-parent,
+:is(.nem-new-blocks, .editor-styles-wrapper) .nem-categories-box .nem-new-category-all {
+    color: #222; font-weight: 600;
+}
+:is(.nem-new-blocks, .editor-styles-wrapper) .nem-new-category-group { margin: 0 0 12px; }
+.nem-new-blocks .nem-categories-box .is-active a,
+.nem-new-blocks .nem-categories-box a:hover { color: #111; text-decoration: underline; }
+:is(.nem-new-blocks, .editor-styles-wrapper) .nem-new-toolbar {
+    display: flex; align-items: center; justify-content: space-between; gap: 20px; margin: 0 0 28px; flex-wrap: wrap;
+}
+:is(.nem-new-blocks, .editor-styles-wrapper) .nem-new-toolbar h1 {
+    font-size: 20px; font-weight: 600; margin: 0; line-height: 1.4;
+}
+.nem-new-toolbar-controls { display: flex; align-items: center; gap: 20px; margin-left: auto; }
+.nem-new-blocks .nem-new-filters { gap: 24px; }
+.nem-new-blocks .nem-new-filter-status { margin: 0 0 25px; }
+:is(.nem-new-blocks, .editor-styles-wrapper) .nem-new-products-grid { display: block; width: 100%; }
+:is(.nem-new-blocks, .editor-styles-wrapper) .wp-block-columns.nem-new-products-row {
+    display: flex; flex-wrap: nowrap; gap: 14px; width: 100%; margin: 0 0 36px; align-items: flex-start;
+}
+:is(.nem-new-blocks, .editor-styles-wrapper) .nem-new-products-row > .wp-block-column {
+    flex-grow: 1; flex-shrink: 1; min-width: 0; margin: 0; text-align: center; position: relative;
+}
+:is(.nem-new-blocks, .editor-styles-wrapper) .nem-collection-product-image { display: block; margin: 0; aspect-ratio: 2 / 3; }
+:is(.nem-new-blocks, .editor-styles-wrapper) .nem-collection-product-image img {
+    display: block; width: 100%; height: 100%; object-fit: cover; border-radius: 0;
+}
+.nem-new-blocks .nem-collection-product-image a { position: relative; display: block; height: 100%; overflow: hidden; }
+:is(.nem-new-blocks, .editor-styles-wrapper) .nem-collection-product h3 {
+    font-size: 13px; font-weight: 500; line-height: 1.4; margin: 10px 4px 8px; text-align: center;
+}
+:is(.nem-new-blocks, .editor-styles-wrapper) .nem-collection-product h3 a { color: #444; text-decoration: none; }
+:is(.nem-new-blocks, .editor-styles-wrapper) .nem-collection-product-price {
+    display: flex; justify-content: center; align-items: baseline; gap: 8px; font-size: 15px; margin: 0;
+}
+:is(.nem-new-blocks, .editor-styles-wrapper) .nem-collection-product-price strong { color: #e51a1a; }
+:is(.nem-new-blocks, .editor-styles-wrapper) .nem-collection-product-price s { color: #777; font-size: 12px; }
+:is(.nem-new-blocks, .editor-styles-wrapper) .nem-collection-product > .nem-badge-online-only,
+:is(.nem-new-blocks, .editor-styles-wrapper) .nem-collection-product > .nem-collection-sale {
+    display: inline-block; position: static; margin: 6px 4px 0; padding: 4px 8px; line-height: 1.2; font-size: 11px;
+}
+:is(.nem-new-blocks, .editor-styles-wrapper) .nem-collection-product > .nem-collection-sale {
+    color: #ff473c; background: #fff5f5; border: 1px solid #ffd6d6;
+}
+.nem-new-blocks .nem-new-products-grid.nem-editor-columns-override {
+    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 36px 14px;
+}
+.nem-new-blocks .nem-new-products-grid.nem-editor-columns-override[data-columns="2"] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.nem-new-blocks .nem-editor-columns-override .nem-new-products-row { display: contents; }
+.nem-new-blocks .nem-editor-columns-override > .wp-block-group__inner-container { display: contents; }
+.nem-new-blocks .nem-editor-columns-override .wp-block-column { width: auto; }
+:is(.nem-new-blocks, .editor-styles-wrapper) .nem-new-pagination { margin: 35px auto 10px; }
+:is(.nem-new-blocks, .editor-styles-wrapper) .nem-collection-newsletter {
+    width: 100%; max-width: 100%; padding: 72px 24px 53px; margin: 0; box-sizing: border-box;
+    text-align: center; background: #efeff3; font-family: Arial, sans-serif; color: #000;
+}
+:is(.nem-new-blocks, .editor-styles-wrapper) .nem-collection-newsletter h2 {
+    font-size: 32px; font-weight: 700; line-height: 40px; letter-spacing: 0; color: #333; margin: 0 0 14px;
+}
+:is(.nem-new-blocks, .editor-styles-wrapper) .nem-collection-newsletter > p,
+:is(.nem-new-blocks, .editor-styles-wrapper) .nem-collection-newsletter > .wp-block-group__inner-container > p {
+    font-size: 16px; font-weight: 400; line-height: 24px; margin: 0 0 30px;
+}
+:is(.nem-new-blocks, .editor-styles-wrapper) .nem-collection-newsletter .nem-editor-newsletter-form {
+    display: block; width: 100%; max-width: 754px; margin: 0 auto;
+}
+:is(.nem-new-blocks, .editor-styles-wrapper) .nem-newsletter-input-row {
+    display: flex; flex-wrap: nowrap; align-items: stretch; gap: 0; max-width: 754px; width: 100%; min-height: 59px; margin: 0 auto;
+}
+:is(.nem-new-blocks, .editor-styles-wrapper) .nem-newsletter-input-row .wp-block-column.nem-newsletter-input-col { flex: 1 1 0; min-width: 0; margin: 0; }
+:is(.nem-new-blocks, .editor-styles-wrapper) .nem-newsletter-input-row .wp-block-column.nem-newsletter-btn-col { flex: 0 0 146px; min-width: 0; margin: 0; }
+:is(.nem-new-blocks, .editor-styles-wrapper) .nem-newsletter-input-box,
+.nem-new-blocks .nem-editor-newsletter-form input[type="email"] {
+    display: block; width: 100%; height: 59px; margin: 0; padding: 18px 22px; border: 1px solid #d6d6d6; border-radius: 0; background: #fff;
+    color: #777; font-family: Arial, sans-serif; font-size: 14px; line-height: 21px; box-sizing: border-box; text-align: left; box-shadow: none;
+}
+:is(.nem-new-blocks, .editor-styles-wrapper) .nem-newsletter-submit-btn,
+.nem-new-blocks .nem-editor-newsletter-form button {
+    display: grid; place-items: center; width: 100%; height: 59px; margin: 0; padding: 18px 12px;
+    background: #000; border: 1px solid #000; color: #fff; font-family: Arial, sans-serif; font-size: 14px;
+    font-weight: 600; line-height: 21px; white-space: nowrap; border-radius: 0; box-sizing: border-box;
+}
+:is(.nem-new-blocks, .editor-styles-wrapper) .wp-block-columns.nem-newsletter-socials-row {
+    display: grid; grid-auto-flow: column; grid-auto-columns: 38px; grid-template-rows: 38px;
+    justify-content: center; align-items: center; gap: 16px;
+    margin: 40px auto 0; width: max-content; max-width: 100%;
+}
+:is(.nem-new-blocks, .editor-styles-wrapper) .nem-newsletter-socials-row .wp-block-column.nem-social-col {
+    flex: none; width: 38px; min-width: 0; height: 38px; margin: 0; padding: 0; box-sizing: border-box;
+}
+:is(.nem-new-blocks, .editor-styles-wrapper) .nem-social-col p {
+    display: block; width: 38px; height: 38px; margin: 0; padding: 0; line-height: 0;
+}
+:is(.nem-new-blocks, .editor-styles-wrapper) .nem-social-col a {
+    display: block; position: relative; width: 38px; height: 38px; margin: 0; padding: 0; border-radius: 50%;
+    color: #fff; font-size: 0; line-height: 0; text-decoration: none; box-sizing: border-box;
+}
+:is(.nem-new-blocks, .editor-styles-wrapper) .nem-social-col a::before {
+    content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    display: block; width: 23px; height: 23px; margin: 0; background-position: center; background-repeat: no-repeat; background-size: contain;
+}
+.editor-styles-wrapper .nem-newsletter-socials-row > .block-editor-inner-blocks,
+.editor-styles-wrapper .nem-newsletter-socials-row > .block-editor-inner-blocks > .block-editor-block-list__layout { display: contents; }
+:is(.nem-new-blocks, .editor-styles-wrapper) .nem-social-col.is-fb a { background: #1877f2; }
+:is(.nem-new-blocks, .editor-styles-wrapper) .nem-social-col.is-fb a::before {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23fff'%3E%3Cpath d='M14 21v-8h3l.5-3H14V8c0-.9.3-1.5 1.7-1.5H18V3.2c-.4-.1-1.8-.2-3.1-.2C11.9 3 10 4.8 10 8v2H7v3h3v8z'/%3E%3C/svg%3E");
+}
+:is(.nem-new-blocks, .editor-styles-wrapper) .nem-social-col.is-ig a { background: linear-gradient(45deg, #ffb34b, #e4315c, #a82495); }
+:is(.nem-new-blocks, .editor-styles-wrapper) .nem-social-col.is-ig a::before {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='4' y='4' width='16' height='16' rx='5' fill='none' stroke='%23fff' stroke-width='2'/%3E%3Ccircle cx='12' cy='12' r='4' fill='none' stroke='%23fff' stroke-width='2'/%3E%3Ccircle cx='17' cy='7' r='1' fill='%23fff'/%3E%3C/svg%3E");
+}
+:is(.nem-new-blocks, .editor-styles-wrapper) .nem-social-col.is-yt a { background: #f00; }
+:is(.nem-new-blocks, .editor-styles-wrapper) .nem-social-col.is-yt a::before {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='2' y='5' width='20' height='14' rx='4' fill='%23fff'/%3E%3Cpath d='m10 8 6 4-6 4z' fill='%23f00'/%3E%3C/svg%3E");
+}
+.nem-new-blocks .nem-editor-newsletter-status { padding: 0; text-align: center; margin: 0 0 26px; font-size: 14px; }
+:is(.nem-new-blocks, .editor-styles-wrapper) .wp-block-group.nem-footer-wrapper { width: 100%; max-width: 100%; margin: 0; }
+:is(.nem-new-blocks, .editor-styles-wrapper) .wp-block-columns.nem-footer-container {
+    display: flex; flex-wrap: nowrap; gap: 36px; max-width: 1320px; width: 100%; margin: 0 auto;
+}
+:is(.nem-new-blocks, .editor-styles-wrapper) .nem-footer-container > .nem-footer-col { margin: 0; min-width: 0; }
+:is(.nem-new-blocks, .editor-styles-wrapper) .nem-footer-container > .nem-col-company { flex-grow: 2; }
+:is(.nem-new-blocks, .editor-styles-wrapper) .nem-footer-body p,
+:is(.nem-new-blocks, .editor-styles-wrapper) .nem-footer-body a,
+:is(.nem-new-blocks, .editor-styles-wrapper) .nem-footer-body strong {
+    color: #fff; font-family: 'Times New Roman', Times, serif; font-size: 13.5px; line-height: 1.45; text-decoration: none;
+}
+:is(.nem-new-blocks, .editor-styles-wrapper) .nem-footer-body p { margin: 0 0 3px; }
+:is(.nem-new-blocks, .editor-styles-wrapper) .nem-payment-icons-row { display: flex; flex-wrap: nowrap; gap: 8px; margin: 0 0 14px; }
+:is(.nem-new-blocks, .editor-styles-wrapper) .nem-payment-badge-col { margin: 0; min-width: 0; }
+:is(.nem-new-blocks, .editor-styles-wrapper) .nem-payment-badge-col figure { margin: 0; padding: 4px; background: #fff; }
+:is(.nem-new-blocks, .editor-styles-wrapper) .nem-payment-badge-col img { width: auto; max-height: 24px; object-fit: contain; }
+:is(.nem-new-blocks, .editor-styles-wrapper) .nem-bct-wrapper figure { margin: 0; }
+:is(.nem-new-blocks, .editor-styles-wrapper) .nem-bct-wrapper img { width: 130px; height: auto; }
+:is(.nem-new-blocks, .editor-styles-wrapper) .nem-footer-copyright p { max-width: 1320px; margin: 0 auto; }
+
+/* Handles are editor controls; they do not become part of the published design. */
+.editor-styles-wrapper .nem-categories-box,
+.editor-styles-wrapper .nem-new-category-group,
+.editor-styles-wrapper .nem-new-products-row > .nem-collection-product { position: relative; outline: 1px dashed #b5c9e0; }
+.editor-styles-wrapper .nem-categories-box::before,
+.editor-styles-wrapper .nem-new-category-group::before,
+.editor-styles-wrapper .nem-new-products-row > .nem-collection-product::before {
+    content: "⋮⋮"; position: absolute; top: 0; left: -18px; width: 18px; height: 28px;
+    font-size: 12px; line-height: 28px; color: #2271b1; background: #e7f2fd; cursor: grab; z-index: 1;
+}
+.editor-styles-wrapper .nem-categories-box p { position: relative; padding-left: 26px; }
+.editor-styles-wrapper .nem-categories-box p::before {
+    content: "⋮⋮"; position: absolute; left: 0; top: 2px; width: 24px; text-align: center; color: #2271b1; cursor: grab;
+}
+.editor-styles-wrapper .nem-new-categories-title { cursor: grab; }
+.editor-styles-wrapper .nem-dragging { opacity: .7; outline: 2px solid #3858e9; }
+.editor-styles-wrapper .nem-drag-over-top { box-shadow: 0 -3px #3858e9; }
+.editor-styles-wrapper .nem-drag-over-bottom { box-shadow: 0 3px #3858e9; }
+.editor-styles-wrapper .nem-drag-over-swap { outline: 2px dashed #3858e9; }
+.nem-floating-drag-ghost { position: fixed; z-index: 9999999; pointer-events: none; background: #1e1e1e; color: #fff; padding: 10px 16px; border-radius: 6px; }
+
+@media (max-width: 1000px) {
+    :is(.nem-new-blocks, .editor-styles-wrapper) .wp-block-columns.nem-new-layout { gap: 24px; }
+    :is(.nem-new-blocks, .editor-styles-wrapper) .nem-new-layout > .nem-new-sidebar { flex-basis: 180px !important; }
+    .nem-new-toolbar-controls { flex-wrap: wrap; margin-left: 0; }
+    :is(.nem-new-blocks, .editor-styles-wrapper) .wp-block-columns.nem-footer-container { flex-wrap: wrap !important; }
+    :is(.nem-new-blocks, .editor-styles-wrapper) .nem-footer-container > .nem-footer-col { flex-basis: calc(50% - 18px); }
+}
+@media (max-width: 700px) {
+    :is(.nem-new-blocks, .editor-styles-wrapper) .wp-block-columns.nem-new-layout { flex-direction: column; padding: 24px 16px; }
+    :is(.nem-new-blocks, .editor-styles-wrapper) .nem-new-layout > .wp-block-column { flex-basis: auto !important; width: 100%; }
+    :is(.nem-new-blocks, .editor-styles-wrapper) .wp-block-columns.nem-new-products-row { flex-wrap: wrap !important; gap: 24px 10px; }
+    :is(.nem-new-blocks, .editor-styles-wrapper) .nem-new-products-row > .wp-block-column { flex: 0 0 calc(50% - 5px); }
+    .nem-new-blocks .nem-new-products-grid.nem-editor-columns-override { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .nem-new-blocks .nem-new-filters { gap: 16px; }
+    .nem-new-toolbar-controls { width: 100%; gap: 12px; justify-content: space-between; }
+    :is(.nem-new-blocks, .editor-styles-wrapper) .nem-collection-newsletter { padding: 48px 20px 44px; }
+    :is(.nem-new-blocks, .editor-styles-wrapper) .nem-collection-newsletter h2 { font-size: 26px; line-height: 34px; margin-bottom: 12px; }
+    :is(.nem-new-blocks, .editor-styles-wrapper) .nem-collection-newsletter > p,
+    :is(.nem-new-blocks, .editor-styles-wrapper) .nem-collection-newsletter > .wp-block-group__inner-container > p { font-size: 14px; line-height: 22px; margin-bottom: 24px; }
+    :is(.nem-new-blocks, .editor-styles-wrapper) .nem-newsletter-input-row { min-height: 54px; }
+    :is(.nem-new-blocks, .editor-styles-wrapper) .nem-newsletter-input-row .wp-block-column.nem-newsletter-btn-col { flex-basis: 116px; }
+    :is(.nem-new-blocks, .editor-styles-wrapper) .nem-newsletter-input-box,
+    .nem-new-blocks .nem-editor-newsletter-form input[type="email"] { height: 54px; padding: 16px; }
+    .nem-new-blocks .nem-editor-newsletter-status { font-size: 12px; }
+    :is(.nem-new-blocks, .editor-styles-wrapper) .nem-newsletter-submit-btn,
+    .nem-new-blocks .nem-editor-newsletter-form button { height: 54px; padding: 16px 10px; font-size: 13px; }
+    :is(.nem-new-blocks, .editor-styles-wrapper) .wp-block-columns.nem-newsletter-socials-row { margin-top: 32px; }
+    :is(.nem-new-blocks, .editor-styles-wrapper) .nem-footer-container > .nem-footer-col { flex-basis: 100%; }
+}
