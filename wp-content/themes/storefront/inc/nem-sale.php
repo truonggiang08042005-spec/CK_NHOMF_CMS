@@ -8,8 +8,11 @@ require_once __DIR__ . '/nem-sale-editor.php';
 
 function nem_is_sale_page() {
 	return is_page( 'sale' ) || is_page_template( 'page-sale.php' ) || is_page( 'san-pham-sale' ) ||
-		( function_exists( 'is_shop' ) && is_shop() && isset( $_GET['on_sale'] ) && '1' === (string) $_GET['on_sale'] ) ||
-		( function_exists( 'is_shop' ) && is_shop() && isset( $_GET['sale'] ) && '' !== $_GET['sale'] );
+		( function_exists( 'is_shop' ) && is_shop() && (
+			( isset( $_GET['on_sale'] ) && '1' === (string) $_GET['on_sale'] ) ||
+			( isset( $_GET['npe_sale'] ) && '1' === (string) $_GET['npe_sale'] ) ||
+			( isset( $_GET['sale'] ) && '' !== $_GET['sale'] )
+		) );
 }
 
 function nem_sale_products_url() {
@@ -430,6 +433,14 @@ add_action( 'template_redirect', function () {
 	if ( function_exists( 'is_shop' ) && is_shop() ) {
 		if ( isset( $_GET['on_sale'] ) && '1' === (string) $_GET['on_sale'] ) {
 			wp_safe_redirect( nem_sale_products_url(), 301 );
+			exit;
+		}
+		if ( isset( $_GET['npe_sale'] ) && '1' === (string) $_GET['npe_sale'] ) {
+			$redirect_url = nem_sale_products_url();
+			if ( isset( $_GET['max_price'] ) && (int) $_GET['max_price'] <= 300000 ) {
+				$redirect_url = add_query_arg( 'sale', '199k', $redirect_url );
+			}
+			wp_safe_redirect( $redirect_url, 301 );
 			exit;
 		}
 		if ( isset( $_GET['sale'] ) && in_array( $_GET['sale'], array( '199k', '70' ), true ) ) {

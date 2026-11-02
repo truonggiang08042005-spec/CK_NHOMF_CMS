@@ -85,9 +85,9 @@ function npe_nav_defaults() {
         ['title' => 'SẢN PHẨM', 'url' => $shop, 'children' => $products],
         ['title' => 'SẢN PHẨM MỚI', 'url' => npe_nav_page_url('san-pham-moi', add_query_arg('orderby', 'date', $shop)), 'children' => []],
         ['title' => 'NEM PLUS+', 'url' => npe_nav_page_url('nem-plus', npe_nav_catalogue_link('NEM PLUS+')), 'children' => []],
-        ['title' => 'SẢN PHẨM SALE', 'url' => add_query_arg('npe_sale', '1', $shop), 'children' => [
-            ['title' => 'CHỈ TỪ 199K', 'url' => add_query_arg(['npe_sale' => '1', 'max_price' => '199000'], $shop), 'children' => []],
-            ['title' => 'SALE UP 50%', 'url' => add_query_arg('npe_sale', '1', $shop), 'children' => []],
+        ['title' => 'SẢN PHẨM SALE', 'url' => npe_nav_page_url('sale', home_url('/sale/')), 'children' => [
+            ['title' => 'CHỈ TỪ 199K', 'url' => add_query_arg('sale', '199k', npe_nav_page_url('sale', home_url('/sale/'))), 'children' => []],
+            ['title' => 'SALE UP 70%', 'url' => add_query_arg('sale', '70', npe_nav_page_url('sale', home_url('/sale/'))), 'children' => []],
         ]],
         ['title' => 'BỘ SƯU TẬP', 'url' => npe_nav_page_url('bo-suu-tap', $shop), 'children' => $collections],
     ];

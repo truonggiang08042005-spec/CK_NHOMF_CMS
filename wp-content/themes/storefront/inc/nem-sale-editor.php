@@ -312,3 +312,4 @@ add_action( 'after_setup_theme', function () {
 	}
 	add_editor_style( 'assets/css/nem-new-products-blocks.css' );
 }, 100 );
+
