@@ -118,6 +118,9 @@ add_action( 'wp', function () {
 } );
 
 add_action( 'storefront_before_content', function () {
+	if ( is_page_template( 'page-dang-nhap.php' ) || is_page( 'dang-nhap' ) ) {
+		return;
+	}
 	if ( ! nem_is_auth_page() ) {
 		return;
 	}
