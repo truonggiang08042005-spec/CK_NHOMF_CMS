@@ -1,0 +1,84 @@
+/* Shared account canvas. Business values remain dynamic; layout is native Gutenberg. */
+.nem-account-block-page #content > .col-full { width: 100%; max-width: none !important; padding: 0 !important; margin: 0 !important; }
+.nem-account-block-page #content, .nem-account-main { padding: 0; margin: 0; }
+:is(.nem-account-design, .editor-styles-wrapper) .wp-block-group__inner-container { max-width: none; }
+.nem-account-design { margin: 0; }
+.nem-account-design > .wp-block-group__inner-container > * { margin-block-start: 0; }
+:is(.nem-account-design, .editor-styles-wrapper) .nem-profile-breadcrumb { display: flex; align-items: center; gap: 8px; }
+:is(.nem-account-design, .editor-styles-wrapper) .nem-profile-breadcrumb > .wp-block-group__inner-container { display: contents; }
+:is(.nem-account-design, .editor-styles-wrapper) .nem-profile-breadcrumb p { margin: 0; font-size: inherit; }
+:is(.nem-account-design, .editor-styles-wrapper) .nem-profile-breadcrumb .nem-bc-separator { margin: 0; }
+:is(.nem-account-design, .editor-styles-wrapper) .nem-profile-greeting-wrap .nem-greeting-sub { margin: 0 0 4px; }
+:is(.nem-account-design, .editor-styles-wrapper) .nem-profile-grid { display: flex; flex-wrap: nowrap !important; gap: 35px; align-items: flex-start !important; margin: 0; }
+:is(.nem-account-design, .editor-styles-wrapper) .nem-profile-grid > .nem-profile-sidebar-col { flex: 0 0 220px; margin: 0; }
+:is(.nem-account-design, .editor-styles-wrapper) .nem-profile-grid > .nem-profile-content-col { flex: 1 1 0; min-width: 0; margin: 0; }
+:is(.nem-account-design, .editor-styles-wrapper) .nem-account-nav-item { margin: 0 0 14px; }
+:is(.nem-account-design, .editor-styles-wrapper) .nem-field-label { margin: 0 0 8px; }
+:is(.nem-account-design, .editor-styles-wrapper) p.nem-field-box { margin: 0; padding: 0 16px; font-size: 13.5px; color: #777; }
+:is(.nem-account-design, .editor-styles-wrapper) .nem-address-name-wrap { display: flex; flex-wrap: wrap; gap: 5px; align-items: baseline; }
+:is(.nem-account-design, .editor-styles-wrapper) .nem-address-card-header > .wp-block-group__inner-container { display: contents; }
+:is(.nem-account-design, .editor-styles-wrapper) .nem-address-name-wrap > .wp-block-group__inner-container { display: contents; }
+:is(.nem-account-design, .editor-styles-wrapper) .nem-address-name-wrap p { margin: 0; }
+:is(.nem-account-design, .editor-styles-wrapper) .nem-address-row { display: flex; flex-wrap: wrap; gap: 5px; }
+:is(.nem-account-design, .editor-styles-wrapper) .nem-address-row > .wp-block-group__inner-container { display: contents; }
+:is(.nem-account-design, .editor-styles-wrapper) .nem-address-row p { margin: 0; }
+:is(.nem-account-design, .editor-styles-wrapper) .nem-address-actions { display: flex; align-items: center; gap: 6px; }
+:is(.nem-account-design, .editor-styles-wrapper) .nem-address-actions > .wp-block-group__inner-container { display: contents; }
+:is(.nem-account-design, .editor-styles-wrapper) .nem-address-actions p { margin: 0; }
+.nem-account-design button.nem-addr-action-btn { padding: 0; background: none; border: 0; font: inherit; font-size: 13px; font-weight: 400; color: #444; }
+.nem-account-design [hidden] { display: none !important; }
+.nem-account-design .nem-orders-wrap { overflow-x: auto; }
+:is(.nem-account-design, .editor-styles-wrapper) .nem-auth { display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0; flex-wrap: nowrap; }
+:is(.nem-account-design, .editor-styles-wrapper) .nem-auth .wp-block-column { min-width: 0; margin: 0; }
+:is(.nem-account-design, .editor-styles-wrapper) .nem-auth__col { box-sizing: border-box; }
+:is(.nem-account-design, .editor-styles-wrapper) .nem-auth__col:first-child { border-left: 0; padding-left: 9.2%; padding-right: 8%; }
+:is(.nem-account-design, .editor-styles-wrapper) .nem-auth__col + .nem-auth__col { border-left: 1px solid var(--nem-line, #e5e5e5); padding-left: 17.5%; padding-right: 0; }
+:is(.nem-account-design, .editor-styles-wrapper) .nem-auth .nem-auth__label { margin: 0 0 6px; color: #8c8c8c; font-size: 14px; }
+:is(.nem-account-design, .editor-styles-wrapper) .nem-auth p.nem-auth__input-box { height: 40px; padding: 9px 12px; margin: 0; border: 1px solid #e5e5e5; box-sizing: border-box; color: #9b9b9b; font-size: 14px; line-height: 20px; }
+:is(.nem-account-design, .editor-styles-wrapper) .nem-auth p.nem-auth__btn { height: 40px; padding: 10px 16px; box-sizing: border-box; margin: 0; background: #000; color: #fff; font-size: 14px; line-height: 20px; font-weight: 700; text-align: center; }
+:is(.nem-account-design, .editor-styles-wrapper) .nem-auth__check::before { content: '\2610'; }
+.nem-account-design label.nem-auth__check::before { content: none; }
+:is(.nem-account-design, .editor-styles-wrapper) .nem-account-check-terms { margin-bottom: 30px; }
+.nem-account-design .nem-account-newsletter-form { display: block; margin: 0; }
+:is(.nem-account-design, .editor-styles-wrapper) .nem-newsletter-section { width: 100%; left: auto; right: auto; margin: 60px 0 0; }
+:is(.nem-account-design, .editor-styles-wrapper) .nem-newsletter-form { display: flex; margin: 0 auto; max-width: 520px; }
+:is(.nem-account-design, .editor-styles-wrapper) .nem-newsletter-form > .wp-block-group__inner-container { display: contents; }
+:is(.nem-account-design, .editor-styles-wrapper) .nem-newsletter-input { flex: 1 1 0; min-width: 0; width: 0; box-sizing: border-box; }
+:is(.nem-account-design, .editor-styles-wrapper) p.nem-newsletter-input { display: flex; align-items: center; text-align: left; }
+:is(.nem-account-design, .editor-styles-wrapper) p.nem-newsletter-submit { display: flex; align-items: center; justify-content: center; margin: 0; }
+:is(.nem-account-design, .editor-styles-wrapper) .nem-newsletter-social-icons { display: flex; gap: 12px; }
+:is(.nem-account-design, .editor-styles-wrapper) .nem-newsletter-social-icons > .wp-block-group__inner-container { display: contents; }
+:is(.nem-account-design, .editor-styles-wrapper) .nem-account-social-item { flex: 0 0 32px; height: 32px; width: 32px; padding: 0; margin: 0; line-height: 0; }
+:is(.nem-account-design, .editor-styles-wrapper) .nem-account-social-item a { display: block; position: relative; width: 32px; height: 32px; padding: 0; margin: 0; font-size: 0; line-height: 0; }
+:is(.nem-account-design, .editor-styles-wrapper) .nem-account-social-item a::before { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 18px; height: 18px; background-size: contain; background-repeat: no-repeat; }
+:is(.nem-account-design, .editor-styles-wrapper) .nem-social-facebook::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23fff'%3E%3Cpath d='M14 21v-8h3l.5-3H14V8c0-.9.3-1.5 1.7-1.5H18V3.2c-.4-.1-1.8-.2-3.1-.2C11.9 3 10 4.8 10 8v2H7v3h3v8z'/%3E%3C/svg%3E"); }
+:is(.nem-account-design, .editor-styles-wrapper) .nem-social-instagram::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='4' y='4' width='16' height='16' rx='5' fill='none' stroke='%23fff' stroke-width='2'/%3E%3Ccircle cx='12' cy='12' r='4' fill='none' stroke='%23fff' stroke-width='2'/%3E%3Ccircle cx='17' cy='7' r='1' fill='%23fff'/%3E%3C/svg%3E"); }
+:is(.nem-account-design, .editor-styles-wrapper) .nem-social-youtube::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='2' y='5' width='20' height='14' rx='4' fill='%23fff'/%3E%3Cpath d='m10 8 6 4-6 4z' fill='%23f00'/%3E%3C/svg%3E"); }
+.editor-styles-wrapper .nem-tab-panel { display: block; margin: 0 0 35px; }
+.editor-styles-wrapper :is(.nem-account-design, .nem-account-members, .nem-account-guests, .nem-newsletter-section) { max-width: none; width: 100%; }
+.editor-styles-wrapper .nem-account-guests { display: none; }
+[data-nem-account-preview="guests"] .editor-styles-wrapper .nem-account-guests,
+[data-nem-account-preview="all"] .editor-styles-wrapper .nem-account-guests { display: block; }
+[data-nem-account-preview="guests"] .editor-styles-wrapper .nem-account-members { display: none; }
+.editor-styles-wrapper :is(.nem-profile-grid, .nem-auth, .nem-newsletter-form, .nem-newsletter-social-icons) > .block-editor-inner-blocks,
+.editor-styles-wrapper :is(.nem-profile-grid, .nem-auth, .nem-newsletter-form, .nem-newsletter-social-icons) > .block-editor-inner-blocks > .block-editor-block-list__layout { display: contents; }
+/* The guest account page keeps the original serif newsletter variant. */
+:is(body.nem-auth-page, [data-nem-account-preview="guests"] .editor-styles-wrapper) .nem-account-design .nem-newsletter-section { margin: 0; padding: 0; background: #efeff3; font-family: 'Times New Roman', Times, serif; color: #000; }
+:is(body.nem-auth-page, [data-nem-account-preview="guests"] .editor-styles-wrapper) .nem-account-design .nem-newsletter-container { max-width: 760px; padding: 60px 24px 50px; box-sizing: border-box; }
+:is(body.nem-auth-page, [data-nem-account-preview="guests"] .editor-styles-wrapper) .nem-account-design .nem-newsletter-heading { font-family: 'Times New Roman', Times, serif; font-size: 32px; line-height: 1.2; letter-spacing: 0; margin: 0 0 12px; }
+:is(body.nem-auth-page, [data-nem-account-preview="guests"] .editor-styles-wrapper) .nem-account-design .nem-newsletter-desc { font-size: 13px; font-weight: 700; color: #000; margin: 0 0 30px; }
+:is(body.nem-auth-page, [data-nem-account-preview="guests"] .editor-styles-wrapper) .nem-account-design .nem-newsletter-form { max-width: 590px; box-shadow: none; }
+:is(body.nem-auth-page, [data-nem-account-preview="guests"] .editor-styles-wrapper) .nem-account-design .nem-newsletter-input { height: 43px; padding: 0 12px !important; font-family: 'Times New Roman', Times, serif; font-size: 14px; }
+:is(body.nem-auth-page, [data-nem-account-preview="guests"] .editor-styles-wrapper) .nem-account-design .nem-newsletter-submit { flex: 0 0 143px; height: 43px; padding: 0 16px !important; font-family: 'Times New Roman', Times, serif; font-size: 15px !important; letter-spacing: 0; }
+:is(body.nem-auth-page, [data-nem-account-preview="guests"] .editor-styles-wrapper) .nem-account-design .nem-newsletter-social-icons { margin-top: 40px; gap: 8px; }
+@media (max-width: 768px) {
+    :is(.nem-account-design, .editor-styles-wrapper) .nem-profile-grid { flex-direction: column; gap: 25px; }
+    :is(.nem-account-design, .editor-styles-wrapper) .nem-profile-grid > .nem-profile-sidebar-col { flex-basis: auto; width: 100%; }
+    :is(.nem-account-design, .editor-styles-wrapper) .nem-profile-grid > .nem-profile-content-col { flex-basis: auto; width: 100%; padding-left: 0; }
+    :is(.nem-account-design, .editor-styles-wrapper) .nem-auth { grid-template-columns: 1fr; }
+    :is(.nem-account-design, .editor-styles-wrapper) .nem-auth__col:first-child,
+    :is(.nem-account-design, .editor-styles-wrapper) .nem-auth__col + .nem-auth__col { padding-left: 0; padding-right: 0; border-left: 0; }
+    :is(.nem-account-design, .editor-styles-wrapper) .nem-auth__col + .nem-auth__col { border-top: 1px solid #e5e5e5; margin-top: 30px; padding-top: 40px; }
+    :is(body.nem-auth-page, [data-nem-account-preview="guests"] .editor-styles-wrapper) .nem-account-design .nem-newsletter-heading { font-size: 26px; }
+    :is(body.nem-auth-page, [data-nem-account-preview="guests"] .editor-styles-wrapper) .nem-account-design .nem-newsletter-submit { flex-basis: 110px; }
+}

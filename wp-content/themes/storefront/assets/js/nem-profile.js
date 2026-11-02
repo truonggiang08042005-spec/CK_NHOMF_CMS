@@ -3,6 +3,8 @@
 
     function init() {
         var panels = { account: 'nemPanelAccount', orders: 'nemPanelOrders', address: 'nemPanelAddress' };
+        var breadcrumb = document.getElementById('nemBcActive');
+        var accountCaption = breadcrumb ? breadcrumb.textContent : 'TÀI KHOẢN';
         function switchTab(key) {
             if (!panels[key]) return;
             document.querySelectorAll('.nem-account-nav-item').forEach(function (item) {
@@ -12,8 +14,11 @@
                 var panel = document.getElementById(panels[name]);
                 if (panel) panel.classList.toggle('is-active', name === key);
             });
-            var breadcrumb = document.getElementById('nemBcActive');
-            if (breadcrumb) breadcrumb.textContent = key === 'address' ? 'ĐỊA CHỈ' : 'TÀI KHOẢN';
+            document.querySelectorAll('.nem-account-nav-link').forEach(function (link) {
+                if (link.dataset.tab === key) link.setAttribute('aria-current', 'true');
+                else link.removeAttribute('aria-current');
+            });
+            if (breadcrumb) breadcrumb.textContent = key === 'address' ? 'ĐỊA CHỈ' : accountCaption;
         }
         document.querySelectorAll('.nem-account-nav-link').forEach(function (link) {
             link.addEventListener('click', function (event) {
@@ -43,6 +48,14 @@
         var remove = document.getElementById('nemBtnDeleteAddr');
         var busy = false;
         var opener;
+        function read(id, fallback) {
+            var node = document.getElementById(id);
+            return node ? ('value' in node ? node.value : node.textContent.trim()) : fallback;
+        }
+        function write(id, value, input) {
+            var node = document.getElementById(id);
+            if (node) node[input ? 'value' : 'textContent'] = value;
+        }
 
         // Apply to typing, pasting, mobile input, and autofill.
         fields.phone.addEventListener('input', function () {
@@ -57,22 +70,22 @@
         function open(mode, button) {
             opener = button;
             formStatus.textContent = '';
-            status.textContent = '';
-            fields.fullname.value = document.getElementById('nemFieldFullname').value;
-            fields.phone.value = document.getElementById('nemFieldPhone').value;
-            fields.country.value = document.getElementById('nemFieldCountry').value;
-            fields.address.value = mode === 'edit' ? document.getElementById('nemAddrValAddress').textContent.trim() : '';
+            if (status) status.textContent = '';
+            fields.fullname.value = read('nemFieldFullname', fields.fullname.value);
+            fields.phone.value = read('nemFieldPhone', fields.phone.value);
+            fields.country.value = read('nemFieldCountry', fields.country.value);
+            fields.address.value = mode === 'edit' ? read('nemAddrValAddress', fields.address.value) : '';
             document.getElementById('nemModalTitle').textContent = mode === 'edit' ? 'CHỈNH SỬA ĐỊA CHỈ' : 'THÊM ĐỊA CHỈ MỚI';
             submit.textContent = mode === 'edit' ? 'LƯU THAY ĐỔI' : 'THÊM ĐỊA CHỈ';
             modal.classList.add('is-open');
             modal.setAttribute('aria-hidden', 'false');
             fields.fullname.focus();
         }
-        document.getElementById('nemBtnEditAddr').addEventListener('click', function (event) {
+        document.getElementById('nemBtnEditAddr')?.addEventListener('click', function (event) {
             event.preventDefault();
             if (!busy) open('edit', this);
         });
-        document.getElementById('nemBtnAddNewAddr').addEventListener('click', function () {
+        document.getElementById('nemBtnAddNewAddr')?.addEventListener('click', function () {
             if (!busy) open('new', this);
         });
         document.getElementById('nemModalCloseBtn').addEventListener('click', close);
@@ -97,7 +110,7 @@
         function setBusy(value) {
             busy = value;
             submit.disabled = value;
-            remove.setAttribute('aria-disabled', String(value));
+            if (remove) remove.setAttribute('aria-disabled', String(value));
             form.setAttribute('aria-busy', String(value));
         }
         form.addEventListener('submit', async function (event) {
@@ -109,20 +122,20 @@
             setBusy(true);
             try {
                 var saved = await request('nem_save_profile_address', data);
-                document.getElementById('nemAddrDisplayName').textContent = saved.fullname.toUpperCase();
-                document.getElementById('nemAddrValAddress').textContent = saved.address;
-                document.getElementById('nemAddrValPhone').textContent = saved.phone;
-                document.getElementById('nemGreetingName').textContent = saved.fullname.toUpperCase();
-                document.getElementById('nemFieldFullname').value = saved.fullname;
-                document.getElementById('nemFieldPhone').value = saved.phone;
-                document.getElementById('nemFieldCountry').value = saved.country;
+                write('nemAddrDisplayName', saved.fullname.toUpperCase());
+                write('nemAddrValAddress', saved.address);
+                write('nemAddrValPhone', saved.phone);
+                write('nemGreetingName', saved.fullname.toUpperCase());
+                write('nemFieldFullname', saved.fullname, true);
+                write('nemFieldPhone', saved.phone, true);
+                write('nemFieldCountry', saved.country, true);
                 document.querySelectorAll('.nem-user-name, .nem-user-dropdown-name').forEach(function (name) {
                     name.textContent = saved.fullname;
                     name.title = saved.fullname;
                 });
-                details.hidden = false;
-                empty.hidden = true;
-                status.textContent = 'Đã lưu thông tin giao hàng.';
+                if (details) details.hidden = false;
+                if (empty) empty.hidden = true;
+                if (status) status.textContent = 'Đã lưu thông tin giao hàng.';
                 setBusy(false);
                 close();
             } catch (error) {
@@ -131,24 +144,24 @@
                 setBusy(false);
             }
         });
-        remove.addEventListener('click', async function (event) {
+        remove?.addEventListener('click', async function (event) {
             event.preventDefault();
             if (busy || !confirm('Bạn có chắc chắn muốn xóa thông tin giao hàng này không?')) return;
-            status.textContent = '';
+            if (status) status.textContent = '';
             setBusy(true);
             try {
                 var result = await request('nem_delete_profile_address', {});
-                details.hidden = true;
-                empty.hidden = false;
-                document.getElementById('nemAddrValAddress').textContent = '';
-                document.getElementById('nemAddrValPhone').textContent = '';
-                document.getElementById('nemFieldPhone').value = '';
-                document.getElementById('nemFieldCountry').value = 'Vietnam';
+                if (details) details.hidden = true;
+                if (empty) empty.hidden = false;
+                write('nemAddrValAddress', '');
+                write('nemAddrValPhone', '');
+                write('nemFieldPhone', '', true);
+                write('nemFieldCountry', 'Vietnam', true);
                 fields.phone.value = '';
                 fields.address.value = '';
-                status.textContent = result.message;
+                if (status) status.textContent = result.message;
             } catch (error) {
-                status.textContent = error.message || 'Không thể kết nối. Vui lòng thử lại.';
+                if (status) status.textContent = error.message || 'Không thể kết nối. Vui lòng thử lại.';
             } finally {
                 setBusy(false);
             }
