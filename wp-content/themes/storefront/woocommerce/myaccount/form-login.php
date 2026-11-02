@@ -1,7 +1,7 @@
 <?php
 /**
  * NEM - Đăng nhập + Đăng ký chung một trang.
- * Breadcrumb và khối "Đăng ký bản tin" được chèn qua hook trong inc/nem-account-functions.php.
+ * Hỗ trợ nhận biến tùy biến tiêu đề, mô tả và nút bấm từ Gutenberg Editor.
  *
  * @package WooCommerce\Templates
  * @version 9.9.0
@@ -19,15 +19,24 @@ $nem_post = function ( $key ) {
 $nem_terms_id  = function_exists( 'wc_terms_and_conditions_page_id' ) ? wc_terms_and_conditions_page_id() : 0;
 $nem_terms_url = $nem_terms_id ? get_permalink( $nem_terms_id ) : ( get_privacy_policy_url() ? get_privacy_policy_url() : '#' );
 
+// Nhận các giá trị tùy biến từ Gutenberg Block Editor (nếu có)
+$login_title    = ! empty( $login_title ) ? $login_title : 'Đăng nhập';
+$login_desc     = ! empty( $login_desc ) ? $login_desc : 'Nếu bạn đã có tài khoản, hãy đăng nhập để tích lũy điểm thành viên và nhận được những ưu đãi tốt hơn!';
+$login_btn      = ! empty( $login_btn ) ? $login_btn : 'Đăng nhập';
+$register_title = ! empty( $register_title ) ? $register_title : 'Đăng ký';
+$register_desc  = ! empty( $register_desc ) ? $register_desc : 'Hãy đăng ký ngay để tích lũy điểm thành viên và nhận được những ưu đãi tốt hơn!';
+$register_btn   = ! empty( $register_btn ) ? $register_btn : 'Đăng ký';
+$is_swap        = ! empty( $register_first );
+
 do_action( 'woocommerce_before_customer_login_form' ); ?>
 
-<div class="nem-auth" id="customer_login">
+<div class="nem-auth <?php echo $is_swap ? 'nem-auth--swap' : ''; ?>" id="customer_login">
 
 	<!-- ĐĂNG NHẬP -->
 	<section class="nem-auth__col nem-auth__col--login" aria-labelledby="nem-login-title">
 		<div class="nem-auth__box">
-			<h2 class="nem-auth__title" id="nem-login-title">Đăng nhập</h2>
-			<p class="nem-auth__desc">Nếu bạn đã có tài khoản, hãy đăng nhập để tích lũy điểm thành viên và nhận được những ưu đãi tốt hơn!</p>
+			<h2 class="nem-auth__title" id="nem-login-title"><?php echo esc_html( $login_title ); ?></h2>
+			<p class="nem-auth__desc"><?php echo esc_html( $login_desc ); ?></p>
 
 			<form class="woocommerce-form woocommerce-form-login login nem-auth__form" method="post" novalidate>
 				<?php do_action( 'woocommerce_login_form_start' ); ?>
@@ -50,7 +59,7 @@ do_action( 'woocommerce_before_customer_login_form' ); ?>
 
 				<input type="hidden" name="rememberme" value="forever" />
 				<?php wp_nonce_field( 'woocommerce-login', 'woocommerce-login-nonce' ); ?>
-				<button type="submit" class="nem-auth__btn woocommerce-form-login__submit" id="nem-login-submit" name="login" value="Đăng nhập">Đăng nhập</button>
+				<button type="submit" class="nem-auth__btn woocommerce-form-login__submit" id="nem-login-submit" name="login" value="<?php echo esc_attr( $login_btn ); ?>"><?php echo esc_html( $login_btn ); ?></button>
 
 				<?php do_action( 'woocommerce_login_form_end' ); ?>
 			</form>
@@ -60,8 +69,8 @@ do_action( 'woocommerce_before_customer_login_form' ); ?>
 	<!-- ĐĂNG KÝ -->
 	<section class="nem-auth__col nem-auth__col--register" aria-labelledby="nem-register-title">
 		<div class="nem-auth__box">
-			<h2 class="nem-auth__title" id="nem-register-title">Đăng ký</h2>
-			<p class="nem-auth__desc">Hãy đăng ký ngay để tích lũy điểm thành viên và nhận được những ưu đãi tốt hơn!</p>
+			<h2 class="nem-auth__title" id="nem-register-title"><?php echo esc_html( $register_title ); ?></h2>
+			<p class="nem-auth__desc"><?php echo esc_html( $register_desc ); ?></p>
 
 			<form method="post" class="woocommerce-form woocommerce-form-register register nem-auth__form" <?php do_action( 'woocommerce_register_form_tag' ); ?>>
 				<?php do_action( 'woocommerce_register_form_start' ); ?>
@@ -104,7 +113,7 @@ do_action( 'woocommerce_before_customer_login_form' ); ?>
 				<?php do_action( 'woocommerce_register_form' ); ?>
 
 				<?php wp_nonce_field( 'woocommerce-register', 'woocommerce-register-nonce' ); ?>
-				<button type="submit" class="nem-auth__btn woocommerce-form-register__submit" id="nem-register-submit" name="register" value="Đăng ký">Đăng ký</button>
+				<button type="submit" class="nem-auth__btn woocommerce-form-register__submit" id="nem-register-submit" name="register" value="<?php echo esc_attr( $register_btn ); ?>"><?php echo esc_html( $register_btn ); ?></button>
 
 				<?php do_action( 'woocommerce_register_form_end' ); ?>
 			</form>

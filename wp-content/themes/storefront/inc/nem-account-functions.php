@@ -119,7 +119,10 @@ add_action( 'wp', function () {
 } );
 
 add_action( 'storefront_before_content', function () {
-	if ( ! nem_is_auth_page() || nem_account_uses_editor() ) {
+if ( is_page_template( 'page-dang-nhap.php' ) || is_page( 'dang-nhap' ) ) {
+		return;
+	}
+	if ( ! nem_is_auth_page() || ( function_exists( 'nem_account_uses_editor' ) && nem_account_uses_editor() ) ) {
 		return;
 	}
 	?>
