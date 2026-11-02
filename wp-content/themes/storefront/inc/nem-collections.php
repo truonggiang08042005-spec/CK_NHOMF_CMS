@@ -1,6 +1,7 @@
 <?php
 /** NEM collection landing page and WooCommerce collection links. */
 defined( 'ABSPATH' ) || exit;
+require_once __DIR__ . '/nem-collections-editor.php';
 
 function nem_collections_catalog() {
 	return array(
@@ -126,7 +127,7 @@ add_filter( 'woocommerce_page_title', function ( $title ) {
 } );
 
 add_action( 'storefront_before_footer', function () {
-	if ( nem_is_collection_page() ) {
+	if ( nem_is_collection_page() && ! nem_collections_uses_editor() ) {
 		get_template_part( 'template-parts/collection-newsletter' );
 	}
 } );
