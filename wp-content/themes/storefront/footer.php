@@ -14,7 +14,7 @@
 
 	<?php do_action( 'storefront_before_footer' ); ?>
 
-	<?php if ( ( ! function_exists( 'nem_new_uses_editor' ) || ! nem_new_uses_editor() ) && ( ! function_exists( 'nem_plus_uses_editor' ) || ! nem_plus_uses_editor() ) ) : ?>
+	<?php if ( ( ! function_exists( 'nem_new_uses_editor' ) || ! nem_new_uses_editor() ) && ( ! function_exists( 'nem_plus_uses_editor' ) || ! nem_plus_uses_editor() ) && ( ! function_exists( 'nem_sale_uses_editor' ) || ! nem_sale_uses_editor() ) ) : ?>
 	<footer id="colophon" class="site-footer nem-site-footer" role="contentinfo">
 		<?php
 		get_template_part( 'template-parts/footer', 'nem' );

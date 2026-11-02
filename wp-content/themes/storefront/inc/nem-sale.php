@@ -4,6 +4,7 @@
  * and two-way synchronization between the SALE Page editor and WooCommerce products.
  */
 defined( 'ABSPATH' ) || exit;
+require_once __DIR__ . '/nem-sale-editor.php';
 
 function nem_is_sale_page() {
 	return is_page( 'sale' ) || is_page_template( 'page-sale.php' ) || is_page( 'san-pham-sale' ) ||
@@ -333,183 +334,6 @@ function nem_sale_render_newsletter_controls() {
 }
 
 /**
- * Enhance Gutenberg blocks on the frontend SALE page with interactive filters,
- * hover secondary product images, and dynamic filter results.
- */
-add_filter( 'render_block', function ( $block_content, $block ) {
-	if ( is_admin() || ! nem_is_sale_page() || ! function_exists( 'WC' ) ) {
-		return $block_content;
-	}
-
-	$class_name = $block['attrs']['className'] ?? '';
-	if ( '' === $class_name ) {
-		return $block_content;
-	}
-
-	$state = nem_sale_filter_state();
-
-	// 1. Replace toolbar placeholder with live filter dropdowns & column switcher.
-	if ( false !== strpos( $class_name, 'nem-sale-toolbar-placeholder' ) ) {
-		return nem_sale_render_toolbar_controls( $state );
-	}
-
-	// 2. Append active filter count / reset bar after toolbar when filters are active.
-	if ( false !== strpos( $class_name, 'nem-new-toolbar' ) && nem_sale_has_active_filters( $state ) ) {
-		$catalog = new WP_Query( nem_sale_query_args( $state ) );
-		$status_html = sprintf(
-			'<div class="nem-new-filter-status" role="status"><span>%s</span><a href="%s">Xóa bộ lọc</a></div>',
-			esc_html( $catalog->found_posts . ' sản phẩm phù hợp' ),
-			esc_url( nem_sale_products_url() )
-		);
-		return $block_content . $status_html;
-	}
-
-	// 3. Highlight active category in sidebar/categories-box, preserve filter parameters, and wrap in <details> on frontend.
-	$is_cat_box     = false !== strpos( $class_name, 'nem-categories-box' );
-	$is_raw_sidebar = false !== strpos( $class_name, 'nem-new-sidebar' ) && false === strpos( $block_content, 'nem-categories-box' );
-	if ( $is_cat_box || $is_raw_sidebar ) {
-		$block_content = preg_replace( '/\bis-active\b/', '', $block_content );
-		$block_content = preg_replace_callback(
-			'/<p class="([^"]*nem-new-category-[^"]*)"[^>]*>(.*?)<\/p>/is',
-			function ( $matches ) use ( $state ) {
-				$p_class = trim( $matches[1] );
-				$inner   = trim( $matches[2] );
-				$label   = wp_strip_all_tags( $inner );
-				$slug    = '';
-
-				if ( preg_match( '/nem-cat-slug-([a-z0-9_-]+)/i', $p_class, $sm ) ) {
-					$slug = sanitize_title( $sm[1] );
-				} elseif ( preg_match( '/[?&]danh_muc=([^&#"]+)/', html_entity_decode( $inner, ENT_QUOTES, 'UTF-8' ), $um ) ) {
-					$slug = sanitize_title( urldecode( $um[1] ) );
-				} elseif ( false === strpos( $p_class, 'nem-new-category-all' ) ) {
-					$slug = sanitize_title( $label );
-				}
-
-				if ( 'all' === $slug || false !== strpos( $p_class, 'nem-new-category-all' ) ) {
-					$slug = '';
-				}
-
-				if ( $slug === $state['danh_muc'] ) {
-					$p_class .= ' is-active';
-				}
-				$new_url = nem_sale_filter_url( $state, array( 'danh_muc' => $slug, 'trang' => 1 ) );
-				return '<p class="' . esc_attr( $p_class ) . '"><a href="' . esc_url( $new_url ) . '">' . esc_html( $label ) . '</a></p>';
-			},
-			$block_content
-		);
-		$summary_title = 'Danh mục';
-		if ( preg_match( '/<h[1-6][^>]*nem-new-categories-title[^>]*>(.*?)<\/h[1-6]>/is', $block_content, $hm ) ) {
-			$summary_title = trim( wp_strip_all_tags( $hm[1] ) ) ?: 'Danh mục';
-			$block_content = preg_replace( '/<h[1-6][^>]*nem-new-categories-title[^>]*>.*?<\/h[1-6]>/is', '', $block_content, 1 );
-		}
-		$wrapper_class = $is_cat_box ? 'nem-categories-box' : 'nem-new-sidebar';
-		$block_content = preg_replace(
-			'/^\s*(<div[^>]*' . $wrapper_class . '[^>]*>)(.*)(<\/div>\s*)$/is',
-			'$1<details class="nem-new-categories" open><summary>' . esc_html( $summary_title ) . '</summary><nav aria-label="Lọc theo danh mục">$2</nav></details>$3',
-			$block_content
-		);
-		return $block_content;
-	}
-
-	// 4. Add secondary hover image & "XEM THÊM" overlay to each product card block.
-	if ( false !== strpos( $class_name, 'nem-collection-product' ) && false === strpos( $class_name, 'nem-collection-product-' ) ) {
-		$product_id = 0;
-		if ( preg_match( '/nem-product-id-(\d+)/', $class_name, $m ) ) {
-			$product_id = absint( $m[1] );
-		}
-		$secondary_html = '';
-		if ( $product_id ) {
-			$product = wc_get_product( $product_id );
-			if ( $product ) {
-				$gallery   = $product->get_gallery_image_ids();
-				$primary   = wp_get_attachment_image_url( $product->get_image_id(), 'large' ) ?: wc_placeholder_img_src( 'large' );
-				$secondary = ! empty( $gallery ) ? wp_get_attachment_image_url( $gallery[0], 'large' ) : $primary;
-				$secondary = $secondary ?: $primary;
-				$secondary_html = '<img class="nem-collection-image-secondary" src="' . esc_url( $secondary ) . '" alt="" aria-hidden="true" width="600" height="900" loading="lazy" decoding="async" />';
-			}
-		}
-		$overlay_html  = $secondary_html . '<span class="nem-collection-product-overlay"><span class="nem-collection-view-more">XEM THÊM</span></span>';
-		$block_content = preg_replace(
-			'/(<figure[^>]*nem-collection-product-image[^>]*>\s*<a[^>]*>.*?)(<\/a>\s*<\/figure>)/is',
-			'$1' . $overlay_html . '$2',
-			$block_content,
-			1
-		);
-		return $block_content;
-	}
-
-	// 5. Handle product grid columns (2 vs 3) and dynamic filtered results.
-	if ( false !== strpos( $class_name, 'nem-new-products-grid' ) ) {
-		if ( 2 === (int) $state['cot'] ) {
-			$block_content = str_replace( 'nem-new-columns-3', 'nem-new-columns-2', $block_content );
-		}
-		if ( nem_sale_has_active_filters( $state ) || $state['trang'] > 1 ) {
-			$catalog = new WP_Query( nem_sale_query_args( $state ) );
-			if ( ! empty( $catalog->posts ) ) {
-				ob_start();
-				?>
-				<div class="wp-block-group nem-new-products-grid nem-new-columns-<?php echo esc_attr( $state['cot'] ); ?>">
-					<?php
-					foreach ( $catalog->posts as $id ) :
-						$product = wc_get_product( $id );
-						if ( ! $product ) {
-							continue;
-						}
-						get_template_part(
-							'template-parts/collection-product',
-							null,
-							array(
-								'product' => $product,
-								'sku'     => $product->get_sku(),
-							)
-						);
-					endforeach;
-					?>
-				</div>
-				<?php
-				return ob_get_clean();
-			} else {
-				return '<div class="nem-new-empty" role="status"><p>Không tìm thấy sản phẩm phù hợp.</p><a href="' . esc_url( nem_sale_products_url() ) . '">Xóa bộ lọc và xem tất cả sản phẩm SALE</a></div>';
-			}
-		}
-		return $block_content;
-	}
-
-	// 6. Dynamic pagination when filters are active.
-	if ( false !== strpos( $class_name, 'nem-new-pagination' ) ) {
-		if ( nem_sale_has_active_filters( $state ) || $state['trang'] > 1 ) {
-			$catalog = new WP_Query( nem_sale_query_args( $state ) );
-			if ( $catalog->max_num_pages <= 1 ) {
-				return '';
-			}
-			return '<nav class="nem-new-pagination" aria-label="Phân trang sản phẩm">' . wp_kses_post(
-				paginate_links(
-					array(
-						'base'      => str_replace( '999999999', '%#%', esc_url( nem_sale_filter_url( $state, array( 'trang' => 999999999 ) ) ) ),
-						'format'    => '',
-						'current'   => $state['trang'],
-						'total'     => $catalog->max_num_pages,
-						'mid_size'  => 1,
-						'end_size'  => 1,
-						'prev_text' => '«',
-						'next_text' => '»',
-						'type'      => 'list',
-					)
-				)
-			) . '</nav>';
-		}
-		return $block_content;
-	}
-
-	// 7. Replace newsletter placeholder with live form & social links.
-	if ( false !== strpos( $class_name, 'nem-newsletter-form-placeholder' ) ) {
-		return nem_sale_render_newsletter_controls();
-	}
-
-	return $block_content;
-}, 10, 2 );
-
-/**
  * Sync edits made to product cards inside the SALE Page editor back to WooCommerce products.
  */
 add_action( 'save_post_page', function ( $post_id, $post, $update ) {
@@ -687,7 +511,7 @@ add_action( 'wp', function () {
 } );
 
 add_action( 'storefront_before_footer', function () {
-	if ( nem_is_sale_page() ) {
+	if ( nem_is_sale_page() && ( ! function_exists( 'nem_sale_uses_editor' ) || ! nem_sale_uses_editor() ) ) {
 		get_template_part( 'template-parts/collection-newsletter', null, array( 'return_to' => 'sale' ) );
 	}
 } );
