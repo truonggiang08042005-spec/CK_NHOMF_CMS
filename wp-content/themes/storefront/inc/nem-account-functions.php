@@ -11,6 +11,7 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+require_once __DIR__ . '/nem-account-editor.php';
 
 /**
  * Trang đăng nhập / đăng ký (trang Tài khoản khi chưa đăng nhập).
@@ -118,7 +119,7 @@ add_action( 'wp', function () {
 } );
 
 add_action( 'storefront_before_content', function () {
-	if ( ! nem_is_auth_page() ) {
+	if ( ! nem_is_auth_page() || nem_account_uses_editor() ) {
 		return;
 	}
 	?>
@@ -136,7 +137,7 @@ add_action( 'storefront_before_content', function () {
  * Khối "ĐĂNG KÝ BẢN TIN" full-width ngay trên footer.
  */
 add_action( 'storefront_before_footer', function () {
-	if ( nem_is_auth_page() ) {
+	if ( nem_is_auth_page() && ! nem_account_uses_editor() ) {
 		get_template_part( 'template-parts/newsletter', 'nem' );
 	}
 } );
