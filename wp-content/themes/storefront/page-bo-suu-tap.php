@@ -4,6 +4,17 @@
  * Collection stories with live WooCommerce products.
  */
 defined( 'ABSPATH' ) || exit;
+if ( nem_collections_uses_editor() ) {
+	get_header();
+	echo '<main id="main" class="site-main nem-collections-main nem-collection-blocks">';
+	while ( have_posts() ) {
+		the_post();
+		the_content();
+	}
+	echo '</main>';
+	get_footer();
+	return;
+}
 get_header();
 ?>
 <main id="main" class="site-main nem-collections-main">
