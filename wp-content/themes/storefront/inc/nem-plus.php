@@ -3,6 +3,7 @@
  * NEM PLUS+ catalog page with persistent filters and synchronized layout.
  */
 defined( 'ABSPATH' ) || exit;
+require_once __DIR__ . '/nem-plus-editor.php';
 
 function nem_is_plus_page() {
 	return is_page( 'nem-plus' ) || is_page_template( 'page-nem-plus.php' ) ||
@@ -191,7 +192,7 @@ add_action( 'wp', function () {
 } );
 
 add_action( 'storefront_before_footer', function () {
-	if ( nem_is_plus_page() ) {
+	if ( nem_is_plus_page() && ( ! function_exists( 'nem_plus_uses_editor' ) || ! nem_plus_uses_editor() ) ) {
 		get_template_part( 'template-parts/collection-newsletter', null, array( 'return_to' => 'nem-plus' ) );
 	}
 } );

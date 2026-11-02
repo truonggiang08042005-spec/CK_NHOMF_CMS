@@ -48,10 +48,10 @@
 .nem-new-blocks .nem-new-filters { gap: 24px; }
 .nem-new-blocks .nem-new-filter-status { margin: 0 0 25px; }
 :is(.nem-new-blocks, .editor-styles-wrapper) .nem-new-products-grid { display: block; width: 100%; }
-:is(.nem-new-blocks, .editor-styles-wrapper) .wp-block-columns.nem-new-products-row {
+:is(.nem-new-blocks, .editor-styles-wrapper) :is(.wp-block-columns.nem-new-products-row, .wp-block-columns.nem-sale-products-row, .wp-block-columns.nem-plus-products-row) {
     display: flex; flex-wrap: nowrap; gap: 14px; width: 100%; margin: 0 0 36px; align-items: flex-start;
 }
-:is(.nem-new-blocks, .editor-styles-wrapper) .nem-new-products-row > .wp-block-column {
+:is(.nem-new-blocks, .editor-styles-wrapper) :is(.nem-new-products-row, .nem-sale-products-row, .nem-plus-products-row) > .wp-block-column {
     flex-grow: 1; flex-shrink: 1; min-width: 0; margin: 0; text-align: center; position: relative;
 }
 :is(.nem-new-blocks, .editor-styles-wrapper) .nem-collection-product-image { display: block; margin: 0; aspect-ratio: 2 / 3; }
@@ -79,7 +79,7 @@
     display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 36px 14px;
 }
 .nem-new-blocks .nem-new-products-grid.nem-editor-columns-override[data-columns="2"] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-.nem-new-blocks .nem-editor-columns-override .nem-new-products-row { display: contents; }
+.nem-new-blocks .nem-editor-columns-override :is(.nem-new-products-row, .nem-sale-products-row, .nem-plus-products-row) { display: contents; }
 .nem-new-blocks .nem-editor-columns-override > .wp-block-group__inner-container { display: contents; }
 .nem-new-blocks .nem-editor-columns-override .wp-block-column { width: auto; }
 :is(.nem-new-blocks, .editor-styles-wrapper) .nem-new-pagination { margin: 35px auto 10px; }
@@ -170,10 +170,10 @@
 /* Handles are editor controls; they do not become part of the published design. */
 .editor-styles-wrapper .nem-categories-box,
 .editor-styles-wrapper .nem-new-category-group,
-.editor-styles-wrapper .nem-new-products-row > .nem-collection-product { position: relative; outline: 1px dashed #b5c9e0; }
+.editor-styles-wrapper :is(.nem-new-products-row, .nem-sale-products-row, .nem-plus-products-row) > .nem-collection-product { position: relative; outline: 1px dashed #b5c9e0; }
 .editor-styles-wrapper .nem-categories-box::before,
 .editor-styles-wrapper .nem-new-category-group::before,
-.editor-styles-wrapper .nem-new-products-row > .nem-collection-product::before {
+.editor-styles-wrapper :is(.nem-new-products-row, .nem-sale-products-row, .nem-plus-products-row) > .nem-collection-product::before {
     content: "⋮⋮"; position: absolute; top: 0; left: -18px; width: 18px; height: 28px;
     font-size: 12px; line-height: 28px; color: #2271b1; background: #e7f2fd; cursor: grab; z-index: 1;
 }
@@ -198,8 +198,8 @@
 @media (max-width: 700px) {
     :is(.nem-new-blocks, .editor-styles-wrapper) .wp-block-columns.nem-new-layout { flex-direction: column; padding: 24px 16px; }
     :is(.nem-new-blocks, .editor-styles-wrapper) .nem-new-layout > .wp-block-column { flex-basis: auto !important; width: 100%; }
-    :is(.nem-new-blocks, .editor-styles-wrapper) .wp-block-columns.nem-new-products-row { flex-wrap: wrap !important; gap: 24px 10px; }
-    :is(.nem-new-blocks, .editor-styles-wrapper) .nem-new-products-row > .wp-block-column { flex: 0 0 calc(50% - 5px); }
+    :is(.nem-new-blocks, .editor-styles-wrapper) :is(.wp-block-columns.nem-new-products-row, .wp-block-columns.nem-sale-products-row, .wp-block-columns.nem-plus-products-row) { flex-wrap: wrap !important; gap: 24px 10px; }
+    :is(.nem-new-blocks, .editor-styles-wrapper) :is(.nem-new-products-row, .nem-sale-products-row, .nem-plus-products-row) > .wp-block-column { flex: 0 0 calc(50% - 5px); }
     .nem-new-blocks .nem-new-products-grid.nem-editor-columns-override { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .nem-new-blocks .nem-new-filters { gap: 16px; }
     .nem-new-toolbar-controls { width: 100%; gap: 12px; justify-content: space-between; }

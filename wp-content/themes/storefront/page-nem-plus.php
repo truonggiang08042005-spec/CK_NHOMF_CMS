@@ -15,6 +15,18 @@ if ( ! function_exists( 'WC' ) ) {
 	return;
 }
 
+if ( function_exists( 'nem_plus_uses_editor' ) && nem_plus_uses_editor() ) {
+	get_header();
+	echo '<main id="main" class="site-main nem-new-main nem-plus-main nem-new-blocks">';
+	while ( have_posts() ) {
+		the_post();
+		the_content();
+	}
+	echo '</main>';
+	get_footer();
+	return;
+}
+
 $state   = nem_plus_filter_state();
 $catalog = new WP_Query( nem_plus_query_args( $state ) );
 
