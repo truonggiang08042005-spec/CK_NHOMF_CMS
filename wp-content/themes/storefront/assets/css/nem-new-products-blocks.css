@@ -169,24 +169,126 @@
 
 /* Handles are editor controls; they do not become part of the published design. */
 .editor-styles-wrapper .nem-categories-box,
-.editor-styles-wrapper .nem-new-category-group,
 .editor-styles-wrapper :is(.nem-new-products-row, .nem-sale-products-row, .nem-plus-products-row) > .nem-collection-product { position: relative; outline: 1px dashed #b5c9e0; }
 .editor-styles-wrapper .nem-categories-box::before,
-.editor-styles-wrapper .nem-new-category-group::before,
 .editor-styles-wrapper :is(.nem-new-products-row, .nem-sale-products-row, .nem-plus-products-row) > .nem-collection-product::before {
     content: "⋮⋮"; position: absolute; top: 0; left: -18px; width: 18px; height: 28px;
     font-size: 12px; line-height: 28px; color: #2271b1; background: #e7f2fd; cursor: grab; z-index: 1;
 }
-.editor-styles-wrapper .nem-categories-box p { position: relative; padding-left: 26px; }
-.editor-styles-wrapper .nem-categories-box p::before {
-    content: "⋮⋮"; position: absolute; left: 0; top: 2px; width: 24px; text-align: center; color: #2271b1; cursor: grab;
+
+/* Category group container & top drag handle ("⋮⋮ Kéo cả nhóm") */
+.editor-styles-wrapper .nem-new-category-group {
+    position: relative !important;
+    outline: 1px dashed #b5c9e0 !important;
+    border-radius: 4px !important;
+    padding: 24px 6px 6px !important;
+    margin-bottom: 12px !important;
+    background: #ffffff !important;
+    transition: outline-color 0.15s ease;
+}
+.editor-styles-wrapper .nem-new-category-group:hover {
+    outline-color: #3858e9 !important;
+}
+.editor-styles-wrapper .nem-new-category-group::before {
+    content: "⋮⋮ Kéo cả nhóm" !important;
+    position: absolute !important;
+    top: 2px !important;
+    left: 4px !important;
+    right: 4px !important;
+    height: 18px !important;
+    line-height: 18px !important;
+    font-size: 10px !important;
+    font-weight: 600 !important;
+    color: #50575e !important;
+    background: #f0f0f1 !important;
+    border-radius: 3px !important;
+    cursor: grab !important;
+    text-align: center !important;
+    user-select: none !important;
+}
+.editor-styles-wrapper .nem-new-category-group:hover::before {
+    color: #3858e9 !important;
+    background: #e7ecfe !important;
+}
+
+/* Individual category item & left drag handle ("⋮⋮") */
+.editor-styles-wrapper .nem-categories-box p,
+.editor-styles-wrapper .nem-new-category-group p {
+    position: relative !important;
+    padding: 2px 6px 2px 28px !important;
+    margin: 0 0 2px 0 !important;
+    font-size: 14px !important;
+    line-height: 1.75 !important;
+    color: #888;
+    cursor: text !important;
+}
+.editor-styles-wrapper .nem-categories-box p::before,
+.editor-styles-wrapper .nem-new-category-group p::before {
+    content: "⋮⋮" !important;
+    position: absolute !important;
+    left: 2px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    width: 20px !important;
+    height: 20px !important;
+    line-height: 20px !important;
+    text-align: center !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    color: #2271b1 !important;
+    background: #e7f2fd !important;
+    border-radius: 3px !important;
+    cursor: grab !important;
+    user-select: none !important;
+}
+.editor-styles-wrapper .nem-categories-box p:hover::before,
+.editor-styles-wrapper .nem-new-category-group p:hover::before {
+    color: #ffffff !important;
+    background: #2271b1 !important;
+}
+.editor-styles-wrapper .nem-categories-box p:hover,
+.editor-styles-wrapper .nem-new-category-group p:hover {
+    background: #f6f7f7 !important;
 }
 .editor-styles-wrapper .nem-new-categories-title { cursor: grab; }
-.editor-styles-wrapper .nem-dragging { opacity: .7; outline: 2px solid #3858e9; }
-.editor-styles-wrapper .nem-drag-over-top { box-shadow: 0 -3px #3858e9; }
-.editor-styles-wrapper .nem-drag-over-bottom { box-shadow: 0 3px #3858e9; }
-.editor-styles-wrapper .nem-drag-over-swap { outline: 2px dashed #3858e9; }
-.nem-floating-drag-ghost { position: fixed; z-index: 9999999; pointer-events: none; background: #1e1e1e; color: #fff; padding: 10px 16px; border-radius: 6px; }
+
+/* Visual feedback during direct canvas drag-and-drop */
+.editor-styles-wrapper .nem-dragging,
+.nem-dragging {
+    opacity: 0.75 !important;
+    outline: 2px solid #3858e9 !important;
+    background-color: #ffffff !important;
+}
+.editor-styles-wrapper .nem-drag-over-top,
+.nem-drag-over-top {
+    box-shadow: 0 -4px 0 0 #3858e9 !important;
+    outline: 2px dashed #3858e9 !important;
+}
+.editor-styles-wrapper .nem-drag-over-bottom,
+.nem-drag-over-bottom {
+    box-shadow: 0 4px 0 0 #3858e9 !important;
+    outline: 2px dashed #3858e9 !important;
+}
+.editor-styles-wrapper .nem-drag-over-swap,
+.nem-drag-over-swap {
+    outline: 3px dashed #3858e9 !important;
+    background-color: #f0f6fc !important;
+}
+.nem-floating-drag-ghost {
+    position: fixed !important;
+    z-index: 9999999 !important;
+    pointer-events: none !important;
+    background: #1e1e1e !important;
+    color: #fff !important;
+    padding: 8px 14px !important;
+    border-radius: 6px !important;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3) !important;
+    border: 2px solid #3858e9 !important;
+    white-space: nowrap !important;
+}
 
 @media (max-width: 1000px) {
     :is(.nem-new-blocks, .editor-styles-wrapper) .wp-block-columns.nem-new-layout { gap: 24px; }
