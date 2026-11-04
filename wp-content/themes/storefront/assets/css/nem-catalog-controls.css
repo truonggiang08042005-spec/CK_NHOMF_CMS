@@ -6,7 +6,7 @@
     font: 600 16px/1.4 Arial, sans-serif;
 }
 .nem-new-filter > summary > span,
-.nem-shop-filter-toggle > span {
+.nem-shop-filter-toggle > span[aria-hidden="true"] {
     width: 0;
     height: 0;
     border: 0;
@@ -15,7 +15,7 @@
     border-right: 6px solid transparent;
 }
 .nem-new-filter[open] > summary > span,
-.nem-shop-filter.is-open .nem-shop-filter-toggle > span { transform: rotate(180deg); }
+.nem-shop-filter.is-open .nem-shop-filter-toggle > span[aria-hidden="true"] { transform: rotate(180deg); }
 .nem-new-filter-panel,
 .nem-shop-filter-panel {
     box-sizing: border-box;
@@ -172,7 +172,7 @@
     .nem-new-filter > summary,
     .nem-shop-filter-toggle { font-size: 12px; }
     .nem-new-filter > summary > span,
-    .nem-shop-filter-toggle > span { border-top-width: 5px; border-left-width: 4px; border-right-width: 4px; }
+    .nem-shop-filter-toggle > span[aria-hidden="true"] { border-top-width: 5px; border-left-width: 4px; border-right-width: 4px; }
     .nem-new-filters { gap: 18px; }
     .nem-new-grid-choices,
     .nem-shop-view-switcher { gap: 8px; }

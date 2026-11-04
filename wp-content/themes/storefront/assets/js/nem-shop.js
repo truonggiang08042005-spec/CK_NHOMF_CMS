@@ -105,7 +105,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (currentSidebar && nextSidebar) currentSidebar.replaceWith(nextSidebar);
             currentTitle.textContent = nextTitle.textContent;
             setColumns(shopMain, columns);
-            if (options.scrollToTop) window.scrollTo({ top: 0, behavior: 'smooth' });
             shopMain.classList.remove('is-filtering');
             shopMain.removeAttribute('aria-busy');
             const categoryDetails = nextSidebar?.querySelector('.nem-shop-categories');
@@ -242,7 +241,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const filter = link.closest('[data-filter-key]');
             updateResults(url.href, {
                 filterKey: filter?.getAttribute('data-filter-key'),
-                scrollToTop: link.matches('.nem-shop-results .woocommerce-pagination a'),
                 pushState: true
             });
             return;

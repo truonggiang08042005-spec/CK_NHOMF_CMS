@@ -2569,3 +2569,9 @@ button.menu-toggle::after {
         padding: 0
     }
 }
+
+.storefront-breadcrumb {
+    width: calc(100% - 160px);
+    max-width: 1300px;
+    margin: 0 auto !important;
+}

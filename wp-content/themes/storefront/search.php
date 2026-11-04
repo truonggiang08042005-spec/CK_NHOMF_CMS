@@ -29,7 +29,7 @@ get_header();
             </div>
 
             <p class="nem-shop-filter-status screen-reader-text" role="status" aria-live="polite" aria-atomic="true"></p>
-            <div class="nem-shop-results">
+            <div class="nem-shop-results nem-new-container nem-new-layout">
                 <?php if (have_posts()) : ?>
                     <?php
                     wc_set_loop_prop('columns', 4);

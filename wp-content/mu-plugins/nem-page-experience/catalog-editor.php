@@ -18,8 +18,6 @@ function npe_catalog_schema($type) {
     ];
     if ($type === 'search') return [
         'heading'=>['label'=>'Tiêu đề kết quả tìm kiếm','default'=>'Kết quả tìm kiếm:'],
-        'search_label'=>['label'=>'Nhãn ô tìm kiếm','default'=>'Tìm kiếm sản phẩm'],
-        'search_button'=>['label'=>'Nút tìm kiếm','default'=>'Tìm kiếm'],
         'empty_text'=>['label'=>'Thông báo không có kết quả','default'=>'Không tìm thấy sản phẩm phù hợp. Vui lòng thử từ khóa khác.'],
     ];
     if ($type === 'cart') return [
@@ -39,11 +37,11 @@ function npe_catalog_schema($type) {
 }
 
 function npe_catalog_sections($type) {
-    return ['shop'=>['banner'=>'Banner sản phẩm','catalog'=>'Danh mục và danh sách sản phẩm'], 'search'=>['form'=>'Ô tìm kiếm','heading'=>'Tiêu đề kết quả','results'=>'Kết quả tìm kiếm'], 'cart'=>['heading'=>'Tiêu đề giỏ hàng','items'=>'Danh sách sản phẩm','bottom'=>'Chú thích và tổng tiền','empty'=>'Thông báo giỏ trống']][$type] ?? [];
+    return ['shop'=>['banner'=>'Banner sản phẩm','catalog'=>'Danh mục và danh sách sản phẩm'], 'search'=>['heading'=>'Tiêu đề kết quả','results'=>'Kết quả tìm kiếm'], 'cart'=>['heading'=>'Tiêu đề giỏ hàng','items'=>'Danh sách sản phẩm','bottom'=>'Chú thích và tổng tiền','empty'=>'Thông báo giỏ trống']][$type] ?? [];
 }
 
 function npe_visual_required_sections($type) {
-    return ['checkout'=>['contact','address','payment','summary'],'shop'=>['catalog'],'cart'=>['items','bottom'],'search'=>['form','results']][$type] ?? [];
+    return ['checkout'=>['contact','address','payment','summary'],'shop'=>['catalog'],'cart'=>['items','bottom'],'search'=>['results']][$type] ?? [];
 }
 
 function npe_catalog_group_schema($type) {
@@ -67,7 +65,7 @@ function npe_catalog_group_schema($type) {
         'catalog_content'=>['items'=>['toolbar'=>'Tiêu đề và bộ lọc','results'=>'Lưới sản phẩm'],'direction'=>'column'],
         'product_card'=>$card,
     ];
-    if ($type === 'search') return ['search_form'=>['items'=>['input'=>'Ô nhập từ khóa','button'=>'Nút tìm kiếm'],'direction'=>'row'],'product_card'=>$card];
+    if ($type === 'search') return ['product_card'=>$card];
     if ($type === 'cart') return [
         'cart_product'=>['items'=>['image'=>'Ảnh sản phẩm','details'=>'Thông tin sản phẩm'],'direction'=>'row'],
         'cart_bottom'=>['items'=>['note'=>'Chú thích','summary'=>'Tổng tiền và thanh toán'],'direction'=>'row'],
@@ -96,7 +94,7 @@ function npe_catalog_targets($type) {
     $map = ['shop'=>[
         'heading'=>'.nem-shop-toolbar-title > .nve-label','categories_title'=>'.nem-shop-sidebar > h2','all_categories'=>'.nem-shop-all-categories',
         'size_label'=>'[data-filter-key="size"] > button > .nve-label','color_label'=>'[data-filter-key="color"] > button > .nve-label','price_label'=>'[data-filter-key="price"] > button > .nve-label','empty_text'=>'.nem-shop-no-results',
-    ],'search'=>['heading'=>'.nem-shop-toolbar-title > .nve-label','search_label'=>'.npe-search-form > label','search_button'=>'.npe-search-form button','empty_text'=>'.nem-search-empty > p'],
+    ],'search'=>['heading'=>'.nem-shop-toolbar-title > .nve-label','empty_text'=>'.nem-search-empty > p'],
     'cart'=>['heading'=>'.entry-title','product_heading'=>'.storefront-custom-cart-product-heading','price_heading'=>'.storefront-custom-cart-price-heading','quantity_heading'=>'.storefront-custom-cart-quantity-heading','total_heading'=>'.storefront-custom-cart-total-heading','note_label'=>'.storefront-custom-cart-note > label','total_label'=>'.storefront-custom-cart-grand-total > span','update_text'=>'.storefront-custom-cart-update','checkout_text'=>'.storefront-custom-cart-checkout','empty_text'=>'.storefront-custom-cart-empty > p','continue_text'=>'.storefront-custom-cart-empty > a']];
     $targets = [];
     foreach ($map[$type] ?? [] as $field=>$selector) $targets[$field] = ['selector'=>$selector,'field'=>$field];
@@ -177,16 +175,6 @@ function npe_catalog_transform($html,$type) {
         if($heading){$span=$doc->createElement('span');$span->setAttribute('class','nve-label');while($heading->firstChild)$span->appendChild($heading->firstChild);$heading->appendChild($span);}
         foreach (['size','color','price'] as $key) foreach(npe_catalog_nodes($xpath,'nem-shop-filter') as $filter) if($filter->getAttribute('data-filter-key')===$key){$button=$filter->getElementsByTagName('button')->item(0);if($button){$span=$doc->createElement('span');$span->setAttribute('class','nve-label');foreach(iterator_to_array($button->childNodes) as $node)if($node->nodeType===XML_TEXT_NODE)$span->appendChild($node);$button->insertBefore($span,$button->firstChild);}}
     } elseif ($type === 'search') {
-        $form=$doc->createElement('form');$form->setAttribute('class','npe-search-form');$form->setAttribute('role','search');$form->setAttribute('action',home_url('/'));$form->setAttribute('method','get');
-        $label=$doc->createElement('label','Tìm kiếm sản phẩm');$label->setAttribute('for','npe-search-text');$form->appendChild($label);
-        $input=$doc->createElement('input');foreach(['type'=>'search','name'=>'s','id'=>'npe-search-text','value'=>get_search_query(false)] as $k=>$v)$input->setAttribute($k,$v);
-        $submit=$doc->createElement('button','Tìm kiếm');$submit->setAttribute('type','submit');
-        $controls=$doc->createElement('div');$controls->setAttribute('class','npe-search-controls');$form->appendChild($controls);
-        $input_piece=$doc->createElement('div');$input_piece->setAttribute('class','npe-search-input-piece');$input_piece->appendChild($input);
-        $button_piece=$doc->createElement('div');$button_piece->appendChild($submit);$controls->appendChild($input_piece);$controls->appendChild($button_piece);
-        $hidden=$doc->createElement('input');$hidden->setAttribute('type','hidden');$hidden->setAttribute('name','post_type');$hidden->setAttribute('value','product');$form->appendChild($hidden);
-        npe_catalog_group($doc,$controls,'search_form',['input'=>$input_piece,'button'=>$button_piece],$layouts['search_form']);
-        $main->insertBefore($form,$main->firstChild);$sections['form']=$form;
         $heading=$first('nem-shop-toolbar'); $results=$first('nem-shop-results');
         if (!$heading) $heading=$first('page-header');
         if ($heading) {
@@ -194,7 +182,7 @@ function npe_catalog_transform($html,$type) {
             if($title){while($title->firstChild)$title->removeChild($title->firstChild);$title->setAttribute('class','nem-shop-toolbar-title');$label=$doc->createElement('span','Kết quả tìm kiếm:');$label->setAttribute('class','nve-label');$title->appendChild($label);$title->appendChild($doc->createTextNode(' '.get_search_query(false)));}
             $sections['heading']=$heading;
         }
-        if (!$results) { $results=$doc->createElement('div');$results->setAttribute('class','nem-shop-results');foreach(iterator_to_array($main->childNodes) as $node)if($node!==$form && $node!==$heading)$results->appendChild($node);$main->appendChild($results); }
+        if (!$results) { $results=$doc->createElement('div');$results->setAttribute('class','nem-shop-results');foreach(iterator_to_array($main->childNodes) as $node)if($node!==$heading)$results->appendChild($node);$main->appendChild($results); }
         $sections['results']=$results;
         $empty=$first('nem-search-empty',$results); if($empty){$p=$empty->getElementsByTagName('p')->item(0);if($p){while($p->firstChild)$p->removeChild($p->firstChild);$p->appendChild($doc->createTextNode(npe_setting('search','empty_text',npe_catalog_schema('search')['empty_text']['default'])));}}
     } else {
@@ -231,8 +219,6 @@ function npe_catalog_transform($html,$type) {
         elseif($key==='heading')$nodes=$type==='cart'?npe_catalog_nodes($xpath,'entry-title',$main):$xpath->query('.//*[contains(@class,"nem-shop-toolbar-title")]/span[contains(@class,"nve-label")]',$main);
         elseif($type==='shop' && in_array($key,['size_label','color_label','price_label'],true))$nodes=$xpath->query('.//*[@data-filter-key="'.str_replace('_label','',$key).'"]/button/span[contains(@class,"nve-label")]',$main);
         elseif($key==='categories_title')$nodes=$xpath->query('.//aside[contains(@class,"nem-shop-sidebar")]/h2',$main);
-        elseif($key==='search_label')$nodes=$form->getElementsByTagName('label');
-        elseif($key==='search_button')$nodes=$form->getElementsByTagName('button');
         elseif($key==='note_label')$nodes=$xpath->query('.//*[contains(@class,"storefront-custom-cart-note")]/label',$main);
         elseif($key==='total_label')$nodes=$xpath->query('.//*[contains(@class,"storefront-custom-cart-grand-total")]/span',$main);
         elseif(in_array($key,['empty_text','continue_text'],true) && $type==='cart')$nodes=$xpath->query('.//*[contains(@class,"storefront-custom-cart-empty")]/'.($key==='empty_text'?'p':'a'),$main);

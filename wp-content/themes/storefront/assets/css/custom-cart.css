@@ -8,7 +8,9 @@ body.woocommerce-cart .site-main {
 }
 
 .storefront-custom-cart {
-    width: 100%;
+    width: calc(100% - 160px);
+    max-width: 1300px;
+    margin: 0 auto;
     color: #111;
     font-size: 15px;
 }
@@ -118,8 +120,8 @@ body.woocommerce-cart .site-main {
     text-indent: 0px !important;
 }
 
-.storefront-custom-cart-remove a.remove::before{
-display: none !important;
+.storefront-custom-cart-remove a.remove::before {
+    display: none !important;
 }
 
 
