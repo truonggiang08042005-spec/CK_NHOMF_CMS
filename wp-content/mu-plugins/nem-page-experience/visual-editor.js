@@ -267,7 +267,7 @@
         applyOrder(); styleSheet();
         if (cfg.type === 'home') connectHomeRows();
         if (cfg.type === 'checkout') connectCheckoutColumns();
-        if (['shop','cart','search','product'].includes(cfg.type)) window.NPELayoutDrag.bind({ doc, groups: cfg.layoutGroups || {}, layouts: data.layouts, onChange(key, layout) { data.layouts[key] = layout; if (key === 'product_details') { data.fields.gallery_position = (layout.order[0] === 'gallery' ? 'left' : 'right'); } changed(); } });
+        if (['shop','cart','search','product','checkout','home'].includes(cfg.type)) window.NPELayoutDrag.bind({ doc, groups: cfg.layoutGroups || {}, layouts: data.layouts, onChange(key, layout) { data.layouts[key] = layout; if (key === 'product_details') { data.fields.gallery_position = (layout.order[0] === 'gallery' ? 'left' : 'right'); } changed(); } });
         message(dirty ? 'Có thay đổi chưa lưu.' : 'Sẵn sàng. Bấm vào chữ hoặc kéo khối để chỉnh sửa.');
     }
     Object.entries(controls).forEach(([prop, id]) => document.getElementById(id).addEventListener('input', event => {

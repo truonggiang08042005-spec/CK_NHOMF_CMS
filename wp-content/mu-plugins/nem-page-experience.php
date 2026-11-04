@@ -123,7 +123,39 @@ add_action('woocommerce_before_add_to_cart_button', function () {
     if (npe_is_page()) npe_simple_options($product);
 });
 function npe_purchase($product) {
+    ob_start();
     woocommerce_template_single_add_to_cart();
+    $html = ob_get_clean();
+
+    $layouts = function_exists('npe_catalog_layouts') ? npe_catalog_layouts('product') : [];
+    $btn_layout = $layouts['purchase_buttons'] ?? ['order' => ['add_to_cart', 'buy_now'], 'direction' => 'column'];
+    $order = $btn_layout['order'] ?? ['add_to_cart', 'buy_now'];
+    $direction = $btn_layout['direction'] ?? 'column';
+
+    $add_btn = '';
+    $buy_btn = '';
+    if (preg_match('/<button\b[^>]*class="[^"]*single_add_to_cart_button[^"]*"[^>]*>.*?<\/button>/is', $html, $m)) {
+        $add_btn = $m[0];
+    }
+    if (preg_match('/<button\b[^>]*class="[^"]*npe-buy-now[^"]*"[^>]*>.*?<\/button>/is', $html, $m2)) {
+        $buy_btn = $m2[0];
+    }
+
+    if ($add_btn && $buy_btn) {
+        $pieces = [
+            'add_to_cart' => '<div class="npe-purchase-piece" data-nve-piece="add_to_cart">' . $add_btn . '</div>',
+            'buy_now' => '<div class="npe-purchase-piece" data-nve-piece="buy_now">' . $buy_btn . '</div>',
+        ];
+        $ordered_pieces = '';
+        foreach ($order as $p_key) {
+            if (isset($pieces[$p_key])) $ordered_pieces .= $pieces[$p_key];
+        }
+        $group_html = '<div class="npe-purchase-buttons" data-nve-group="purchase_buttons" data-nve-flow="' . esc_attr($direction) . '">' . $ordered_pieces . '</div>';
+        $html = str_replace($buy_btn, '', $html);
+        $html = str_replace($add_btn, $group_html, $html);
+    }
+
+    echo $html;
 }
 function npe_selected_options($id) {
     $p=wc_get_product($id); $reference=$p ? npe_reference($p) : [];

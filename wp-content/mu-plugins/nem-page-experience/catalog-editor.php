@@ -49,6 +49,17 @@ function npe_visual_required_sections($type) {
 function npe_catalog_group_schema($type) {
     if ($type === 'product') return [
         'product_details'=>['items'=>['gallery'=>'Ảnh sản phẩm','summary'=>'Nội dung sản phẩm'],'direction'=>'row'],
+        'purchase_buttons'=>['items'=>['add_to_cart'=>'Thêm vào giỏ','buy_now'=>'Mua ngay'],'direction'=>'column'],
+        'product_summary'=>['items'=>['title'=>'Tên sản phẩm','brand'=>'Thương hiệu & mã','price'=>'Giá','consult'=>'Tư vấn Zalo','purchase'=>'Nút mua hàng','size_guide'=>'Hướng dẫn size','description'=>'Mô tả'],'direction'=>'column'],
+    ];
+    if ($type === 'checkout') return [
+        'contact_fields'=>['items'=>['name'=>'Họ và tên','phone'=>'Số điện thoại','email'=>'Email'],'direction'=>'column'],
+        'address_fields'=>['items'=>['street'=>'Số nhà, tên đường','district'=>'Phường/Quận','city'=>'Tỉnh/Thành phố'],'direction'=>'column'],
+        'summary_elements'=>['items'=>['items'=>'Danh sách sản phẩm','totals'=>'Bảng tính tiền','legal'=>'Điều khoản mua hàng','place_order'=>'Nút đặt hàng'],'direction'=>'column'],
+    ];
+    if ($type === 'home') return [
+        'home_features'=>['items'=>['feature_0'=>'Thiết kế 1','feature_1'=>'Thiết kế 2'],'direction'=>'row'],
+        'newsletter_form'=>['items'=>['email'=>'Ô nhập email','submit'=>'Nút đăng ký'],'direction'=>'row'],
     ];
     $card = ['items'=>['image'=>'Ảnh sản phẩm','information'=>'Tên và giá sản phẩm'],'direction'=>'column'];
     if ($type === 'shop') return [
@@ -247,7 +258,7 @@ add_filter('template_include',function($template){
 
 add_action('wp_enqueue_scripts',function(){
     $front = npe_visual_front_type();
-    if(!isset(npe_catalog_types()[$front]) && $front !== 'product') return;
+    if(!isset(npe_catalog_types()[$front]) && !in_array($front, ['product', 'checkout', 'home'], true)) return;
     wp_enqueue_style('npe-catalog-layout',content_url('/mu-plugins/nem-page-experience/catalog-layout.css'),[],filemtime(__DIR__.'/catalog-layout.css'));
 },1100);
 

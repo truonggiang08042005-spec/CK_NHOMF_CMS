@@ -248,7 +248,7 @@ add_action('wp_ajax_npe_visual_save', function () {
     $history[] = ['at' => current_time('mysql'), 'builder' => $old, 'home' => get_option('nem_home_content', []), 'styles' => get_option('npe_visual_styles', [])];
     update_post_meta($id, '_npe_visual_history', array_slice($history, -10));
     $all[$type] = array_merge($old, ['fields' => array_merge($old['fields'] ?? [], $fields), 'order' => $order, 'hidden' => $hidden, 'columns' => $columns]);
-    if (isset(npe_catalog_types()[$type]) || $type === 'product') {
+    if (isset(npe_catalog_types()[$type]) || in_array($type, ['product', 'checkout', 'home'], true)) {
         $all[$type]['layouts'] = npe_catalog_clean_layouts($type,$data['layouts'] ?? ($old['layouts'] ?? []));
         if ($type === 'product' && !empty($all[$type]['layouts']['product_details']['order'])) {
             $all[$type]['fields']['gallery_position'] = ($all[$type]['layouts']['product_details']['order'][0] === 'gallery' ? 'left' : 'right');

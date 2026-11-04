@@ -28,4 +28,15 @@
 [data-nve-group="product_details"][data-nve-flow="row"]>[data-nve-piece="gallery"]{flex:1.4;min-width:0}
 [data-nve-group="product_details"][data-nve-flow="row"]>[data-nve-piece="summary"]{flex:0.9;min-width:320px}
 [data-nve-group="product_details"][data-nve-flow="column"]>[data-nve-piece]{width:100%!important}
+[data-nve-group="purchase_buttons"]{display:flex!important;flex-direction:column!important;gap:8px;margin-top:12px;width:100%}
+[data-nve-group="purchase_buttons"][data-nve-flow="row"]{flex-direction:row!important}
+[data-nve-group="purchase_buttons"]>[data-nve-piece]{flex:1;min-width:0;width:100%}
+[data-nve-group="purchase_buttons"] .single_add_to_cart_button,[data-nve-group="purchase_buttons"] .npe-buy-now{width:100%!important;margin:0!important}
+[data-nve-group="product_summary"]{display:flex!important;flex-direction:column!important;gap:14px;width:100%}
+[data-nve-group="contact_fields"],[data-nve-group="address_fields"]{display:flex!important;flex-direction:column!important;gap:12px;width:100%}
+[data-nve-group="summary_elements"]{display:flex!important;flex-direction:column!important;gap:16px;width:100%}
+[data-nve-group="newsletter_form"]{display:flex!important;flex-direction:row!important;gap:10px;align-items:center}
+[data-nve-group="newsletter_form"][data-nve-flow="column"]{flex-direction:column!important}
+[data-nve-group="newsletter_form"] .npe-newsletter-input-piece{flex:1;min-width:0}
+[data-nve-group="home_features"]{display:grid!important;grid-template-columns:1fr 1fr;gap:4px}
 @media(max-width:760px){[data-nve-group="catalog_columns"][data-nve-flow="row"],[data-nve-group="cart_bottom"][data-nve-flow="row"]{flex-direction:column!important}[data-nve-group="catalog_columns"]>[data-nve-piece="categories"]{flex-basis:auto;width:100%}[data-nve-group="cart_product"]{gap:18px}[data-nve-group="cart_product"]>[data-nve-piece="image"]{flex-basis:90px;width:90px}[data-nve-group="cart_product"] .storefront-custom-cart-image img{width:90px;height:auto}}
