@@ -3,7 +3,17 @@
 defined('ABSPATH') || exit;
 
 function npe_visual_pages() {
-    return ['home' => (int) get_option('page_on_front'), 'product' => (int) get_option('npe_product_layout_page'), 'checkout' => (int) get_option('woocommerce_checkout_page_id')];
+    return ['home' => (int) get_option('page_on_front'), 'product' => (int) get_option('npe_product_layout_page'), 'checkout' => (int) get_option('woocommerce_checkout_page_id'), 'shop'=>(int)get_option('woocommerce_shop_page_id'), 'cart'=>(int)get_option('woocommerce_cart_page_id'), 'search'=>(int)get_option('npe_search_layout_page')];
+}
+
+function npe_visual_front_type() {
+    if (is_front_page()) return 'home';
+    if (function_exists('is_product') && is_product()) return 'product';
+    if (function_exists('is_cart') && is_cart()) return 'cart';
+    if (is_search()) return 'search';
+    if (function_exists('is_shop') && (is_shop() || is_product_taxonomy())) return 'shop';
+    if (function_exists('npe_is_checkout') && npe_is_checkout()) return 'checkout';
+    return '';
 }
 
 function npe_visual_page_type($id) {
@@ -12,7 +22,9 @@ function npe_visual_page_type($id) {
 
 function npe_visual_url($type, $product_id = 0) {
     $id = npe_visual_pages()[$type] ?? 0;
-    return $id ? add_query_arg(array_filter(['page' => 'npe-visual-editor', 'post' => $id, 'product' => absint($product_id)]), admin_url('admin.php')) : '';
+    $args = ['page' => 'npe-visual-editor', 'post' => $id, 'product' => absint($product_id)];
+    if ($type === 'search' && is_search()) $args['query'] = get_search_query(false);
+    return $id ? add_query_arg(array_filter($args), admin_url('admin.php')) : '';
 }
 
 function npe_visual_product() {
@@ -53,7 +65,7 @@ add_filter('page_row_actions', function ($actions, $post) {
 
 add_action('admin_bar_menu', function ($bar) {
     if (!current_user_can('manage_options')) return;
-    $type = is_front_page() ? 'home' : (function_exists('is_product') && is_product() ? 'product' : (function_exists('is_checkout') && is_checkout() && !is_order_received_page() ? 'checkout' : ''));
+    $type = npe_visual_front_type();
     if (!$type || !npe_visual_url($type)) return;
     if ($type === 'product') $bar->add_node(['id' => 'npe-edit-product', 'title' => 'Sửa dữ liệu sản phẩm', 'href' => admin_url('post.php?post=' . get_queried_object_id() . '&action=edit')]);
     $bar->add_node(['id' => 'edit', 'title' => 'Edit Page · Sửa trực quan', 'href' => npe_visual_url($type, $type === 'product' ? get_queried_object_id() : 0)]);
@@ -64,6 +76,7 @@ add_action('admin_menu', function () {
 });
 
 function npe_visual_targets($type) {
+    if (function_exists('npe_catalog_types') && isset(npe_catalog_types()[$type])) return npe_catalog_targets($type);
     $targets = [];
     if ($type === 'home') {
         foreach (npe_builder_schema('home') as $key => $field) {
@@ -149,7 +162,7 @@ function npe_visual_home_header() {
 }
 
 add_action('wp_head', function () {
-    $type = is_front_page() ? 'home' : (function_exists('is_product') && is_product() ? 'product' : (function_exists('npe_is_checkout') && npe_is_checkout() ? 'checkout' : ''));
+    $type = npe_visual_front_type();
     if (!$type) return;
     $all = get_option('npe_visual_styles', []);
     $styles = npe_visual_styles($type, $all[$type] ?? []);
@@ -224,7 +237,7 @@ add_action('wp_ajax_npe_visual_save', function () {
     $allowed = array_keys(npe_builder_sections($type));
     $order = array_values(array_unique(array_merge(array_intersect(array_filter(is_array($data['order'] ?? null) ? $data['order'] : [], 'is_string'), $allowed), $allowed)));
     $hidden = array_values(array_intersect(array_filter(is_array($data['hidden'] ?? null) ? $data['hidden'] : [], 'is_string'), $allowed));
-    if ($type === 'checkout') $hidden = array_values(array_diff($hidden, ['contact','address','payment','summary']));
+    $hidden = array_values(array_diff($hidden,npe_visual_required_sections($type)));
     $all = get_option('npe_page_builder', []);
     if (!is_array($all)) $all = [];
     $old = $all[$type] ?? [];
@@ -235,6 +248,12 @@ add_action('wp_ajax_npe_visual_save', function () {
     $history[] = ['at' => current_time('mysql'), 'builder' => $old, 'home' => get_option('nem_home_content', []), 'styles' => get_option('npe_visual_styles', [])];
     update_post_meta($id, '_npe_visual_history', array_slice($history, -10));
     $all[$type] = array_merge($old, ['fields' => array_merge($old['fields'] ?? [], $fields), 'order' => $order, 'hidden' => $hidden, 'columns' => $columns]);
+    if (isset(npe_catalog_types()[$type]) || $type === 'product') {
+        $all[$type]['layouts'] = npe_catalog_clean_layouts($type,$data['layouts'] ?? ($old['layouts'] ?? []));
+        if ($type === 'product' && !empty($all[$type]['layouts']['product_details']['order'])) {
+            $all[$type]['fields']['gallery_position'] = ($all[$type]['layouts']['product_details']['order'][0] === 'gallery' ? 'left' : 'right');
+        }
+    }
     if ($type === 'home') $all[$type]['feature_order'] = npe_visual_feature_order($data['featureOrder'] ?? ($old['feature_order'] ?? []));
     if ($type === 'home') update_option('nem_home_content', npe_builder_update_home($fields));
     if ($type === 'product') {
@@ -261,7 +280,7 @@ function npe_visual_editor_screen() {
     $id = npe_visual_pages()[$type];
     if (!$id || !current_user_can('edit_post', $id)) { echo '<div class="wrap"><h1>Chưa nhập trang</h1><p>Cần nhập các trang NEM trước khi chỉnh sửa.</p></div>'; return; }
     $product = npe_visual_product();
-    $view = $type === 'home' ? home_url('/') : ($type === 'checkout' ? wc_get_checkout_url() : ($product ? $product->get_permalink() : home_url('/')));
+    $view = isset(npe_catalog_types()[$type]) ? npe_catalog_preview_url($type) : ($type === 'home' ? home_url('/') : ($type === 'checkout' ? wc_get_checkout_url() : ($product ? $product->get_permalink() : home_url('/'))));
     $preview = add_query_arg(['npe_visual_preview' => $id, '_npe_nonce' => wp_create_nonce('npe_visual_preview_' . $id)], $view);
     $schema = npe_builder_schema($type);
     if ($type === 'product') foreach (['newsletter_title','newsletter_text'] as $key) $schema[$key] = npe_builder_schema('home')[$key];
@@ -271,12 +290,15 @@ function npe_visual_editor_screen() {
     $settings = npe_page_settings($type);
     wp_enqueue_media();
     wp_enqueue_style('npe-visual-editor', content_url('/mu-plugins/nem-page-experience/visual-editor.css'), [], filemtime(__DIR__.'/visual-editor.css'));
-    wp_enqueue_script('npe-visual-editor', content_url('/mu-plugins/nem-page-experience/visual-editor.js'), ['jquery','jquery-ui-sortable','media-editor'], filemtime(__DIR__.'/visual-editor.js'), true);
-    wp_localize_script('npe-visual-editor', 'npeVisual', ['type' => $type, 'post' => $id, 'ajax' => admin_url('admin-ajax.php'), 'nonce' => wp_create_nonce('npe_visual_save'), 'targets' => npe_visual_targets($type), 'schema' => $schema, 'fields' => $fields, 'order' => npe_section_order($type, true), 'hidden' => $settings['hidden'], 'columns' => $settings['columns'], 'featureOrder' => npe_visual_feature_order(), 'canvasStyle' => add_query_arg('ver', filemtime(__DIR__.'/visual-canvas.css'), content_url('/mu-plugins/nem-page-experience/visual-canvas.css')), 'styles' => npe_visual_styles($type, $styles[$type] ?? []), 'sections' => npe_builder_sections($type), 'product' => $type === 'product' && $product ? $product->get_id() : 0]);
+    wp_enqueue_script('npe-layout-drag',content_url('/mu-plugins/nem-page-experience/visual-layout-drag.js'),[],filemtime(__DIR__.'/visual-layout-drag.js'),true);
+    wp_enqueue_script('npe-visual-editor', content_url('/mu-plugins/nem-page-experience/visual-editor.js'), ['jquery','jquery-ui-sortable','media-editor','npe-layout-drag'], filemtime(__DIR__.'/visual-editor.js'), true);
+    wp_localize_script('npe-visual-editor', 'npeVisual', ['type' => $type, 'post' => $id, 'ajax' => admin_url('admin-ajax.php'), 'nonce' => wp_create_nonce('npe_visual_save'), 'targets' => npe_visual_targets($type), 'schema' => $schema, 'fields' => $fields, 'order' => npe_section_order($type, true), 'hidden' => $settings['hidden'], 'columns' => $settings['columns'], 'featureOrder' => npe_visual_feature_order(), 'canvasStyle' => add_query_arg('ver', filemtime(__DIR__.'/visual-canvas.css'), content_url('/mu-plugins/nem-page-experience/visual-canvas.css')), 'styles' => npe_visual_styles($type, $styles[$type] ?? []), 'sections' => npe_builder_sections($type), 'layouts'=>npe_catalog_layouts($type), 'layoutGroups'=>npe_catalog_group_schema($type), 'required'=>npe_visual_required_sections($type), 'product' => $type === 'product' && $product ? $product->get_id() : 0]);
     ?>
     <div class="nve-shell">
-        <header class="nve-toolbar"><a href="<?php echo esc_url(admin_url('edit.php?post_type=page')); ?>">← All Pages</a><strong>Sửa trang trực quan</strong><nav aria-label="Chọn trang"><?php foreach (['home'=>'Trang chủ','product'=>'Chi tiết sản phẩm','checkout'=>'Thanh toán'] as $key=>$label): ?><a <?php if ($key === $type) echo 'aria-current="page"'; ?> href="<?php echo esc_url(npe_visual_url($key)); ?>"><?php echo esc_html($label); ?></a><?php endforeach; ?></nav><select id="nve-device" aria-label="Kích thước xem trước"><option value="100%">Máy tính</option><option value="820px">Máy tính bảng</option><option value="390px">Điện thoại</option></select><a href="<?php echo esc_url($view); ?>" target="_blank" rel="noopener">Xem trang ↗</a><button id="nve-save" class="button button-primary">Lưu thay đổi</button></header>
+        <header class="nve-toolbar"><a href="<?php echo esc_url(admin_url('edit.php?post_type=page')); ?>">← All Pages</a><strong>Sửa trang trực quan</strong><nav aria-label="Chọn trang"><select id="nve-page" aria-label="Trang đang chỉnh sửa"><?php foreach (['home'=>'Trang chủ','product'=>'Chi tiết sản phẩm','checkout'=>'Thanh toán','shop'=>'Sản phẩm','cart'=>'Giỏ hàng','search'=>'Tìm kiếm'] as $key=>$label): ?><option value="<?php echo esc_url(npe_visual_url($key)); ?>" <?php selected($key,$type); ?>><?php echo esc_html($label); ?></option><?php endforeach; ?></select></nav><select id="nve-device" aria-label="Kích thước xem trước"><option value="100%">Máy tính</option><option value="820px">Máy tính bảng</option><option value="390px">Điện thoại</option></select><a href="<?php echo esc_url($view); ?>" target="_blank" rel="noopener">Xem trang ↗</a><button id="nve-save" class="button button-primary">Lưu thay đổi</button></header>
         <aside class="nve-sidebar"><p class="nve-help">Bấm vào chữ trên trang để sửa. Chọn một dòng chữ để đổi cỡ chữ bên dưới. Kéo tay nắm ngay trên trang để đổi vị trí; ảnh và nội dung có thể kéo đổi bên.</p><p id="nve-status" role="status" aria-live="polite">Đang tải trang…</p>
+        <?php if ($type==='search'): ?><label for="nve-query">Từ khóa xem trước</label><input id="nve-query" type="search" value="<?php echo esc_attr(isset($_GET['query']) && is_string($_GET['query']) ? wp_unslash($_GET['query']) : 'đầm'); ?>"><button type="button" class="button" id="nve-search-preview">Xem kết quả</button><?php endif; ?>
+        <?php if (isset(npe_catalog_types()[$type])): ?><p class="nve-help">Kéo tay nắm ⠿ hoặc ảnh vào cạnh trái, phải, trên hoặc dưới của khối còn lại. Vạch xanh và nhãn chỉ vị trí sắp thả. Bố cục ảnh/tên/giá áp dụng chung cho danh sách.</p><?php endif; ?>
         <?php if ($type === 'product' && $product): ?><label for="nve-product">Sản phẩm xem trước</label><select id="nve-product"><?php foreach (wc_get_products(['status'=>'publish','limit'=>100,'orderby'=>'title','order'=>'ASC']) as $p): ?><option value="<?php echo (int)$p->get_id(); ?>" <?php selected($p->get_id(),$product->get_id()); ?>><?php echo esc_html($p->get_name()); ?></option><?php endforeach; ?></select><p class="nve-help">Bố cục áp dụng cho mọi sản phẩm. Sửa tên/mô tả chỉ tác động sản phẩm đang xem.</p><a href="<?php echo esc_url(admin_url('post.php?post='.$product->get_id().'&action=edit')); ?>" target="_blank" rel="noopener">Sửa ảnh, giá, màu và size sản phẩm ↗</a><?php endif; ?>
         <details open><summary>Chữ đang chọn</summary><p id="nve-selection">Bấm chọn chữ trên trang.</p><label>Cỡ chữ (px)<input id="nve-font-size" type="number" min="8" max="120" placeholder="Mặc định"></label><label>Độ đậm<select id="nve-font-weight"><option value="">Mặc định</option><option value="400">Thường</option><option value="500">Vừa</option><option value="600">Đậm vừa</option><option value="700">Đậm</option></select></label><label>Màu chữ<input id="nve-color" type="color" value="#222222"></label><label>Căn chữ<select id="nve-align"><option value="">Mặc định</option><option value="left">Trái</option><option value="center">Giữa</option><option value="right">Phải</option></select></label><label>Chiều cao dòng<input id="nve-line-height" type="number" min="0.8" max="3" step="0.1" placeholder="Mặc định"></label><button type="button" id="nve-reset-style" class="button">Khôi phục kiểu chữ mặc định</button></details>
         <details open><summary>Bố cục · kéo để sắp xếp</summary><ol id="nve-sections"></ol></details>

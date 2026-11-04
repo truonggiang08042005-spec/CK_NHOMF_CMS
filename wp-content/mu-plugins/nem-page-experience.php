@@ -7,6 +7,7 @@
 defined('ABSPATH') || exit;
 require_once __DIR__.'/nem-page-experience/admin.php';
 require_once __DIR__.'/nem-page-experience/visual-editor.php';
+require_once __DIR__.'/nem-page-experience/catalog-editor.php';
 require_once __DIR__.'/nem-page-experience/navigation.php';
 require_once __DIR__.'/nem-page-experience/checkout-functions.php';
 require_once __DIR__.'/nem-page-experience/payment-banks.php';

@@ -65,6 +65,7 @@ function npe_builder_schema($page) {
             'banner_text' => ['label' => 'Nội dung thông báo / ưu đãi', 'type' => 'textarea', 'default' => ''],
         ];
     }
+    if (function_exists('npe_catalog_schema')) $fields = array_merge($fields,npe_catalog_schema($page));
     return $fields;
 }
 
@@ -83,7 +84,7 @@ function npe_builder_sections($page) {
     if ($page === 'checkout') {
         return ['contact' => 'Thông tin khách hàng', 'address' => 'Địa chỉ giao hàng', 'shipping' => 'Vận chuyển', 'payment' => 'Phương thức thanh toán', 'notes' => 'Ghi chú đơn hàng', 'promo' => 'Ảnh / thông báo ưu đãi', 'summary' => 'Tóm tắt đơn hàng', 'coupon' => 'Mã giảm giá'];
     }
-    return [];
+    return function_exists('npe_catalog_sections') ? npe_catalog_sections($page) : [];
 }
 
 function npe_page_settings($page) {
@@ -95,6 +96,7 @@ function npe_page_settings($page) {
         'hidden' => isset($settings['hidden']) && is_array($settings['hidden']) ? $settings['hidden'] : [],
         'columns' => isset($settings['columns']) && is_array($settings['columns']) ? $settings['columns'] : [],
         'feature_order' => isset($settings['feature_order']) && is_array($settings['feature_order']) ? $settings['feature_order'] : [],
+        'layouts' => isset($settings['layouts']) && is_array($settings['layouts']) ? $settings['layouts'] : [],
     ];
 }
 
@@ -121,7 +123,7 @@ function npe_section_order($page, $include_hidden = false) {
     $order = array_values(array_unique(array_merge(array_intersect($settings['order'], $allowed), $allowed)));
     if ($include_hidden) return $order;
     // A working checkout always keeps the fields/payment/summary needed to place an order.
-    $required = $page === 'checkout' ? ['contact', 'address', 'payment', 'summary'] : [];
+    $required = function_exists('npe_visual_required_sections') ? npe_visual_required_sections($page) : ($page === 'checkout' ? ['contact', 'address', 'payment', 'summary'] : []);
     return array_values(array_filter($order, function ($section) use ($settings, $required) {
         return in_array($section, $required, true) || !in_array($section, $settings['hidden'], true);
     }));

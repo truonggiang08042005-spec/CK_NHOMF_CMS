@@ -1,1 +1,3 @@
 .npe-promo{padding-top:24px;padding-bottom:24px;text-align:center;box-sizing:border-box}.npe-promo img{display:block;width:100%;height:auto;max-height:480px;object-fit:contain}.npe-promo p{margin:15px 0;line-height:1.6}.npe-detail.npe-gallery-right{grid-template-columns:minmax(270px,.72fr) minmax(0,1.65fr)}.npe-detail.npe-gallery-right .npe-gallery{order:2}.npe-detail.npe-gallery-right .npe-summary{order:1}
+.npe-detail.npe-gallery-col{display:flex!important;flex-direction:column!important;align-items:center;max-width:960px;margin-left:auto;margin-right:auto;gap:35px}
+.npe-detail.npe-gallery-col .npe-gallery,.npe-detail.npe-gallery-col .npe-summary{width:100%!important;max-width:100%!important}

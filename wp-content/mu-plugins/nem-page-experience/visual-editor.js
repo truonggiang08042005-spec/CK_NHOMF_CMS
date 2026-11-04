@@ -4,9 +4,9 @@
     if (!cfg) return;
     const frame = document.getElementById('nve-preview');
     const status = document.getElementById('nve-status');
-    const data = { fields: { ...cfg.fields }, order: [...cfg.order], hidden: [...cfg.hidden], columns: { ...cfg.columns }, featureOrder: [...(cfg.featureOrder || [])], styles: { ...JSON.parse(JSON.stringify(cfg.styles)) }, product: cfg.product, productFields: {} };
+    const data = { fields: { ...cfg.fields }, order: [...cfg.order], hidden: [...cfg.hidden], columns: { ...cfg.columns }, layouts: { ...(cfg.layouts || {}) }, featureOrder: [...(cfg.featureOrder || [])], styles: { ...JSON.parse(JSON.stringify(cfg.styles)) }, product: cfg.product, productFields: {} };
     let doc, connectedDoc, selected = '', dirty = false, saving = false, dragKey = '';
-    const required = cfg.type === 'checkout' ? ['contact', 'address', 'payment', 'summary'] : [];
+    const required = cfg.required || (cfg.type === 'checkout' ? ['contact', 'address', 'payment', 'summary'] : []);
     const styleProps = { fontSize: 'font-size', fontWeight: 'font-weight', color: 'color', textAlign: 'text-align', lineHeight: 'line-height', letterSpacing: 'letter-spacing' };
     const controls = { fontSize: 'nve-font-size', fontWeight: 'nve-font-weight', color: 'nve-color', textAlign: 'nve-align', lineHeight: 'nve-line-height' };
     function message(text, error = false) { status.textContent = text; status.classList.toggle('is-error', error); }
@@ -43,7 +43,7 @@
     }
     function applyOrder() {
         if (!doc) return;
-        const root = doc.querySelector(cfg.type === 'checkout' ? '.nem-checkout-grid' : '#npe-main');
+        const root = doc.querySelector(cfg.type === 'checkout' ? '.nem-checkout-grid' : (['shop','cart','search'].includes(cfg.type) ? '[data-nve-root]' : '#npe-main'));
         if (!root) return;
         data.order.forEach(key => {
             const node = root.querySelector(`[data-npe-section="${key}"]`);
@@ -53,7 +53,8 @@
             if (cfg.type === 'checkout') {
                 const column = data.columns[key] || (['summary', 'coupon'].includes(key) ? 'sidebar' : 'main');
                 root.querySelector(`.nem-checkout-${column}`)?.appendChild(node);
-            } else root.appendChild(node);
+            } else if (['shop','cart','search'].includes(cfg.type)) node.parentNode.appendChild(node);
+            else root.appendChild(node);
         });
     }
     function move(key, delta) {
@@ -92,6 +93,7 @@
         if (key === 'collection_url') nodes('.npe-collection').forEach(el => el.href = value);
         if (key === 'support_url') nodes('.npe-consult').forEach(el => el.href = value);
         if (key === 'brand') nodes('.npe-brand').forEach(el => { const br = el.querySelector('br'); if (br) { while (el.firstChild && el.firstChild !== br) el.firstChild.remove(); el.prepend(doc.createTextNode('Thương hiệu: ' + value)); } });
+        if (cfg.type === 'shop' && key === 'banner_url') nodes('.nem-shop-banner').forEach(el => { el.href = value; });
         changed();
     }
     function updateField(key, value) {
@@ -192,6 +194,7 @@
         nodes('.nve-block-handle').forEach(handle => { handle.draggable = false; });
     }
     function imageNodes(key) {
+        if (cfg.type === 'shop' && key === 'banner_image') return nodes('.nem-shop-banner img');
         const map = { image_logo: '.nem-logo-img, .nem-drawer-logo, .npe-logo img', image_hero: '.npe-slide:nth-of-type(1) img', image_hero3: '.npe-slide:nth-of-type(2) img', image_hero4: '.npe-slide:nth-of-type(3) img', image_feature1: '.npe-features > a[data-npe-feature="0"] img', image_feature2: '.npe-features > a[data-npe-feature="1"] img', image_collection: '.npe-collection img', banner_image: '.npe-promo img', image_bct: '.npe-certification', image_payment1: '.npe-payments img:nth-child(1)', image_payment2: '.npe-payments img:nth-child(2)', image_payment: '.npe-payments img:nth-child(3)', image_payment4: '.npe-payments img:nth-child(4)' };
         return nodes(map[key] || '[data-no-image]');
     }
@@ -225,7 +228,7 @@
     function connect() {
         try { doc = frame.contentDocument; if (!doc?.querySelector('body')) throw new Error('Không đọc được nội dung trang.'); }
         catch (error) { message('Không tải được xem trước. Kiểm tra đăng nhập WordPress và mở lại Edit Page.', true); return; }
-        if (!doc.querySelector('#npe-main, .nem-checkout-grid')) { message('Phiên đăng nhập hết hạn hoặc trang chưa tải đúng. Đăng nhập lại rồi mở Edit Page.', true); return; }
+        if (!doc.querySelector('#npe-main, .nem-checkout-grid, [data-nve-root]')) { message('Phiên đăng nhập hết hạn hoặc trang chưa tải đúng. Đăng nhập lại rồi mở Edit Page.', true); return; }
         if (doc === connectedDoc) return;
         connectedDoc = doc;
         doc.getElementById('npe-visual-typography')?.remove();
@@ -262,9 +265,9 @@
             el.addEventListener('dragend', () => { dragKey = ''; nodes('.nve-drop-target').forEach(n => n.classList.remove('nve-drop-target')); });
         });
         applyOrder(); styleSheet();
-        if (cfg.type === 'product') connectProductColumns();
         if (cfg.type === 'home') connectHomeRows();
         if (cfg.type === 'checkout') connectCheckoutColumns();
+        if (['shop','cart','search','product'].includes(cfg.type)) window.NPELayoutDrag.bind({ doc, groups: cfg.layoutGroups || {}, layouts: data.layouts, onChange(key, layout) { data.layouts[key] = layout; if (key === 'product_details') { data.fields.gallery_position = (layout.order[0] === 'gallery' ? 'left' : 'right'); } changed(); } });
         message(dirty ? 'Có thay đổi chưa lưu.' : 'Sẵn sàng. Bấm vào chữ hoặc kéo khối để chỉnh sửa.');
     }
     Object.entries(controls).forEach(([prop, id]) => document.getElementById(id).addEventListener('input', event => {
@@ -276,6 +279,8 @@
     }));
     document.getElementById('nve-reset-style').addEventListener('click', () => { if (!selected) return; delete data.styles[selected]; styleSheet(); select(selected, nodes(cfg.targets[selected].selector)[0]); changed(); });
     document.getElementById('nve-device').addEventListener('change', event => { frame.style.width = event.target.value; });
+    document.getElementById('nve-page')?.addEventListener('change', event => { location.href = event.target.value; });
+    document.getElementById('nve-search-preview')?.addEventListener('click', () => { const url = new URL(location.href); url.searchParams.set('query', document.getElementById('nve-query').value); location.href = url.href; });
     document.getElementById('nve-product')?.addEventListener('change', event => {
         if (dirty && !window.confirm('Bạn có thay đổi chưa lưu. Chuyển sản phẩm và bỏ các thay đổi này?')) { event.target.value = cfg.product; return; }
         dirty = false; const url = new URL(location.href); url.searchParams.set('product', event.target.value); location.href = url.href;
