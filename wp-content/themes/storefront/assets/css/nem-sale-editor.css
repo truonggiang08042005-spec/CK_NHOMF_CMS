@@ -279,17 +279,19 @@ figure.wp-block-image.nem-new-banner {
 
 /* Visual feedback during direct canvas drag-and-drop */
 .nem-dragging {
-    opacity: 0.92 !important;
+    opacity: 0.75 !important;
     outline: 2px solid #3858e9 !important;
     background-color: #ffffff !important;
 }
 
 .nem-drag-over-top {
     box-shadow: 0 -4px 0 0 #3858e9 !important;
+    outline: 2px dashed #3858e9 !important;
 }
 
 .nem-drag-over-bottom {
     box-shadow: 0 4px 0 0 #3858e9 !important;
+    outline: 2px dashed #3858e9 !important;
 }
 
 .nem-drag-over-swap {

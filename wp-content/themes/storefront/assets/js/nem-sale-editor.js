@@ -1,13 +1,15 @@
 /**
- * Ultra-Smooth Canvas Drag-and-Drop for NEM SALE Gutenberg Editor
+ * Ultra-Smooth Canvas Drag-and-Drop for NEM Gutenberg Editor (SALE & PLUS)
  * - Dragging the Entire Category Box (.nem-categories-box / .nem-new-sidebar):
  *   Grab the top blue bar, bottom bar, "Danh mục" title, or any border/padding of the sidebar.
- *   Moving the mouse Left <-> Right swaps the Danh mục column between Left and Right LIVE in real time!
- *   Moving the mouse Up <-> Down drops the entire Danh mục block above/below any section on the page!
- * - Dragging Individual Category Groups (.nem-new-category-group: Đầm, Áo, Quần...):
- *   Grab the top bar of the group to reorder groups smoothly.
- * - Dragging Individual Category Lines:
- *   Grab the left "⋮⋮" icon to reorder lines, while clicking on the text itself edits text natively.
+ *   Moving Left <-> Right swaps the Danh mục column between Left and Right LIVE in real time!
+ *   Moving Up <-> Down drops the entire Danh mục block above/below any section on the page!
+ * - Dragging Category Groups (.nem-new-category-group: Đầm, Áo, Quần...):
+ *   Grab the top "⋮⋮ Kéo cả nhóm" bar or the parent title ("Đầm", "Áo") to drag the whole group
+ *   anywhere — inside the sidebar, over to the right side (catalog), or anywhere on the page!
+ * - Dragging Individual Category Items (.nem-new-category-child, .nem-new-category-all...):
+ *   Grab any element (Đầm suông, Đầm dáng A, Tất cả sản phẩm...) to drop it wherever you want —
+ *   inside groups, across groups, into the right side catalog, between products, or on any page section!
  */
 ( function () {
 	'use strict';
@@ -18,6 +20,33 @@
 		}
 		if ( window.parent && window.parent.wp && window.parent.wp.data ) {
 			return window.parent.wp.data;
+		}
+		return null;
+	}
+
+	function getClosestBlockElement( node ) {
+		if ( ! node || node.nodeType !== 1 ) {
+			node = node ? node.parentElement : null;
+		}
+		if ( ! node || ! node.closest ) {
+			return null;
+		}
+		return node.closest( '[data-block], [id^="block-"]' );
+	}
+
+	function getClientId( el ) {
+		if ( ! el ) {
+			return null;
+		}
+		var blockEl = getClosestBlockElement( el );
+		if ( blockEl ) {
+			var dataBlock = blockEl.getAttribute( 'data-block' );
+			if ( dataBlock ) {
+				return dataBlock;
+			}
+			if ( blockEl.id && blockEl.id.indexOf( 'block-' ) === 0 ) {
+				return blockEl.id.replace( /^block-/, '' );
+			}
 		}
 		return null;
 	}
@@ -33,22 +62,37 @@
 		if ( ! matched ) {
 			return null;
 		}
-		return matched.closest( '[data-block]' ) || matched;
+		var blockEl = getClosestBlockElement( matched );
+		return blockEl || matched;
 	}
 
-	function getClientId( el ) {
-		if ( ! el ) {
+	/**
+	 * Strictly find an individual category item block element without jumping up to its parent group container.
+	 */
+	function findCategoryItemBlock( node ) {
+		if ( ! node || node.nodeType !== 1 ) {
+			node = node ? node.parentElement : null;
+		}
+		if ( ! node || ! node.closest ) {
 			return null;
 		}
-		var blockNode = el.closest ? el.closest( '[data-block]' ) : null;
-		if ( blockNode ) {
-			return blockNode.getAttribute( 'data-block' );
+		var matched = node.closest(
+			'.nem-new-category-child, .nem-new-category-parent, .nem-new-category-all, [class*="nem-cat-slug-"]'
+		);
+		if ( ! matched ) {
+			return null;
 		}
-		var idNode = el.closest ? el.closest( '[id^="block-"]' ) : null;
-		if ( idNode ) {
-			return idNode.id.replace( /^block-/, '' );
+		if ( matched.hasAttribute( 'data-block' ) || ( matched.id && matched.id.indexOf( 'block-' ) === 0 ) ) {
+			return matched;
 		}
-		return null;
+		var curr = matched.parentElement;
+		while ( curr && ! curr.classList.contains( 'nem-new-category-group' ) && ! curr.classList.contains( 'nem-categories-box' ) ) {
+			if ( curr.hasAttribute( 'data-block' ) || ( curr.id && curr.id.indexOf( 'block-' ) === 0 ) ) {
+				return curr;
+			}
+			curr = curr.parentElement;
+		}
+		return matched;
 	}
 
 	function determineDraggableHandle( targetEl, event ) {
@@ -64,67 +108,82 @@
 		// 1. Heading "Danh mục" (.nem-new-categories-title) -> drags the ENTIRE Category Box!
 		var catTitle = targetEl.closest( '.nem-new-categories-title' );
 		if ( catTitle && catBox ) {
-			var titleRect = catTitle.getBoundingClientRect();
-			var isTitleIcon = event.clientX - titleRect.left <= 28;
 			return {
 				el: catBox,
 				type: 'categories-box',
 				label: '✥ Đang di chuyển: Cả khối Danh mục',
-				immediate: isTitleIcon,
-			};
-		}
-
-		// 2. Individual category item ("Đầm", "Đầm suông", "Tất cả sản phẩm"...)
-		var catItem = findBlockByClass(
-			targetEl,
-			'.nem-new-category-child, .nem-new-category-parent, .nem-new-category-all'
-		);
-		if ( catItem ) {
-			var itemRect = catItem.getBoundingClientRect();
-			// Left 26px "⋮⋮" handle drags the item (or parent group if shift/parent)
-			if ( event.clientX - itemRect.left <= 26 ) {
-				return {
-					el: catItem,
-					type: 'category-item',
-					label: '⋮⋮ Đang kéo mục: ' + ( catItem.textContent || '' ).trim(),
-					immediate: true,
-				};
-			}
-			// Clicking on the text itself -> let native Gutenberg text editing work 100% smoothly!
-			return null;
-		}
-
-		// 3. Category Group box (.nem-new-category-group: Đầm, Áo, Quần...)
-		var catGroup = findBlockByClass( targetEl, '.nem-new-category-group' );
-		if ( catGroup ) {
-			var groupRect = catGroup.getBoundingClientRect();
-			// Top 28px bar OR clicking directly on the group's padding/border
-			if ( event.clientY - groupRect.top <= 28 || targetEl === catGroup ) {
-				var groupTitleEl = catGroup.querySelector( '.nem-new-category-parent' );
-				var groupName    = groupTitleEl ? groupTitleEl.textContent.trim() : 'Nhóm danh mục';
-				return {
-					el: catGroup,
-					type: 'category-group',
-					label: '⋮⋮ Đang kéo nhóm: ' + groupName,
-					immediate: true,
-				};
-			}
-		}
-
-		// 4. Entire Category Box (.nem-categories-box) or Sidebar column (.nem-new-sidebar)
-		// Matches top 38px bar, bottom 30px bar, left/right borders, or any empty space in the box/sidebar!
-		if ( catBox ) {
-			return {
-				el: catBox,
-				type: 'categories-box',
-				label: '✥ Đang di chuyển: Cả khối Danh mục (Qua Trái / Phải / Lên / Xuống)',
 				immediate: true,
 			};
 		}
 
+		// 2. Parent item "Đầm", "Áo" (.nem-new-category-parent) -> drags the whole category group!
+		// When the user drags "Đầm", they want to move the entire group "Đầm"
+		var catParent = targetEl.closest( '.nem-new-category-parent' );
+		var catGroup  = findBlockByClass( targetEl, '.nem-new-category-group' );
+		if ( catParent && catGroup ) {
+			var groupTitleEl = catGroup.querySelector( '.nem-new-category-parent' );
+			var groupName = groupTitleEl ? groupTitleEl.textContent.trim() : 'Nhóm danh mục';
+			return {
+				el: catGroup,
+				type: 'category-group',
+				label: '⋮⋮ Đang kéo nhóm: ' + groupName + ' (toàn bộ nhóm)',
+				immediate: true,
+			};
+		}
+
+		// 3. Category Group top bar / handle / border ("⋮⋮ Kéo cả nhóm")
+		if ( catGroup ) {
+			var groupRect = catGroup.getBoundingClientRect();
+			var isGroupTopBar = ( event.clientY - groupRect.top <= 28 );
+			var isGroupBorder = ( targetEl === catGroup );
+			var isGroupLeftHandle = ( event.clientX - groupRect.left <= 24 && event.clientX - groupRect.left >= -35 && event.clientY - groupRect.top <= 40 );
+
+			if ( isGroupTopBar || isGroupBorder || isGroupLeftHandle ) {
+				var gTitleEl = catGroup.querySelector( '.nem-new-category-parent' );
+				var gName = gTitleEl ? gTitleEl.textContent.trim() : 'Nhóm danh mục';
+				return {
+					el: catGroup,
+					type: 'category-group',
+					label: '⋮⋮ Đang kéo nhóm: ' + gName + ' (toàn bộ nhóm)',
+					immediate: true,
+				};
+			}
+		}
+
+		// 4. Individual category item ("Đầm suông", "Đầm dáng A", "Tất cả sản phẩm"...)
+		var catItem = findCategoryItemBlock( targetEl );
+		if ( catItem ) {
+			var itemName = ( catItem.textContent || '' ).trim();
+			if ( itemName.length > 25 ) {
+				itemName = itemName.substring( 0, 25 ) + '...';
+			}
+
+			return {
+				el: catItem,
+				type: 'category-item',
+				label: '⋮⋮ Đang kéo phần tử: ' + ( itemName || 'Phần tử danh mục' ),
+				immediate: true,
+			};
+		}
+
+		// 5. Entire Category Box (.nem-categories-box) or Sidebar column (.nem-new-sidebar)
+		// Matches top 38px bar, bottom 30px bar, or empty space
+		if ( catBox ) {
+			var boxRect = catBox.getBoundingClientRect();
+			var isBoxBar = ( event.clientY - boxRect.top <= 38 ) || ( boxRect.bottom - event.clientY <= 32 ) || ( targetEl === catBox );
+			if ( isBoxBar ) {
+				return {
+					el: catBox,
+					type: 'categories-box',
+					label: '✥ Đang di chuyển: Cả khối Danh mục (Qua Trái / Phải / Lên / Xuống)',
+					immediate: true,
+				};
+			}
+		}
+
 		var sidebarCol = findBlockByClass( targetEl, '.nem-new-sidebar' );
 		if ( sidebarCol && targetEl === sidebarCol ) {
-			var innerBox = sidebarCol.querySelector( '.nem-categories-box[data-block]' ) || sidebarCol;
+			var innerBox = sidebarCol.querySelector( '.nem-categories-box' ) || sidebarCol;
 			return {
 				el: innerBox,
 				type: 'categories-box',
@@ -133,7 +192,7 @@
 			};
 		}
 
-		// 5. Product Card top bar ("⋮⋮ Kéo đổi vị trí sản phẩm")
+		// 6. Product Card top bar ("⋮⋮ Kéo đổi vị trí sản phẩm")
 		var prodCol = findBlockByClass( targetEl, '.nem-collection-product' );
 		if ( prodCol ) {
 			var prodRect = prodCol.getBoundingClientRect();
@@ -173,15 +232,14 @@
 		if ( ! wpData ) {
 			return false;
 		}
-		var layoutEl   = doc.querySelector( '.nem-new-layout[data-block]' );
-		var sidebarCol = doc.querySelector( '.nem-new-sidebar[data-block]' );
-		var catalogCol = doc.querySelector( '.nem-new-catalog[data-block]' );
+		var layoutEl   = doc.querySelector( '.nem-new-layout[data-block]' ) || doc.querySelector( '.nem-new-layout' );
+		var sidebarCol = doc.querySelector( '.nem-new-sidebar[data-block]' ) || doc.querySelector( '.nem-new-sidebar' );
+		var catalogCol = doc.querySelector( '.nem-new-catalog[data-block]' ) || doc.querySelector( '.nem-new-catalog' );
 		if ( ! layoutEl || ! sidebarCol || ! catalogCol ) {
 			return false;
 		}
 
 		var layoutRect = layoutEl.getBoundingClientRect();
-		// Only live-swap left/right when cursor is vertically within the 2-column layout region
 		if ( clientY < layoutRect.top - 30 || clientY > layoutRect.bottom + 30 ) {
 			return false;
 		}
@@ -195,7 +253,6 @@
 			return false;
 		}
 
-		// If .nem-categories-box was previously moved outside .nem-new-sidebar, put it back inside .nem-new-sidebar first
 		var boxRoot = select.getBlockRootClientId( boxId ) || '';
 		if ( boxRoot !== sideId && dragState.el.classList.contains( 'nem-categories-box' ) ) {
 			dispatch.moveBlocksToPosition( [ boxId ], boxRoot, sideId, 0 );
@@ -210,13 +267,11 @@
 
 		var midX = layoutRect.left + layoutRect.width / 2;
 
-		// If sidebar is currently on the Left (idxSide < idxCat) and cursor moves to the Right side
 		if ( idxSide < idxCat && clientX > midX + 40 ) {
 			dispatch.moveBlocksToPosition( [ sideId ], rootId, rootId, idxCat );
 			return true;
 		}
 
-		// If sidebar is currently on the Right (idxSide > idxCat) and cursor moves to the Left side
 		if ( idxSide > idxCat && clientX < midX - 40 ) {
 			dispatch.moveBlocksToPosition( [ sideId ], rootId, rootId, 0 );
 			return true;
@@ -225,6 +280,12 @@
 		return true;
 	}
 
+	/**
+	 * Universal Drop Target Finder:
+	 * Supports dropping anywhere: inside category groups, in the sidebar,
+	 * over to the right side (catalog column, toolbar, grid, product rows, products),
+	 * or around major page sections!
+	 */
 	function findDropTarget( doc, clientX, clientY, dragState ) {
 		var hoverEl = doc.elementFromPoint( clientX, clientY );
 		if ( ! hoverEl ) {
@@ -234,6 +295,7 @@
 		var sourceEl = dragState.el;
 		var type     = dragState.type;
 
+		// 1. Product card swap
 		if ( type === 'product-card' ) {
 			var targetProd = findBlockByClass( hoverEl, '.nem-collection-product' );
 			if ( targetProd && targetProd !== sourceEl ) {
@@ -242,81 +304,132 @@
 			return null;
 		}
 
-		if ( type === 'category-group' ) {
-			var targetGroup = findBlockByClass( hoverEl, '.nem-new-category-group' );
-			if ( targetGroup && targetGroup !== sourceEl ) {
-				var rect = targetGroup.getBoundingClientRect();
-				var pos  = clientY < rect.top + rect.height / 2 ? 'top' : 'bottom';
-				return { el: targetGroup, position: pos };
-			}
-			var targetAll = findBlockByClass( hoverEl, '.nem-new-category-all, .nem-new-categories-title' );
-			if ( targetAll && targetAll !== sourceEl ) {
-				return { el: targetAll, position: 'bottom' };
-			}
-			var allGroups = doc.querySelectorAll( '.nem-new-category-group[data-block]' );
-			var bestGroup = null;
-			var bestDist  = Infinity;
-			for ( var i = 0; i < allGroups.length; i++ ) {
-				var g = allGroups[ i ];
-				if ( g === sourceEl ) {
-					continue;
-				}
-				var r   = g.getBoundingClientRect();
-				var mid = r.top + r.height / 2;
-				var d   = Math.abs( clientY - mid );
-				if ( d < bestDist && d < 180 ) {
-					bestDist  = d;
-					bestGroup = g;
-				}
-			}
-			if ( bestGroup ) {
-				var bRect = bestGroup.getBoundingClientRect();
-				return {
-					el: bestGroup,
-					position: clientY < bRect.top + bRect.height / 2 ? 'top' : 'bottom',
-				};
-			}
-			return null;
-		}
-
-		if ( type === 'category-item' ) {
-			var targetItem = findBlockByClass(
-				hoverEl,
-				'.nem-new-category-child, .nem-new-category-parent, .nem-new-category-all, .nem-new-categories-title'
-			);
-			if ( targetItem && targetItem !== sourceEl ) {
-				var iRect = targetItem.getBoundingClientRect();
-				var iPos  = clientY < iRect.top + iRect.height / 2 ? 'top' : 'bottom';
-				if ( targetItem.classList.contains( 'nem-new-category-parent' ) ) {
-					iPos = 'bottom';
-				}
-				return { el: targetItem, position: iPos };
-			}
-			var intoGroup = findBlockByClass( hoverEl, '.nem-new-category-group' );
-			if ( intoGroup && ! intoGroup.contains( sourceEl ) ) {
-				return { el: intoGroup, position: 'inside' };
-			}
-			return null;
-		}
-
+		// 2. Entire Category Box
 		if ( type === 'categories-box' ) {
-			// First, check if cursor is inside the 2-column layout -> live swap Left <-> Right!
 			var handledHorizontal = tryLiveSwapSidebarHorizontal( doc, clientX, clientY, dragState );
 			if ( handledHorizontal ) {
 				return null;
 			}
-
-			// Otherwise, allow dropping the entire Category Box above/below any major section on the page
-			var majorSection = findBlockByClass(
+			var majorSec = findBlockByClass(
 				hoverEl,
 				'.nem-new-banner, .nem-new-layout, .nem-collection-newsletter, .nem-footer-wrapper, .nem-new-breadcrumb'
 			);
-			if ( majorSection && majorSection !== sourceEl && ! majorSection.contains( sourceEl ) ) {
-				var mRect = majorSection.getBoundingClientRect();
-				var mPos  = clientY < mRect.top + mRect.height / 2 ? 'top' : 'bottom';
-				return { el: majorSection, position: mPos };
+			if ( majorSec && majorSec !== sourceEl && ! majorSec.contains( sourceEl ) ) {
+				var msRect = majorSec.getBoundingClientRect();
+				var msPos  = clientY < ( msRect.top + msRect.height / 2 ) ? 'top' : 'bottom';
+				return { el: majorSec, position: msPos };
 			}
 			return null;
+		}
+
+		// 3. For BOTH 'category-group' and 'category-item': UNIVERSAL DROP EVERYWHERE!
+
+		// Target A: An individual category item
+		var targetItem = findCategoryItemBlock( hoverEl );
+		if ( targetItem && targetItem !== sourceEl && ! sourceEl.contains( targetItem ) ) {
+			var iRect = targetItem.getBoundingClientRect();
+			var iPos  = clientY < ( iRect.top + iRect.height / 2 ) ? 'top' : 'bottom';
+			return { el: targetItem, position: iPos };
+		}
+
+		// Target B: A category group container
+		var targetGrp = hoverEl.closest ? hoverEl.closest( '.nem-new-category-group' ) : null;
+		if ( targetGrp && targetGrp !== sourceEl && ! sourceEl.contains( targetGrp ) ) {
+			var gBlock = findBlockByClass( targetGrp, '.nem-new-category-group' ) || targetGrp;
+			var gRect  = gBlock.getBoundingClientRect();
+			if ( type === 'category-item' ) {
+				if ( clientY < gRect.top + 14 ) {
+					return { el: gBlock, position: 'top' };
+				}
+				if ( clientY > gRect.bottom - 14 ) {
+					return { el: gBlock, position: 'bottom' };
+				}
+				return { el: gBlock, position: 'inside' };
+			}
+			var gPos = clientY < ( gRect.top + gRect.height / 2 ) ? 'top' : 'bottom';
+			return { el: gBlock, position: gPos };
+		}
+
+		// Target C: Title "Danh mục"
+		var catTitleEl = hoverEl.closest ? hoverEl.closest( '.nem-new-categories-title' ) : null;
+		if ( catTitleEl && ! sourceEl.contains( catTitleEl ) ) {
+			return { el: catTitleEl, position: 'bottom' };
+		}
+
+		// Target D: ON THE RIGHT SIDE (Catalog, Products, Toolbar, Grid)
+		// D1: A product card
+		var hoverProd = findBlockByClass( hoverEl, '.nem-collection-product' );
+		if ( hoverProd && hoverProd !== sourceEl && ! sourceEl.contains( hoverProd ) ) {
+			var hpRect = hoverProd.getBoundingClientRect();
+			var hpPos  = ( clientX < hpRect.left + hpRect.width / 2 ) ? 'top' : 'bottom';
+			return { el: hoverProd, position: hpPos };
+		}
+
+		// D2: A product row
+		var hoverRow = findBlockByClass(
+			hoverEl,
+			'.nem-new-products-row, .nem-sale-products-row, .nem-plus-products-row'
+		);
+		if ( hoverRow && hoverRow !== sourceEl && ! sourceEl.contains( hoverRow ) ) {
+			var hrRect = hoverRow.getBoundingClientRect();
+			var hrPos  = clientY < ( hrRect.top + hrRect.height / 2 ) ? 'top' : 'bottom';
+			return { el: hoverRow, position: hrPos };
+		}
+
+		// D3: Products grid
+		var hoverGrid = findBlockByClass( hoverEl, '.nem-new-products-grid' );
+		if ( hoverGrid && hoverGrid !== sourceEl && ! sourceEl.contains( hoverGrid ) ) {
+			var hgRect = hoverGrid.getBoundingClientRect();
+			var hgPos  = clientY < ( hgRect.top + hgRect.height / 2 ) ? 'top' : 'bottom';
+			return { el: hoverGrid, position: hgPos };
+		}
+
+		// D4: Toolbar in catalog
+		var hoverToolbar = findBlockByClass( hoverEl, '.nem-new-toolbar' );
+		if ( hoverToolbar && hoverToolbar !== sourceEl && ! sourceEl.contains( hoverToolbar ) ) {
+			var htRect = hoverToolbar.getBoundingClientRect();
+			var htPos  = clientY < ( htRect.top + htRect.height / 2 ) ? 'top' : 'bottom';
+			return { el: hoverToolbar, position: htPos };
+		}
+
+		// D5: Pagination
+		var hoverPagination = findBlockByClass( hoverEl, '.nem-new-pagination' );
+		if ( hoverPagination && hoverPagination !== sourceEl && ! sourceEl.contains( hoverPagination ) ) {
+			var hpgRect = hoverPagination.getBoundingClientRect();
+			var hpgPos  = clientY < ( hpgRect.top + hpgRect.height / 2 ) ? 'top' : 'bottom';
+			return { el: hoverPagination, position: hpgPos };
+		}
+
+		// D6: Catalog column container (.nem-new-catalog)
+		var hoverCatalog = findBlockByClass( hoverEl, '.nem-new-catalog' );
+		if ( hoverCatalog && hoverCatalog !== sourceEl && ! sourceEl.contains( hoverCatalog ) ) {
+			var hcRect = hoverCatalog.getBoundingClientRect();
+			if ( clientY < hcRect.top + 60 ) {
+				return { el: hoverCatalog, position: 'top' };
+			}
+			if ( clientY > hcRect.bottom - 60 ) {
+				return { el: hoverCatalog, position: 'bottom' };
+			}
+			return { el: hoverCatalog, position: 'inside' };
+		}
+
+		// Target E: Major page sections (Banner, Newsletter, Footer, Layout, Breadcrumb)
+		var hoverMajor = findBlockByClass(
+			hoverEl,
+			'.nem-new-banner, .nem-new-breadcrumb, .nem-collection-newsletter, .nem-footer-wrapper, .nem-new-layout'
+		);
+		if ( hoverMajor && hoverMajor !== sourceEl && ! hoverMajor.contains( sourceEl ) ) {
+			var hmRect = hoverMajor.getBoundingClientRect();
+			var hmPos  = clientY < ( hmRect.top + hmRect.height / 2 ) ? 'top' : 'bottom';
+			return { el: hoverMajor, position: hmPos };
+		}
+
+		// Target F: Any generic block nearby
+		var anyBlock = getClosestBlockElement( hoverEl );
+		if ( anyBlock && anyBlock !== sourceEl && ! sourceEl.contains( anyBlock ) ) {
+			var abRect = anyBlock.getBoundingClientRect();
+			var abPos  = clientY < ( abRect.top + abRect.height / 2 ) ? 'top' : 'bottom';
+			return { el: anyBlock, position: abPos };
 		}
 
 		return null;
@@ -343,13 +456,30 @@
 		var fromRoot  = select.getBlockRootClientId( sourceId ) || '';
 		var fromIndex = select.getBlockIndex( sourceId );
 
+		// Case 1: Drop 'inside' a container (e.g. into .nem-new-category-group or .nem-new-catalog)
 		if ( dropTarget.position === 'inside' ) {
 			var order = select.getBlockOrder( targetId );
-			dispatch.moveBlocksToPosition( [ sourceId ], fromRoot, targetId, order ? order.length : 0 );
+			var targetIndex = order ? order.length : 0;
+			dispatch.moveBlocksToPosition( [ sourceId ], fromRoot, targetId, targetIndex );
 			dispatch.selectBlock( sourceId );
 			return;
 		}
 
+		// Case 2: Product card swap
+		if ( dragState.type === 'product-card' && dropTarget.position === 'swap' ) {
+			var toRootSwap  = select.getBlockRootClientId( targetId ) || '';
+			var toIndexSwap = select.getBlockIndex( targetId );
+			if ( fromRoot === toRootSwap ) {
+				dispatch.moveBlocksToPosition( [ sourceId ], fromRoot, toRootSwap, toIndexSwap );
+			} else {
+				dispatch.moveBlocksToPosition( [ sourceId ], fromRoot, toRootSwap, toIndexSwap );
+				dispatch.moveBlocksToPosition( [ targetId ], toRootSwap, fromRoot, fromIndex );
+			}
+			dispatch.selectBlock( sourceId );
+			return;
+		}
+
+		// Case 3: Drop 'top' (before) or 'bottom' (after) targetId
 		var toRoot  = select.getBlockRootClientId( targetId ) || '';
 		var toIndex = select.getBlockIndex( targetId );
 
@@ -357,26 +487,15 @@
 			return;
 		}
 
-		if ( dragState.type === 'product-card' && dropTarget.position === 'swap' ) {
-			if ( fromRoot === toRoot ) {
-				dispatch.moveBlocksToPosition( [ sourceId ], fromRoot, toRoot, toIndex );
-			} else {
-				dispatch.moveBlocksToPosition( [ sourceId ], fromRoot, toRoot, toIndex );
-				dispatch.moveBlocksToPosition( [ targetId ], toRoot, fromRoot, fromIndex );
-			}
-			dispatch.selectBlock( sourceId );
-			return;
-		}
-
 		var insertIndex = toIndex;
 		if ( fromRoot === toRoot ) {
 			if ( fromIndex < toIndex ) {
-				insertIndex = dropTarget.position === 'bottom' ? toIndex : toIndex - 1;
+				insertIndex = ( dropTarget.position === 'bottom' ) ? toIndex : ( toIndex - 1 );
 			} else {
-				insertIndex = dropTarget.position === 'bottom' ? toIndex + 1 : toIndex;
+				insertIndex = ( dropTarget.position === 'bottom' ) ? ( toIndex + 1 ) : toIndex;
 			}
 		} else {
-			insertIndex = dropTarget.position === 'bottom' ? toIndex + 1 : toIndex;
+			insertIndex = ( dropTarget.position === 'bottom' ) ? ( toIndex + 1 ) : toIndex;
 		}
 
 		if ( insertIndex < 0 ) {
@@ -438,7 +557,6 @@
 				};
 
 				if ( candidate.immediate ) {
-					e.preventDefault();
 					var wpData   = getWPData();
 					var clientId = getClientId( candidate.el );
 					if ( wpData && clientId ) {
@@ -460,7 +578,7 @@
 				var dy = e.clientY - dragState.startY;
 
 				if ( ! dragState.isDragging ) {
-					var threshold = dragState.immediate ? 3 : 6;
+					var threshold = dragState.immediate ? 3 : 5;
 					if ( Math.hypot( dx, dy ) < threshold ) {
 						return;
 					}
