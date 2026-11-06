@@ -1,7 +1,7 @@
 <?php
 /** Square layout icon shared by the catalog pages. */
 defined( 'ABSPATH' ) || exit;
-$columns = isset( $args['columns'] ) && 2 === (int) $args['columns'] ? 2 : 3;
+$columns = isset( $args['columns'] ) && in_array( (int) $args['columns'], array( 2, 3, 4 ), true ) ? (int) $args['columns'] : 4;
 $cell = ( 18 - ( $columns - 1 ) ) / $columns;
 ?>
 <svg class="nem-catalog-grid-icon" viewBox="0 0 20 20" width="20" height="20" aria-hidden="true" focusable="false">

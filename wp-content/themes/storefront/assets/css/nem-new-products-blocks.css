@@ -79,9 +79,108 @@
     display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 36px 14px;
 }
 .nem-new-blocks .nem-new-products-grid.nem-editor-columns-override[data-columns="2"] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.nem-new-blocks .nem-new-products-grid.nem-editor-columns-override[data-columns="4"] {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 32px 12px;
+}
+:is(.nem-plus-blocks, .nem-plus-page) .nem-new-products-grid.nem-editor-columns-override {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 32px 12px;
+}
+:is(.nem-plus-blocks, .nem-plus-page) .nem-new-products-grid.nem-editor-columns-override[data-columns="3"] {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 36px 14px;
+}
+:is(.nem-plus-blocks, .nem-plus-page) .nem-new-products-grid.nem-editor-columns-override[data-columns="2"] {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 36px 14px;
+}
 .nem-new-blocks .nem-editor-columns-override :is(.nem-new-products-row, .nem-sale-products-row, .nem-plus-products-row) { display: contents; }
 .nem-new-blocks .nem-editor-columns-override > .wp-block-group__inner-container { display: contents; }
 .nem-new-blocks .nem-editor-columns-override .wp-block-column { width: auto; }
+
+/* NEM PLUS in Gutenberg Canvas */
+body.nem-plus-editor-screen .editor-styles-wrapper :is(.wp-block-columns.nem-new-products-row, .wp-block-columns.nem-sale-products-row, .wp-block-columns.nem-plus-products-row) {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    gap: 12px !important;
+    width: 100% !important;
+}
+body.nem-plus-editor-screen .editor-styles-wrapper :is(.nem-new-products-row, .nem-sale-products-row, .nem-plus-products-row) > .wp-block-column {
+    flex: 1 1 0 !important;
+    min-width: 0 !important;
+}
+
+/* Product quantity control inside editor canvas and block templates */
+:is(.nem-new-blocks, .editor-styles-wrapper) .nem-product-quantity-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 10px;
+    padding-top: 4px;
+    font-size: 13px;
+    user-select: none;
+    flex-wrap: wrap;
+}
+:is(.nem-new-blocks, .editor-styles-wrapper) .nem-product-quantity-label {
+    font-size: 12px;
+    color: #555;
+    font-weight: 500;
+    margin: 0;
+}
+:is(.nem-new-blocks, .editor-styles-wrapper) .nem-product-quantity-control {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid #dcdcdc;
+    border-radius: 2px;
+    background: #fff;
+    overflow: hidden;
+    height: 28px;
+    box-sizing: border-box;
+}
+:is(.nem-new-blocks, .editor-styles-wrapper) .nem-qty-btn {
+    width: 26px;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    border: none;
+    background: #f7f7f7;
+    color: #333;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+:is(.nem-new-blocks, .editor-styles-wrapper) .nem-qty-input {
+    width: 36px;
+    height: 100%;
+    border: none;
+    border-left: 1px solid #e5e5e5;
+    border-right: 1px solid #e5e5e5;
+    padding: 0 2px;
+    margin: 0;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 600;
+    color: #222;
+    background: #fff;
+    -moz-appearance: textfield;
+    box-sizing: border-box;
+}
+:is(.nem-new-blocks, .editor-styles-wrapper) .nem-qty-input::-webkit-outer-spin-button,
+:is(.nem-new-blocks, .editor-styles-wrapper) .nem-qty-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+:is(.nem-new-blocks, .editor-styles-wrapper) .nem-product-stock-hint {
+    font-size: 11px;
+    color: #888;
+    white-space: nowrap;
+}
 :is(.nem-new-blocks, .editor-styles-wrapper) .nem-new-pagination { margin: 35px auto 10px; }
 :is(.nem-new-blocks, .editor-styles-wrapper) .nem-collection-newsletter {
     width: 100%; max-width: 100%; padding: 72px 24px 53px; margin: 0; box-sizing: border-box;

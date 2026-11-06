@@ -22,7 +22,7 @@ function nem_plus_filter_state( $input = null ) {
 	$state = array(
 		'danh_muc' => $scalar( 'danh_muc' ),
 		'gia'      => $scalar( 'gia' ),
-		'cot'      => '2' === $scalar( 'cot' ) ? 2 : 3,
+		'cot'      => in_array( $scalar( 'cot' ), array( '2', '3', '4' ), true ) ? (int) $scalar( 'cot' ) : 4,
 		'trang'    => max( 1, min( 1000, absint( $scalar( 'trang' ) ) ) ),
 	);
 
@@ -103,7 +103,7 @@ function nem_plus_query_args( $state ) {
 	$args = array(
 		'post_type'           => 'product',
 		'post_status'         => 'publish',
-		'posts_per_page'      => 12,
+		'posts_per_page'      => 16,
 		'paged'               => $state['trang'],
 		'orderby'             => array(
 			'menu_order' => 'ASC',

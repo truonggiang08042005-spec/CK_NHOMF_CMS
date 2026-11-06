@@ -40,6 +40,93 @@
 .nem-new-filter-status a { color: #111; text-decoration: underline; }
 .nem-new-products-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 44px 8px; }
 .nem-new-products-grid.nem-new-columns-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.nem-new-products-grid.nem-new-columns-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 36px 12px; }
+.nem-plus-page .nem-new-products-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 36px 12px; }
+.nem-plus-page .nem-new-products-grid.nem-new-columns-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.nem-plus-page .nem-new-products-grid.nem-new-columns-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+/* Product quantity control */
+.nem-product-quantity-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 10px;
+    padding-top: 4px;
+    font-size: 13px;
+    user-select: none;
+    flex-wrap: wrap;
+}
+.nem-product-quantity-label {
+    font-size: 12px;
+    color: #555;
+    font-weight: 500;
+    margin: 0;
+}
+.nem-product-quantity-control {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid #dcdcdc;
+    border-radius: 2px;
+    background: #fff;
+    overflow: hidden;
+    height: 28px;
+    box-sizing: border-box;
+}
+.nem-qty-btn {
+    width: 26px;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    border: none;
+    background: #f7f7f7;
+    color: #333;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+.nem-qty-btn:hover {
+    background: #e6e6e6;
+    color: #000;
+}
+.nem-qty-btn:active {
+    background: #d8d8d8;
+}
+.nem-qty-input {
+    width: 36px;
+    height: 100%;
+    border: none;
+    border-left: 1px solid #e5e5e5;
+    border-right: 1px solid #e5e5e5;
+    padding: 0 2px;
+    margin: 0;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 600;
+    color: #222;
+    background: #fff;
+    -moz-appearance: textfield;
+    box-sizing: border-box;
+}
+.nem-qty-input::-webkit-outer-spin-button,
+.nem-qty-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+.nem-qty-input:focus {
+    outline: none;
+    background: #fafafa;
+}
+.nem-product-stock-hint {
+    font-size: 11px;
+    color: #888;
+    white-space: nowrap;
+}
 .nem-new-products-grid .nem-collection-product h3 { font-size: 14px; font-weight: 400; line-height: 1.4; margin: 14px 4px 20px; }
 .nem-new-products-grid .nem-collection-product-price { font-size: 18px; }
 .nem-new-products-grid .nem-collection-sale { position: absolute; top: 0; right: 0; color: #ff473c; background: #ffffff; padding: 6px 22px; font-size: 14px; font-weight: 700; z-index: 3; line-height: 1.2; border-radius: 0; letter-spacing: 0.2px; }
@@ -58,6 +145,18 @@
     .nem-new-toolbar h1 { font-size: 18px; }
     .nem-new-products-grid .nem-collection-product h3 { font-size: 12px; }
     .nem-new-products-grid .nem-collection-product-price { font-size: 16px; }
+    .nem-plus-page .nem-new-products-grid,
+    .nem-new-products-grid.nem-new-columns-4 {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 28px 10px;
+    }
+}
+@media (max-width: 1100px) {
+    .nem-plus-page .nem-new-products-grid,
+    .nem-new-products-grid.nem-new-columns-4 {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 24px 10px;
+    }
 }
 @media (max-width: 1000px) {
     .nem-new-container { width: calc(100% - 48px); }
@@ -84,10 +183,13 @@
     .nem-new-filter > summary { gap: 5px; }
     .nem-new-filter-panel { width: 200px; }
     .nem-new-filter:last-child .nem-new-filter-panel { width: 240px; }
-    .nem-new-products-grid, .nem-new-products-grid.nem-new-columns-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 10px; }
+    .nem-new-products-grid, .nem-new-products-grid.nem-new-columns-2, .nem-new-products-grid.nem-new-columns-4, .nem-plus-page .nem-new-products-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 24px 8px; }
     .nem-new-products-grid .nem-collection-product h3 { font-size: 11px; min-height: 32px; margin: 10px 0 12px; }
     .nem-new-products-grid .nem-collection-product-price { font-size: 14px; }
     .nem-new-products-grid .nem-collection-sale { padding: 4px 16px; font-size: 12px; }
+    .nem-product-quantity-wrapper { margin-top: 6px; }
+    .nem-qty-btn { width: 22px; }
+    .nem-qty-input { width: 30px; font-size: 12px; }
     .nem-new-pagination { margin-top: 35px; }
     .nem-new-pagination a, .nem-new-pagination span { min-width: 34px; height: 34px; font-size: 13px; }
 }

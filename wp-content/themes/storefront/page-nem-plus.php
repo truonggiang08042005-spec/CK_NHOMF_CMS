@@ -67,7 +67,7 @@ get_header();
 				<?php get_template_part( 'template-parts/catalog-filters', null, array( 'state' => $state, 'url' => nem_plus_products_url() ) ); ?>
 
 				<div class="nem-new-grid-choices" aria-label="Số cột sản phẩm">
-					<?php foreach ( array( 3, 2 ) as $columns ) : ?>
+					<?php foreach ( array( 4, 3, 2 ) as $columns ) : ?>
 						<a class="<?php echo $state['cot'] === $columns ? 'is-active' : ''; ?>" href="<?php echo esc_url( nem_plus_filter_url( $state, array( 'cot' => $columns ) ) ); ?>" aria-label="<?php echo esc_attr( 'Hiển thị ' . $columns . ' cột' ); ?>" <?php echo $state['cot'] === $columns ? 'aria-current="true"' : ''; ?>>
 							<?php get_template_part( 'template-parts/catalog-grid-icon', null, array( 'columns' => $columns ) ); ?>
 						</a>
@@ -94,8 +94,9 @@ get_header();
 							'template-parts/collection-product',
 							null,
 							array(
-								'product' => $product,
-								'sku'     => $product->get_sku(),
+								'product'       => $product,
+								'sku'           => $product->get_sku(),
+								'show_quantity' => true,
 							)
 						);
 					endforeach;

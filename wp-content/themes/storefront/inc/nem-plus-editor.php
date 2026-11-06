@@ -73,7 +73,7 @@ function nem_plus_editor_catalog() {
 	}
 	$args = nem_plus_query_args( $state );
 	$args['nem_plus_editor_order'] = array_keys( $cards );
-	$args['posts_per_page']        = $cards ? count( $cards ) : 12;
+	$args['posts_per_page']        = $cards ? count( $cards ) : 16;
 	return $cache[ $key ] = array(
 		'state' => $state,
 		'cards' => $cards,
@@ -86,7 +86,7 @@ function nem_plus_editor_toolbar( $state ) {
 	echo '<div class="nem-new-toolbar-controls">';
 	get_template_part( 'template-parts/catalog-filters', null, array( 'state' => $state, 'url' => nem_plus_products_url() ) );
 	echo '<div class="nem-new-grid-choices" aria-label="Số cột sản phẩm">';
-	foreach ( array( 3, 2 ) as $columns ) {
+	foreach ( array( 4, 3, 2 ) as $columns ) {
 		echo '<a href="' . esc_url( nem_plus_filter_url( $state, array( 'cot' => $columns ) ) ) . '" aria-label="Hiển thị ' . $columns . ' cột"' . ( $state['cot'] === $columns ? ' class="is-active" aria-current="true"' : '' ) . '>';
 		get_template_part( 'template-parts/catalog-grid-icon', null, array( 'columns' => $columns ) );
 		echo '</a>';
@@ -118,7 +118,7 @@ function nem_plus_editor_grid( $block, $catalog ) {
 			}
 			$product = wc_get_product( $id );
 			ob_start();
-			get_template_part( 'template-parts/collection-product', null, array( 'product' => $product, 'sku' => $product->get_sku() ) );
+			get_template_part( 'template-parts/collection-product', null, array( 'product' => $product, 'sku' => $product->get_sku(), 'show_quantity' => true ) );
 			$html = '<div class="wp-block-column nem-editor-live-card" data-product-id="' . absint( $id ) . '">' . ob_get_clean() . '</div>';
 			return array(
 				'blockName'    => 'core/html',
@@ -144,14 +144,13 @@ function nem_plus_editor_grid( $block, $catalog ) {
 		return $item;
 	};
 	$html = render_block( $walk( $block ) );
-	if ( isset( $_GET['cot'] ) && is_string( $_GET['cot'] ) && in_array( $_GET['cot'], array( '2', '3' ), true ) ) {
-		$tags = new WP_HTML_Tag_Processor( $html );
-		if ( $tags->next_tag() ) {
-			$tags->add_class( 'nem-editor-columns-override' );
-			$tags->set_attribute( 'data-columns', $catalog['state']['cot'] );
-		}
-		$html = $tags->get_updated_html();
+	$cot  = $catalog['state']['cot'] ?? 4;
+	$tags = new WP_HTML_Tag_Processor( $html );
+	if ( $tags->next_tag() ) {
+		$tags->add_class( 'nem-editor-columns-override' );
+		$tags->set_attribute( 'data-columns', (string) $cot );
 	}
+	$html = $tags->get_updated_html();
 	if ( ! $ids ) {
 		$html .= '<div class="nem-new-empty" role="status"><p>Không tìm thấy sản phẩm phù hợp.</p><a href="' . esc_url( nem_plus_products_url() ) . '">Xóa bộ lọc và xem tất cả sản phẩm NEM PLUS</a></div>';
 	}
@@ -288,6 +287,13 @@ function nem_plus_is_editor_screen() {
 	$page = get_post( $id );
 	return $id && $page && 'page' === $page->post_type && ( 'nem-plus' === $page->post_name || 200 === $id );
 }
+
+add_filter( 'admin_body_class', function ( $classes ) {
+	if ( nem_plus_is_editor_screen() ) {
+		$classes .= ' nem-plus-editor-screen';
+	}
+	return $classes;
+} );
 
 /**
  * Share layout rules between frontend and editor canvas.
